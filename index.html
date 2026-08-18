@@ -153,28 +153,7 @@ input[type="file"]{display:none}
 .risk-medio{background:rgba(177,138,32,.09);color:var(--gold-dark);border:1px solid rgba(177,138,32,.25)}
 .risk-bajo{background:rgba(129,78,131,.07);color:var(--plum);border:1px solid rgba(129,78,131,.2)}
 
-  <!-- Diccionarios Personalizados -->
-  <div class="panel" style="margin-bottom: 16px;">
-    <div class="panel-header">
-      <div class="panel-title"><span class="dot"></span>⚙️ Diccionarios Personalizados (100% local)</div>
-    </div>
-    <div class="panel-body">
-      <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">
-        Separa los términos por comas. La lista blanca protege datos de ser anonimizados. La lista negra fuerza su anonimización.
-      </p>
-      <label for="whitelist" style="display: block; margin-bottom: 4px; font-size: 0.75rem; font-weight: 600; color: var(--text);">
-        ✅ Lista Blanca (proteger):
-      </label>
-      <input type="text" id="whitelist" placeholder="Ej: MiEmpresa S.L., Ayuntamiento de Madrid, Juan García" 
-             style="width: 100%; padding: 8px; margin-bottom: 12px; border: 1px solid var(--border-med); border-radius: var(--r4); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem;">
-      
-      <label for="blacklist" style="display: block; margin-bottom: 4px; font-size: 0.75rem; font-weight: 600; color: var(--text);">
-        ⛔ Lista Negra (forzar anonimización):
-      </label>
-      <input type="text" id="blacklist" placeholder="Ej: confidencial, secreto, interno, proyecto X" 
-             style="width: 100%; padding: 8px; border: 1px solid var(--border-med); border-radius: var(--r4); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem;">
-    </div>
-  </div>
+  
   
 /* ── Action bar ── */
 .action-bar{display:flex;gap:10px;align-items:center;margin-bottom:22px;flex-wrap:wrap}
@@ -595,6 +574,29 @@ Ejemplo: «La paciente María García López, con DNI 12345678Z y fecha de nacim
     </div>
   </div>
 
+  <!-- Diccionarios Personalizados -->
+  <div class="panel" style="margin-bottom: 16px;">
+    <div class="panel-header">
+      <div class="panel-title"><span class="dot"></span>⚙️ Diccionarios Personalizados (100% local)</div>
+    </div>
+    <div class="panel-body">
+      <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">
+        Separa los términos por comas. La lista blanca protege datos de ser anonimizados. La lista negra fuerza su anonimización.
+      </p>
+      <label for="whitelist" style="display: block; margin-bottom: 4px; font-size: 0.75rem; font-weight: 600; color: var(--text);">
+        ✅ Lista Blanca (proteger):
+      </label>
+      <input type="text" id="whitelist" placeholder="Ej: MiEmpresa S.L., Ayuntamiento de Madrid, Juan García" 
+             style="width: 100%; padding: 8px; margin-bottom: 12px; border: 1px solid var(--border-med); border-radius: var(--r4); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem;">
+      
+      <label for="blacklist" style="display: block; margin-bottom: 4px; font-size: 0.75rem; font-weight: 600; color: var(--text);">
+        ⛔ Lista Negra (forzar anonimización):
+      </label>
+      <input type="text" id="blacklist" placeholder="Ej: confidencial, secreto, interno, proyecto X" 
+             style="width: 100%; padding: 8px; border: 1px solid var(--border-med); border-radius: var(--r4); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem;">
+    </div>
+  </div>
+  
   <!-- Action bar -->
   <div class="action-bar">
     <button class="btn btn-primary" id="btnAnon" onclick="runAnonymization()">🔒 Anonimizar</button>
