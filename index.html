@@ -12,6 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.8.2/docx.umd.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" crossorigin="anonymous"></script>
 
 <style>
 :root{
@@ -426,8 +427,7 @@ table.etable tr:last-child td{border-bottom:none} table.etable tr:hover td{backg
                 <span class="ftype ok">TXT</span><span class="ftype ok">CSV</span><span class="ftype ok">MD</span>
               </div>
             </div>
-            <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.xlsx,.xls,.ods,.rtf,.odt,.txt,.csv,.md,.tsv">
-
+            <input type="file" id="fileInput" multiple accept=".pdf,.docx,.doc,.xlsx,.xls,.ods,.rtf,.odt,.txt,.csv,.md,.tsv">
             <div class="file-loaded-card hidden" id="fileLoadedCard">
               <div class="fext-badge ext-other" id="fextBadge">—</div>
               <div style="flex:1;min-width:0">
@@ -594,6 +594,22 @@ Ejemplo: «La paciente María García López, con DNI 12345678Z y fecha de nacim
       </label>
       <input type="text" id="blacklist" placeholder="Ej: confidencial, secreto, interno, proyecto X" 
              style="width: 100%; padding: 8px; border: 1px solid var(--border-med); border-radius: var(--r4); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem;">
+    </div>
+  </div>
+
+    <!-- Panel de Lotes (Oculto por defecto) -->
+  <div class="panel" id="batchPanel" style="display:none; margin-bottom: 16px;">
+    <div class="panel-header">
+      <div class="panel-title"><span class="dot" style="background:var(--gold-mid)"></span>📂 Procesamiento por Lotes</div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--text-dim)" id="batchStatus">0 archivos</span>
+    </div>
+    <div class="panel-body">
+      <div id="batchList" style="max-height: 200px; overflow-y: auto; margin-bottom: 12px; font-size: 0.75rem; font-family: 'IBM Plex Mono', monospace;">
+        <!-- Lista de archivos generada por JS -->
+      </div>
+      <button class="btn btn-primary" id="btnDownloadZip" disabled onclick="downloadBatchZip()" style="width:100%; justify-content:center;">
+        ⬇️ Descargar todos anonimizados (.zip)
+      </button>
     </div>
   </div>
   
@@ -847,6 +863,147 @@ function removeFile() {
   log('Archivo eliminado.');
 }
 
+/* ──────────────────────────
+   BATCH PROCESSING SETUP
+────────────────────────────*/
+let batchFiles = [];
+let batchResults = []; // Guardará { name, anonText, ext }
+
+// Sobrescribimos el listener del input para manejar múltiples archivos
+document.getElementById('fileInput').addEventListener('change', e => { 
+  const files = Array.from(e.target.files); 
+  if (files.length > 0) handleFiles(files); 
+  e.target.value = ''; 
+});
+
+async function handleFiles(files) {
+  batchFiles = files;
+  batchResults = [];
+  
+  if (files.length === 1) {
+    // Comportamiento normal para 1 archivo
+    document.getElementById('batchPanel').style.display = 'none';
+    loadFile(files[0]);
+  } else {
+    // Modo Lote
+    document.getElementById('batchPanel').style.display = 'block';
+    document.getElementById('fileLoadedCard').classList.add('hidden'); // Ocultar tarjeta de 1 archivo
+    renderBatchList(files.map(f => ({ name: f.name, status: 'Pendiente', statusClass: '' })));
+    document.getElementById('batchStatus').textContent = `${files.length} archivos en cola`;
+    log(`Lote iniciado: ${files.length} archivos.`, 'ok');
+    
+    // Procesar automáticamente
+    await processBatchLoop(files);
+  }
+}
+
+function renderBatchList(items) {
+  const list = document.getElementById('batchList');
+  list.innerHTML = items.map(item => `
+    <div style="display:flex; justify-content:space-between; padding: 4px 0; border-bottom: 1px solid var(--border);">
+      <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:70%;">${item.name}</span>
+      <span class="${item.statusClass}" style="font-size:0.65rem;">${item.status}</span>
+    </div>
+  `).join('');
+}
+
+async function processBatchLoop(files) {
+  const opts = getOptions();
+  const tech = selectedTech;
+  const listItems = files.map(f => ({ name: f.name, status: 'Pendiente', statusClass: '' }));
+  
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    listItems[i].status = 'Procesando...';
+    listItems[i].statusClass = 'fstatus-loading';
+    renderBatchList(listItems);
+    
+    try {
+      // 1. Extraer texto (usamos la lógica existente de forma aislada)
+      const text = await extractTextSilent(file);
+      
+      // 2. Anonimizar
+      const entities = detectEntities(text, opts);
+      const engine = new AnonEngine();
+      let anonText = '';
+      let pos = 0;
+      const dicts = obtenerDiccionarios();
+      
+      for (const e of entities) {
+        anonText += text.slice(pos, e.start);
+        const valLower = e.original.toLowerCase();
+        if (dicts.whitelist.some(w => valLower === w)) {
+          anonText += e.original;
+        } else if (dicts.blacklist.some(b => valLower === b)) {
+          anonText += '[ANONIMIZADO_PERSONALIZADO]';
+        } else {
+          anonText += engine.apply(tech, e.type, e.original);
+        }
+        pos = e.end;
+      }
+      anonText += text.slice(pos);
+      
+      // Aplicar blacklist global
+      dicts.blacklist.forEach(termino => {
+        const escaped = termino.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const hasSpace = /\s/.test(termino);
+        const regex = hasSpace ? new RegExp(`(${escaped})`, 'gi') : new RegExp(`\\b(${escaped})\\b`, 'gi');
+        if (regex.test(text)) anonText = anonText.replace(regex, '[ANONIMIZADO_PERSONALIZADO]');
+      });
+
+      // 3. Guardar resultado
+      const ext = extOf(file.name);
+      batchResults.push({ name: `anon_${file.name}`, anonText: anonText, ext: ext });
+      
+      listItems[i].status = '✓ OK';
+      listItems[i].statusClass = 'fstatus-ok';
+    } catch (err) {
+      listItems[i].status = '✗ Error';
+      listItems[i].statusClass = 'fstatus-err';
+      log(`Error en ${file.name}: ${err.message}`, 'err');
+    }
+    renderBatchList(listItems);
+  }
+  
+  document.getElementById('btnDownloadZip').disabled = false;
+  document.getElementById('batchStatus').textContent = `${files.length} archivos procesados`;
+  log('Lote completado.', 'ok');
+}
+
+// Función auxiliar para extraer texto sin tocar la UI global
+async function extractTextSilent(file) {
+  const ext = extOf(file.name);
+  if (['txt','md','csv','tsv'].includes(ext)) return await readAsText(file);
+  if (['pdf'].includes(ext)) return await extractPDF(file);
+  if (['docx','odt'].includes(ext)) return await extractDOCX(file);
+  if (['doc'].includes(ext)) { try { return await extractDOCX(file); } catch(_) { return await readAsText(file); } }
+  if (['rtf'].includes(ext)) return await extractRTF(file);
+  if (['xlsx','xls','ods','xlsm'].includes(ext)) return await extractXLSX(file, ext==='xls');
+  return await readAsText(file);
+}
+
+/* ──────────────────────────
+   ZIP DOWNLOAD
+────────────────────────────*/
+async function downloadBatchZip() {
+  if (typeof JSZip === 'undefined') { alert('JSZip no cargado. Necesitas conexión la primera vez.'); return; }
+  const zip = new JSZip();
+  
+  for (const res of batchResults) {
+    // Si es texto plano o csv/md, lo metemos como txt. Si era xlsx, lo metemos como txt también (por simplicidad del motor actual)
+    // Para mantenerlo simple y robusto, todo el lote se descarga como archivos de texto (.txt)
+    const safeName = res.name.replace(/\.[^.]+$/, '') + '.txt';
+    zip.file(safeName, res.anonText);
+  }
+  
+  const blob = await zip.generateAsync({ type: 'blob' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `lote_anonimizado_${yyyymmdd()}.zip`; a.click();
+  URL.revokeObjectURL(url);
+  log('ZIP descargado.', 'ok');
+}
+  
 async function loadFile(file) {
   const ext  = extOf(file.name);
   loadedFileName = file.name;
