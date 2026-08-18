@@ -362,7 +362,7 @@ table.etable tr:last-child td{border-bottom:none} table.etable tr:hover td{backg
   <div class="page-header">
     <div>
       <div class="page-eyebrow">Protección de Datos Personales</div>
-      <h1 class="page-title">Anonimización de Documentos---LUIS</h1>
+      <h1 class="page-title">Anonimización de Documentos</h1>
       <p class="page-desc">Motor local de detección y anonimización mediante expresiones regulares. Carga archivos (PDF, DOCX, XLSX, RTF, TXT, CSV…) o pega texto directamente. Genera informe antes/después descargable. Ningún dato sale del navegador.</p>
     </div>
     <div class="norm-ref">
@@ -633,17 +633,38 @@ Ejemplo: «La paciente María García López, con DNI 12345678Z y fecha de nacim
       <strong>⚠ Cobertura parcial:</strong> <span id="warnText"></span>
     </div>
 
-    <div class="ba-grid">
-      <div class="ba-col">
-        <div class="ba-col-header before">
-          <span class="ba-dot"></span>ANTES — Datos originales
-          <div class="legend" style="margin-left:auto">
-            <div class="legend-item"><span class="legend-swatch sw-directo"></span>Directo</div>
-            <div class="legend-item"><span class="legend-swatch sw-indirecto"></span>Indirecto</div>
-          </div>
-        </div>
-        <div class="ba-col-body" id="beforeText"></div>
+    <div class="ba-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+  <div class="ba-col">
+    <div class="ba-col-header before">
+      <span class="ba-dot"></span>ANTES — Datos originales
+      <div class="legend" style="margin-left:auto">
+        <div class="legend-item"><span class="legend-swatch sw-directo"></span>Directo</div>
+        <div class="legend-item"><span class="legend-swatch sw-indirecto"></span>Indirecto</div>
       </div>
+    </div>
+    <div class="ba-col-body" id="beforeText"></div>
+  </div>
+  
+  <div class="ba-col">
+    <div class="ba-col-header" style="background:rgba(177,138,32,.08);color:var(--gold-dark);border-color:rgba(177,138,32,.25)">
+      <span class="ba-dot" style="background:var(--gold-mid)"></span>CAMBIOS — Diff visual
+      <div class="legend" style="margin-left:auto">
+        <div class="legend-item"><span class="legend-swatch sw-anon"></span>Anonimizado</div>
+      </div>
+    </div>
+    <div class="ba-col-body" id="diffText" style="background:var(--surface2)"></div>
+  </div>
+  
+  <div class="ba-col">
+    <div class="ba-col-header after">
+      <span class="ba-dot"></span>DESPUÉS — Texto anonimizado
+      <div class="legend" style="margin-left:auto">
+        <div class="legend-item"><span class="legend-swatch sw-anon"></span>Anonimizado</div>
+      </div>
+    </div>
+    <div class="ba-col-body" id="afterText"></div>
+  </div>
+</div>
       <div class="ba-col">
         <div class="ba-col-header after">
           <span class="ba-dot"></span>DESPUÉS — Texto anonimizado
@@ -1645,6 +1666,9 @@ function renderResults(text, entities, anonText, rBefore, rAfter) {
   raEl.style.color  = rAfter==='ALTO'?'var(--red)':rAfter==='MEDIO'?'var(--gold-dark)':'var(--green)';
   document.getElementById('beforeText').innerHTML  = buildBeforeHTML(text, entities);
   document.getElementById('afterText').innerHTML   = buildAfterHTML(anonText, entities);
+  document.getElementById('beforeText').innerHTML  = buildBeforeHTML(text, entities);
+  document.getElementById('diffText').innerHTML    = buildDiffHTML(text, entities);
+  document.getElementById('afterText').innerHTML   = buildAfterHTML(anonText, entities);
   renderTable(entities);
   document.getElementById('entityCount').textContent = `${entities.length} entidad${entities.length!==1?'es':''}`;
   renderNotes(entities, rAfter);
@@ -1674,6 +1698,27 @@ function buildAfterHTML(anonText, entities) {
   return escaped;
 }
 
+function buildDiffHTML(text, entities) {
+  let html = '', pos = 0;
+  
+  for (const e of entities) {
+    // Texto sin cambios hasta aquí
+    html += esc(text.slice(pos, e.start));
+    
+    // Mostrar original tachado + nuevo valor
+    const originalClass = e.category === 'directo' ? 'hl-directo' : 'hl-indirecto';
+    html += `<span class="${originalClass}" style="text-decoration:line-through;opacity:0.7">${esc(e.original)}</span>`;
+    html += ` <span class="hl-anon" style="font-weight:600">→ ${esc(e.anonymized)}</span> `;
+    
+    pos = e.end;
+  }
+  
+  // Añadir el resto del texto
+  html += esc(text.slice(pos));
+  
+  return html;
+}
+  
 function renderTable(entities) {
   const tbody = document.getElementById('entityTableBody');
   tbody.innerHTML = '';
