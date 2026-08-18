@@ -673,17 +673,6 @@ Ejemplo: «La paciente María García López, con DNI 12345678Z y fecha de nacim
     </div>
     <div class="ba-col-body" id="diffText" style="background:var(--surface2)"></div>
   </div>
-  
-  <div class="ba-col">
-    <div class="ba-col-header after">
-      <span class="ba-dot"></span>DESPUÉS — Texto anonimizado
-      <div class="legend" style="margin-left:auto">
-        <div class="legend-item"><span class="legend-swatch sw-anon"></span>Anonimizado</div>
-      </div>
-    </div>
-    <div class="ba-col-body" id="afterText"></div>
-  </div>
-</div>
       
     <div class="entity-table-wrap">
       <div class="entity-table-header">
@@ -1011,16 +1000,6 @@ async function downloadBatchZip() {
   log('ZIP descargado correctamente.', 'ok');
 }
   
-  const zipBlob = await zip.generateAsync({ type: 'blob' });
-  const url = URL.createObjectURL(zipBlob);
-  const a = document.createElement('a');
-  a.href = url; 
-  a.download = `lote_anonimizado_${yyyymmdd()}.zip`; 
-  a.click();
-  URL.revokeObjectURL(url);
-  log('ZIP descargado correctamente.', 'ok');
-}
-
 /* ──────────────────────────
    GENERADORES DE FORMATO
 ────────────────────────────*/
