@@ -153,6 +153,29 @@ input[type="file"]{display:none}
 .risk-medio{background:rgba(177,138,32,.09);color:var(--gold-dark);border:1px solid rgba(177,138,32,.25)}
 .risk-bajo{background:rgba(129,78,131,.07);color:var(--plum);border:1px solid rgba(129,78,131,.2)}
 
+  <!-- Diccionarios Personalizados -->
+  <div class="panel" style="margin-bottom: 16px;">
+    <div class="panel-header">
+      <div class="panel-title"><span class="dot"></span>⚙️ Diccionarios Personalizados (100% local)</div>
+    </div>
+    <div class="panel-body">
+      <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">
+        Separa los términos por comas. La lista blanca protege datos de ser anonimizados. La lista negra fuerza su anonimización.
+      </p>
+      <label for="whitelist" style="display: block; margin-bottom: 4px; font-size: 0.75rem; font-weight: 600; color: var(--text);">
+        ✅ Lista Blanca (proteger):
+      </label>
+      <input type="text" id="whitelist" placeholder="Ej: MiEmpresa S.L., Ayuntamiento de Madrid, Juan García" 
+             style="width: 100%; padding: 8px; margin-bottom: 12px; border: 1px solid var(--border-med); border-radius: var(--r4); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem;">
+      
+      <label for="blacklist" style="display: block; margin-bottom: 4px; font-size: 0.75rem; font-weight: 600; color: var(--text);">
+        ⛔ Lista Negra (forzar anonimización):
+      </label>
+      <input type="text" id="blacklist" placeholder="Ej: confidencial, secreto, interno, proyecto X" 
+             style="width: 100%; padding: 8px; border: 1px solid var(--border-med); border-radius: var(--r4); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem;">
+    </div>
+  </div>
+  
 /* ── Action bar ── */
 .action-bar{display:flex;gap:10px;align-items:center;margin-bottom:22px;flex-wrap:wrap}
 .btn{font-family:'IBM Plex Sans',sans-serif;font-size:.75rem;font-weight:500;border-radius:var(--r4);padding:9px 18px;cursor:pointer;border:none;transition:all .15s;display:flex;align-items:center;gap:7px}
@@ -690,6 +713,18 @@ let loadedFileExt = null;   // tracks original ext for export
 let loadedWB      = null;   // SheetJS workbook kept for XLSX re-export
 let lastResult    = null;
 
+/* ──────────────────────────
+   DICCIONARIOS PERSONALIZADOS
+────────────────────────────*/
+function obtenerDiccionarios() {
+  const whitelistRaw = document.getElementById('whitelist')?.value || '';
+  const blacklistRaw = document.getElementById('blacklist')?.value || '';
+  return {
+    whitelist: whitelistRaw.split(',').map(s => s.trim().toLowerCase()).filter(s => s.length > 0),
+    blacklist: blacklistRaw.split(',').map(s => s.trim().toLowerCase()).filter(s => s.length > 0)
+  };
+}
+  
 /* ──────────────────────────
    TABS
 ────────────────────────────*/
@@ -1510,51 +1545,86 @@ class AnonEngine {
 }
 
 /* ──────────────────────────
-   MAIN RUN
+   MAIN RUN (Mejorada con Diccionarios)
 ────────────────────────────*/
 function runAnonymization() {
-  const text = currentTab === 'file' ? loadedFileText : document.getElementById('inputText').value;
-  if (!text || !text.trim()) {
+  const originalText = currentTab === 'file' ? loadedFileText : document.getElementById('inputText').value;
+  if (!originalText || !originalText.trim()) {
     log(currentTab === 'file' ? '⚠ Carga un archivo primero.' : '⚠ Introduce texto primero.', 'err');
     return;
   }
   const t0 = performance.now();
   setLogActive(true);
-  log(`Analizando ${text.length.toLocaleString('es')} caracteres…`);
+  log(`Analizando ${originalText.length.toLocaleString('es')} caracteres…`);
 
-  const opts     = getOptions();
-  const entities = detectEntities(text, opts);
-  const engine   = new AnonEngine();
-  const anonEnts = entities.map(e => ({ ...e, anonymized: engine.apply(selectedTech, e.type, e.original), technique: selectedTech }));
+  const opts = getOptions();
+  // 1. Detectar entidades sobre el texto ORIGINAL (para que la vista "ANTES" sea correcta)
+  const rawEntities = detectEntities(originalText, opts);
+  
+  // 2. Obtener diccionarios del usuario
+  const dicts = obtenerDiccionarios();
+  const engine = new AnonEngine();
+  const anonEnts = [];
+  let anonText = '';
+  let pos = 0;
 
-  let anonText = '', pos = 0;
-  for (const e of anonEnts) { anonText += text.slice(pos, e.start) + e.anonymized; pos = e.end; }
-  anonText += text.slice(pos);
+  // 3. Procesar cada entidad detectada
+  for (const e of rawEntities) {
+    anonText += originalText.slice(pos, e.start);
+    const valLower = e.original.toLowerCase();
+    
+    if (dicts.whitelist.some(w => valLower === w)) {
+      // Protegido por whitelist: se deja el texto original
+      anonText += e.original;
+      anonEnts.push({ ...e, anonymized: e.original, technique: 'Protegido (Whitelist)' });
+    } else if (dicts.blacklist.some(b => valLower === b)) {
+      // Forzado por blacklist
+      anonText += '[ANONIMIZADO_PERSONALIZADO]';
+      anonEnts.push({ ...e, anonymized: '[ANONIMIZADO_PERSONALIZADO]', technique: 'Forzado (Blacklist)' });
+    } else {
+      // Técnica normal del motor
+      const anonVal = engine.apply(selectedTech, e.type, e.original);
+      anonText += anonVal;
+      anonEnts.push({ ...e, anonymized: anonVal, technique: selectedTech });
+    }
+    pos = e.end;
+  }
+  anonText += originalText.slice(pos);
 
-  const nDir = anonEnts.filter(e => e.category === 'directo').length;
-  const nInd = anonEnts.filter(e => e.category === 'indirecto').length;
-  const rBefore = nDir > 0 ? 'ALTO' : nInd > 0 ? 'MEDIO' : 'BAJO';
-  const rAfter  = anonEnts.length === 0 ? rBefore : nDir > 0 ? 'MEDIO' : 'BAJO';
+  // 4. Aplicar blacklist global por si el motor NO detectó algo que el usuario quiere ocultar sí o sí
+  dicts.blacklist.forEach(termino => {
+    const escaped = termino.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const hasSpace = /\s/.test(termino);
+    const regex = hasSpace ? new RegExp(`(${escaped})`, 'gi') : new RegExp(`\\b(${escaped})\\b`, 'gi');
+    if (regex.test(originalText)) {
+      anonText = anonText.replace(regex, '[ANONIMIZADO_PERSONALIZADO]');
+    }
+  });
+
+  // 5. Cálculo de riesgos (excluyendo los protegidos por whitelist del conteo de "anonimizados")
+  const nDir = anonEnts.filter(e => e.category === 'directo' && e.technique !== 'Protegido (Whitelist)').length;
+  const nInd = anonEnts.filter(e => e.category === 'indirecto' && e.technique !== 'Protegido (Whitelist)').length;
+  
+  const rBefore = (rawEntities.filter(e => e.category === 'directo').length > 0) ? 'ALTO' : (rawEntities.filter(e => e.category === 'indirecto').length > 0) ? 'MEDIO' : 'BAJO';
+  const rAfter  = anonEnts.filter(e => e.technique !== 'Protegido (Whitelist)').length === 0 ? rBefore : (nDir > 0 ? 'MEDIO' : 'BAJO');
 
   const elapsed = ((performance.now() - t0) / 1000).toFixed(3);
-  log(`Detectadas ${anonEnts.length} entidades en ${elapsed}s`, 'ok');
+  log(`Procesadas ${anonEnts.length} entidades en ${elapsed}s`, 'ok');
   setLogActive(false);
 
   lastResult = {
-    text, anonText, entities: anonEnts, riskBefore: rBefore, riskAfter: rAfter,
+    text: originalText, anonText, entities: anonEnts, riskBefore: rBefore, riskAfter: rAfter,
     filename: currentTab === 'file' ? (loadedFileName || 'texto') : 'texto-libre',
     tech: selectedTech, elapsed,
   };
 
-  renderResults(text, anonEnts, anonText, rBefore, rAfter);
+  renderResults(originalText, anonEnts, anonText, rBefore, rAfter);
   document.getElementById('processingInfo').textContent = `⚡ ${elapsed}s · ${anonEnts.length} entidades`;
   document.getElementById('btnExportDoc').disabled = false;
   document.getElementById('btnReport').disabled    = false;
-  // Show xlsx option only when source was a spreadsheet
   const isXls = loadedFileExt && ['xlsx','xls','ods','xlsm'].includes(loadedFileExt);
   document.getElementById('edm-xlsx').style.display = isXls ? '' : 'none';
 }
-
 /* ──────────────────────────
    RENDER RESULTS
 ────────────────────────────*/
