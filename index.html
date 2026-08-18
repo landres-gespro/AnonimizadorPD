@@ -815,8 +815,12 @@ function getOptions() {
 const dropZone = document.getElementById('dropZone');
 dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
 dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('drag-over'); const f = e.dataTransfer.files[0]; if (f) loadFile(f); });
-
+dropZone.addEventListener('drop', e => { 
+  e.preventDefault(); 
+  dropZone.classList.remove('drag-over'); 
+  const files = Array.from(e.dataTransfer.files); 
+  if (files.length > 0) handleFiles(files); 
+});
 function extOf(name) { return (name.split('.').pop() || '').toLowerCase(); }
 
 function extClass(ext) {
@@ -882,11 +886,12 @@ async function handleFiles(files) {
   if (files.length === 1) {
     // Comportamiento normal para 1 archivo
     document.getElementById('batchPanel').style.display = 'none';
-    loadFile(files[0]);
+    document.getElementById('fileLoadedCard').classList.remove('hidden');
+    await loadFile(files[0]);
   } else {
     // Modo Lote
     document.getElementById('batchPanel').style.display = 'block';
-    document.getElementById('fileLoadedCard').classList.add('hidden'); // Ocultar tarjeta de 1 archivo
+    document.getElementById('fileLoadedCard').classList.add('hidden');
     renderBatchList(files.map(f => ({ name: f.name, status: 'Pendiente', statusClass: '' })));
     document.getElementById('batchStatus').textContent = `${files.length} archivos en cola`;
     log(`Lote iniciado: ${files.length} archivos.`, 'ok');
