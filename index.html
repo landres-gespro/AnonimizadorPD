@@ -615,87 +615,85 @@ Ejemplo: «La paciente María García López, con DNI 12345678Z y fecha de nacim
   
   <!-- Action bar -->
   <div class="action-bar">
-    <button class="btn btn-primary" id="btnAnon" onclick="runAnonymization()">🔒 Anonimizar</button>
-    <button class="btn btn-report" id="btnDownloadPdf" disabled onclick="downloadSinglePdf()" style="background:rgba(179,63,118,.08);color:var(--magenta);border:1px solid rgba(179,63,118,.25)">
-      📕 Descargar PDF
-    </button>
-    <button class="btn btn-secondary" onclick="clearAll()">↩ Limpiar</button>
-
-    <!-- Export document dropdown -->
-    <div class="export-doc-group">
-      <button class="btn btn-export" id="btnExportDoc" disabled onclick="toggleExportMenu(event)">⬇ Exportar doc ▾</button>
-      <div class="export-doc-menu" id="exportDocMenu">
-        <button class="edm-item" onclick="exportDoc('txt')">📄 Texto plano (.txt)</button>
-        <button class="edm-item" id="edm-docx" onclick="exportDoc('docx')">📝 Word (.docx)</button>
-        <button class="edm-item" id="edm-pdf"  onclick="exportDoc('pdf')">📕 PDF (.pdf)</button>
-        <button class="edm-item" id="edm-xlsx" onclick="exportDoc('xlsx')" style="display:none">📊 Excel (.xlsx)</button>
-        <div class="edm-sep"></div>
-        <button class="edm-item" onclick="copyResult()">📋 Copiar al portapapeles</button>
-      </div>
+  <button class="btn btn-primary" id="btnAnon" onclick="runAnonymization()">🔒 Anonimizar</button>
+  <button class="btn btn-report" id="btnDownloadPdf" disabled onclick="downloadSinglePdf()" style="background:rgba(179,63,118,.08);color:var(--magenta);border:1px solid rgba(179,63,118,.25)">📕 Descargar PDF</button>
+  <button class="btn btn-secondary" onclick="clearAll()">↩ Limpiar</button>
+  <div class="export-doc-group">
+    <button class="btn btn-export" id="btnExportDoc" disabled onclick="toggleExportMenu(event)">⬇ Exportar doc ▾</button>
+    <div class="export-doc-menu" id="exportDocMenu">
+      <button class="edm-item" onclick="exportDoc('txt')">📄 Texto plano (.txt)</button>
+      <button class="edm-item" id="edm-docx" onclick="exportDoc('docx')">📝 Word (.docx)</button>
+      <button class="edm-item" id="edm-pdf"  onclick="exportDoc('pdf')">📕 PDF (.pdf)</button>
+      <button class="edm-item" id="edm-xlsx" onclick="exportDoc('xlsx')" style="display:none">📊 Excel (.xlsx)</button>
+      <div class="edm-sep"></div>
+      <button class="edm-item" onclick="copyResult()">📋 Copiar al portapapeles</button>
     </div>
-
-    <button class="btn btn-report" id="btnReport" disabled onclick="openReport()">📊 Ver informe</button>
-    <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--text-dim)" id="processingInfo"></span>
   </div>
+  <button class="btn btn-report" id="btnReport" disabled onclick="openReport()"> Ver informe</button>
+  <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--text-dim)" id="processingInfo"></span>
+</div>
 
   <!-- Results -->
   <div class="results-section" id="resultsSection">
-    <div class="risk-row">
-      <span style="font-weight:500;letter-spacing:.5px">Riesgo estimado:</span>
-      <span class="risk-before" id="riskBefore">ALTO</span>
-      <span class="risk-arrow">→</span>
-      <span class="risk-after" id="riskAfter">BAJO</span>
-      <span style="margin-left:auto;font-size:.6rem;color:var(--text-dim)">k-anonimidad · Guía PDPC/AEPD Paso 4</span>
-    </div>
-
-    <div class="warn-box" id="warnBox" style="display:none">
-      <strong>⚠ Cobertura parcial:</strong> <span id="warnText"></span>
-    </div>
-
-    <div class="ba-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-  <div class="ba-col">
-    <div class="ba-col-header before">
-      <span class="ba-dot"></span>ANTES — Datos originales
-      <div class="legend" style="margin-left:auto">
-        <div class="legend-item"><span class="legend-swatch sw-directo"></span>Directo</div>
-        <div class="legend-item"><span class="legend-swatch sw-indirecto"></span>Indirecto</div>
-      </div>
-    </div>
-    <div class="ba-col-body" id="beforeText"></div>
+  <div class="risk-row">
+    <span style="font-weight:500;letter-spacing:.5px">Riesgo estimado:</span>
+    <span class="risk-before" id="riskBefore">ALTO</span>
+    <span class="risk-arrow">→</span>
+    <span class="risk-after" id="riskAfter">BAJO</span>
+    <span style="margin-left:auto;font-size:.6rem;color:var(--text-dim)">k-anonimidad · Guía PDPC/AEPD Paso 4</span>
   </div>
-  
-  <div class="ba-col">
-    <div class="ba-col-header" style="background:rgba(177,138,32,.08);color:var(--gold-dark);border-color:rgba(177,138,32,.25)">
-      <span class="ba-dot" style="background:var(--gold-mid)"></span>CAMBIOS — Diff visual
-      <div class="legend" style="margin-left:auto">
-        <div class="legend-item"><span class="legend-swatch sw-anon"></span>Anonimizado</div>
-      </div>
-    </div>
-    <div class="ba-col-body" id="diffText" style="background:var(--surface2)"></div>
+  <div class="warn-box" id="warnBox" style="display:none">
+    <strong>⚠ Cobertura parcial:</strong> <span id="warnText"></span>
   </div>
-      
-    <div class="entity-table-wrap">
-      <div class="entity-table-header">
-        <div class="panel-title"><span class="dot"></span>Registro de entidades</div>
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--text-dim)" id="entityCount">0 entidades</span>
+  <div class="ba-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+    <div class="ba-col">
+      <div class="ba-col-header before">
+        <span class="ba-dot"></span>ANTES — Datos originales
+        <div class="legend" style="margin-left:auto">
+          <div class="legend-item"><span class="legend-swatch sw-directo"></span>Directo</div>
+          <div class="legend-item"><span class="legend-swatch sw-indirecto"></span>Indirecto</div>
+        </div>
       </div>
-      <table class="etable">
-        <thead><tr><th style="width:130px">Tipo</th><th style="width:90px">Categoría</th><th>Valor original</th><th>Valor anonimizado</th><th style="width:130px">Técnica</th></tr></thead>
-        <tbody id="entityTableBody"></tbody>
-      </table>
+      <div class="ba-col-body" id="beforeText"></div>
     </div>
-
-    <div class="notes-panel">
-      <strong>ℹ Observaciones metodológicas (Paso 5 · Gestión de riesgos)</strong>
-      <span id="notesText">—</span>
+    <div class="ba-col">
+      <div class="ba-col-header" style="background:rgba(177,138,32,.08);color:var(--gold-dark);border-color:rgba(177,138,32,.25)">
+        <span class="ba-dot" style="background:var(--gold-mid)"></span>CAMBIOS — Diff visual
+        <div class="legend" style="margin-left:auto">
+          <div class="legend-item"><span class="legend-swatch sw-anon"></span>Anonimizado</div>
+        </div>
+      </div>
+      <div class="ba-col-body" id="diffText" style="background:var(--surface2)"></div>
     </div>
-
-    <div style="background:rgba(96,52,94,.04);border:1px solid var(--border);border-radius:var(--r4);padding:10px 14px;font-size:.68rem;color:var(--text-muted);line-height:1.6">
-      <strong style="color:var(--plum-deep)">Aviso metodológico:</strong>
-      Motor local v3 basado en regex y diccionarios ES. Detecta: email, teléfono, DNI/NIE, IBAN, IPv4/v6, fechas, CP, edades, direcciones, nombres ES, <strong style="color:var(--plum-deep)">matrículas ES, coordenadas GPS, UUID/Cookie/Device ID, handles y URLs de RRSS (Twitter/X, Instagram, LinkedIn, Facebook, TikTok, YouTube)</strong>. Los nombres inusuales o extranjeros pueden requerir revisión manual. Conforme a Guía PDPC/AEPD (Oct. 2022) y RGPD Art. 4(1).
+    <div class="ba-col">
+      <div class="ba-col-header after">
+        <span class="ba-dot"></span>DESPUÉS — Texto anonimizado
+        <div class="legend" style="margin-left:auto">
+          <div class="legend-item"><span class="legend-swatch sw-anon"></span>Anonimizado</div>
+        </div>
+      </div>
+      <div class="ba-col-body" id="afterText"></div>
     </div>
   </div>
-
+  <div class="entity-table-wrap">
+    <div class="entity-table-header">
+      <div class="panel-title"><span class="dot"></span>Registro de entidades</div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--text-dim)" id="entityCount">0 entidades</span>
+    </div>
+    <table class="etable">
+      <thead><tr><th style="width:130px">Tipo</th><th style="width:90px">Categoría</th><th>Valor original</th><th>Valor anonimizado</th><th style="width:130px">Técnica</th></tr></thead>
+      <tbody id="entityTableBody"></tbody>
+    </table>
+  </div>
+  <div class="notes-panel">
+    <strong> Observaciones metodológicas (Paso 5 · Gestión de riesgos)</strong>
+    <span id="notesText">—</span>
+  </div>
+  <div style="background:rgba(96,52,94,.04);border:1px solid var(--border);border-radius:var(--r4);padding:10px 14px;font-size:.68rem;color:var(--text-muted);line-height:1.6">
+    <strong style="color:var(--plum-deep)">Aviso metodológico:</strong>
+    Motor local v3 basado en regex y diccionarios ES. Detecta: email, teléfono, DNI/NIE, IBAN, IPv4/v6, fechas, CP, edades, direcciones, nombres ES, <strong style="color:var(--plum-deep)">matrículas ES, coordenadas GPS, UUID/Cookie/Device ID, handles y URLs de RRSS (Twitter/X, Instagram, LinkedIn, Facebook, TikTok, YouTube)</strong>. Los nombres inusuales o extranjeros pueden requerir revisión manual. Conforme a Guía PDPC/AEPD (Oct. 2022) y RGPD Art. 4(1).
+  </div>
+</div>
 </div><!-- /app -->
 
 <!-- ═══════════════════════════════════════
@@ -1035,41 +1033,53 @@ async function generatePdfBlob(text, originalName) {
   const { jsPDF } = jspdf;
   const pdf = new jsPDF({ unit: 'mm', format: 'a4' });
   const margin = 18, lineH = 5.5, pageH = 282, contentW = 174;
-
-  pdf.setFont('helvetica', 'bold'); 
-  pdf.setFontSize(11); 
+  pdf.setFont('helvetica', 'bold');
+  pdf.setFontSize(11);
   pdf.setTextColor(96, 52, 94);
   pdf.text('Documento anonimizado — AnonimizadorPD', margin, 13);
-  pdf.setDrawColor(96, 52, 94); 
-  pdf.setLineWidth(0.3); 
+  pdf.setDrawColor(96, 52, 94);
+  pdf.setLineWidth(0.3);
   pdf.line(margin, 15.5, 192, 15.5);
-  
-  pdf.setFont('helvetica', 'normal'); 
-  pdf.setFontSize(7.5); 
+  pdf.setFont('helvetica', 'normal');
+  pdf.setFontSize(7.5);
   pdf.setTextColor(122, 80, 128);
   pdf.text(`Original: ${originalName} · ${new Date().toLocaleDateString('es-ES')}`, margin, 19.5);
-
-  pdf.setFontSize(9); 
+  pdf.setFontSize(9);
   pdf.setTextColor(46, 20, 48);
   let y = 26;
   const lines = pdf.splitTextToSize(text, contentW);
-  
   for (const line of lines) {
     if (y + lineH > pageH) {
-      pdf.addPage(); 
+      pdf.addPage();
       y = 14;
-      pdf.setFontSize(7); 
+      pdf.setFontSize(7);
       pdf.setTextColor(170, 136, 176);
       pdf.text('AnonimizadorPD · PDPC/AEPD · RGPD Art.4(1)', margin, 9);
-      pdf.setFontSize(9); 
+      pdf.setFontSize(9);
       pdf.setTextColor(46, 20, 48);
     }
     pdf.text(line, margin, y);
     y += lineH;
   }
-
   return pdf.output('blob');
 }
+
+async function downloadSinglePdf() {
+  if (!lastResult) return;
+  if (typeof jspdf === 'undefined') { alert('jsPDF no cargado. Necesitas conexión la primera vez.'); return; }
+  try {
+    const base = `anonimizado-${_baseName()}-${yyyymmdd()}`;
+    log(`Exportando PDF...`, 'ok');
+    const blob = await generatePdfBlob(lastResult.anonText, lastResult.filename);
+    _dlBlob(blob, base + '.pdf');
+    log('PDF exportado.', 'ok');
+  } catch (err) {
+    log(`Error exportando PDF: ${err.message}`, 'err');
+    alert(`No se pudo exportar como PDF.\n\n${err.message}`);
+  }
+}
+
+async function loadFile(file) {
   
   
   
@@ -2315,11 +2325,11 @@ function clearAll() {
   document.getElementById('resultsSection').classList.remove('visible');
   ['stat-total','stat-dir','stat-ind','stat-riesgo'].forEach(id => document.getElementById(id).textContent = '—');
   document.getElementById('btnExportDoc').disabled = true;
-  document.getElementById('btnReport').disabled    = true;
+  document.getElementById('btnReport').disabled = true;
+  document.getElementById('btnDownloadPdf').disabled = true;
   document.getElementById('processingInfo').textContent = '';
   lastResult = null;
   log('Pantalla limpiada.');
-  document.getElementById('btnDownloadPdf').disabled = true;
 }
 </script>
 </body>
