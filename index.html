@@ -988,12 +988,121 @@ async function downloadBatchZip() {
   if (typeof JSZip === 'undefined') { alert('JSZip no cargado. Necesitas conexión la primera vez.'); return; }
   const zip = new JSZip();
   
+  log('Generando ZIP con formatos originales...', 'ok');
+  
   for (const res of batchResults) {
-    // Si es texto plano o csv/md, lo metemos como txt. Si era xlsx, lo metemos como txt también (por simplicidad del motor actual)
-    // Para mantenerlo simple y robusto, todo el lote se descarga como archivos de texto (.txt)
-    const safeName = res.name.replace(/\.[^.]+$/, '') + '.txt';
-    zip.file(safeName, res.anonText);
+    const ext = res.ext.toLowerCase();
+    let blob;
+    let filename;
+    
+    try {
+      if (['docx', 'doc', 'odt'].includes(ext)) {
+        // Generar DOCX
+        filename = res.name.replace(/\.[^.]+$/, '') + '.docx';
+        blob = await generateDocxBlob(res.anonText, res.name);
+        
+      } else if (ext === 'pdf') {
+        // Generar PDF
+        filename = res.name.replace(/\.[^.]+$/, '') + '.pdf';
+        blob = await generatePdfBlob(res.anonText, res.name);
+        
+      } else {
+        // TXT, CSV, MD, etc.
+        filename = res.name.replace(/\.[^.]+$/, '') + '.txt';
+        blob = new Blob([res.anonText], { type: 'text/plain;charset=utf-8' });
+      }
+      
+      zip.file(filename, blob);
+      log(`✓ ${filename} añadido al ZIP`, 'ok');
+      
+    } catch (err) {
+      log(`✗ Error con ${res.name}: ${err.message}`, 'err');
+      // Fallback a TXT
+      const txtName = res.name.replace(/\.[^.]+$/, '') + '.txt';
+      zip.file(txtName, new Blob([res.anonText], { type: 'text/plain;charset=utf-8' }));
+    }
   }
+  
+  const zipBlob = await zip.generateAsync({ type: 'blob' });
+  const url = URL.createObjectURL(zipBlob);
+  const a = document.createElement('a');
+  a.href = url; 
+  a.download = `lote_anonimizado_${yyyymmdd()}.zip`; 
+  a.click();
+  URL.revokeObjectURL(url);
+  log('ZIP descargado correctamente.', 'ok');
+}
+
+/* ──────────────────────────
+   GENERADORES DE FORMATO
+────────────────────────────*/
+async function generateDocxBlob(text, originalName) {
+  if (typeof docx === 'undefined') throw new Error('docx.js no cargado');
+  const { Document, Paragraph, TextRun, Packer, HeadingLevel } = docx;
+
+  const paragraphs = [
+    new Paragraph({
+      children: [new TextRun({ text: 'Documento anonimizado — AnonimizadorPD', bold: true, color: '60345e', size: 22 })],
+      heading: HeadingLevel.HEADING_1,
+      spacing: { after: 160 },
+    }),
+    new Paragraph({
+      children: [new TextRun({ text: `Archivo original: ${originalName} · Fecha: ${new Date().toLocaleDateString('es-ES')}`, color: '7a5080', size: 16 })],
+      spacing: { after: 240 },
+    }),
+    ...text.split('\n').map(line =>
+      new Paragraph({ children: [new TextRun({ text: line || ' ', size: 20 })], spacing: { after: 80 } })
+    ),
+    new Paragraph({
+      children: [new TextRun({ text: 'AnonimizadorPD · PDPC/AEPD · RGPD Art.4(1)', color: 'aa88b0', size: 14 })],
+      spacing: { before: 480 },
+    }),
+  ];
+
+  const doc = new Document({ sections: [{ children: paragraphs }] });
+  return await Packer.toBlob(doc);
+}
+
+async function generatePdfBlob(text, originalName) {
+  if (typeof jspdf === 'undefined') throw new Error('jsPDF no cargado');
+  const { jsPDF } = jspdf;
+  const pdf = new jsPDF({ unit: 'mm', format: 'a4' });
+  const margin = 18, lineH = 5.5, pageH = 282, contentW = 174;
+
+  pdf.setFont('helvetica', 'bold'); 
+  pdf.setFontSize(11); 
+  pdf.setTextColor(96, 52, 94);
+  pdf.text('Documento anonimizado — AnonimizadorPD', margin, 13);
+  pdf.setDrawColor(96, 52, 94); 
+  pdf.setLineWidth(0.3); 
+  pdf.line(margin, 15.5, 192, 15.5);
+  
+  pdf.setFont('helvetica', 'normal'); 
+  pdf.setFontSize(7.5); 
+  pdf.setTextColor(122, 80, 128);
+  pdf.text(`Original: ${originalName} · ${new Date().toLocaleDateString('es-ES')}`, margin, 19.5);
+
+  pdf.setFontSize(9); 
+  pdf.setTextColor(46, 20, 48);
+  let y = 26;
+  const lines = pdf.splitTextToSize(text, contentW);
+  
+  for (const line of lines) {
+    if (y + lineH > pageH) {
+      pdf.addPage(); 
+      y = 14;
+      pdf.setFontSize(7); 
+      pdf.setTextColor(170, 136, 176);
+      pdf.text('AnonimizadorPD · PDPC/AEPD · RGPD Art.4(1)', margin, 9);
+      pdf.setFontSize(9); 
+      pdf.setTextColor(46, 20, 48);
+    }
+    pdf.text(line, margin, y);
+    y += lineH;
+  }
+
+  return pdf.output('blob');
+}
   
   const blob = await zip.generateAsync({ type: 'blob' });
   const url = URL.createObjectURL(blob);
