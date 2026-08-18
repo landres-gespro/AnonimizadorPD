@@ -616,6 +616,9 @@ Ejemplo: «La paciente María García López, con DNI 12345678Z y fecha de nacim
   <!-- Action bar -->
   <div class="action-bar">
     <button class="btn btn-primary" id="btnAnon" onclick="runAnonymization()">🔒 Anonimizar</button>
+    <button class="btn btn-report" id="btnDownloadPdf" disabled onclick="downloadSinglePdf()" style="background:rgba(179,63,118,.08);color:var(--magenta);border:1px solid rgba(179,63,118,.25)">
+      📕 Descargar PDF
+    </button>
     <button class="btn btn-secondary" onclick="clearAll()">↩ Limpiar</button>
 
     <!-- Export document dropdown -->
@@ -981,42 +984,32 @@ async function extractTextSilent(file) {
 ────────────────────────────*/
 async function downloadBatchZip() {
   if (typeof JSZip === 'undefined') { alert('JSZip no cargado. Necesitas conexión la primera vez.'); return; }
-  const zip = new JSZip();
+  if (typeof jspdf === 'undefined') { alert('jsPDF no cargado. Necesitas conexión la primera vez.'); return; }
   
-  log('Generando ZIP con formatos originales...', 'ok');
+  const zip = new JSZip();
+  log('Generando ZIP con todos los archivos en PDF...', 'ok');
   
   for (const res of batchResults) {
-    const ext = res.ext.toLowerCase();
-    let blob;
-    let filename;
-    
     try {
-      if (['docx', 'doc', 'odt'].includes(ext)) {
-        // Generar DOCX
-        filename = res.name.replace(/\.[^.]+$/, '') + '.docx';
-        blob = await generateDocxBlob(res.anonText, res.name);
-        
-      } else if (ext === 'pdf') {
-        // Generar PDF
-        filename = res.name.replace(/\.[^.]+$/, '') + '.pdf';
-        blob = await generatePdfBlob(res.anonText, res.name);
-        
-      } else {
-        // TXT, CSV, MD, etc.
-        filename = res.name.replace(/\.[^.]+$/, '') + '.txt';
-        blob = new Blob([res.anonText], { type: 'text/plain;charset=utf-8' });
-      }
-      
-      zip.file(filename, blob);
-      log(`✓ ${filename} añadido al ZIP`, 'ok');
-      
+      // Siempre generar PDF, independientemente del formato original
+      const pdfName = res.name.replace(/\.[^.]+$/, '') + '.pdf';
+      const blob = await generatePdfBlob(res.anonText, res.name);
+      zip.file(pdfName, blob);
+      log(`✓ ${pdfName} añadido al ZIP`, 'ok');
     } catch (err) {
       log(`✗ Error con ${res.name}: ${err.message}`, 'err');
-      // Fallback a TXT
-      const txtName = res.name.replace(/\.[^.]+$/, '') + '.txt';
-      zip.file(txtName, new Blob([res.anonText], { type: 'text/plain;charset=utf-8' }));
     }
   }
+  
+  const zipBlob = await zip.generateAsync({ type: 'blob' });
+  const url = URL.createObjectURL(zipBlob);
+  const a = document.createElement('a');
+  a.href = url; 
+  a.download = `lote_anonimizado_${yyyymmdd()}.zip`; 
+  a.click();
+  URL.revokeObjectURL(url);
+  log('ZIP descargado correctamente.', 'ok');
+}
   
   const zipBlob = await zip.generateAsync({ type: 'blob' });
   const url = URL.createObjectURL(zipBlob);
@@ -1933,6 +1926,7 @@ function renderResults(text, entities, anonText, rBefore, rAfter) {
   } else wb.style.display = 'none';
   document.getElementById('resultsSection').classList.add('visible');
   setTimeout(() => document.getElementById('resultsSection').scrollIntoView({ behavior:'smooth', block:'start' }), 80);
+  document.getElementById('btnDownloadPdf').disabled = false;
 }
 
 function buildBeforeHTML(text, entities) {
@@ -2148,6 +2142,22 @@ function _exportXlsx(base) {
   log('XLSX exportado.', 'ok');
 }
 
+async function downloadSinglePdf() {
+  if (!lastResult) return;
+  if (typeof jspdf === 'undefined') { alert('jsPDF no cargado. Necesitas conexión la primera vez.'); return; }
+  
+  try {
+    const base = `anonimizado-${_baseName()}-${yyyymmdd()}`;
+    log(`Exportando PDF...`, 'ok');
+    const blob = await generatePdfBlob(lastResult.anonText, lastResult.filename);
+    _dlBlob(blob, base + '.pdf');
+    log('PDF exportado.', 'ok');
+  } catch (err) {
+    log(`Error exportando PDF: ${err.message}`, 'err');
+    alert(`No se pudo exportar como PDF.\n\n${err.message}`);
+  }
+}
+  
 async function copyResult() {
   if (!lastResult) return;
   try {
@@ -2330,6 +2340,7 @@ function clearAll() {
   document.getElementById('processingInfo').textContent = '';
   lastResult = null;
   log('Pantalla limpiada.');
+  document.getElementById('btnDownloadPdf').disabled = true;
 }
 </script>
 </body>
