@@ -12,6 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.8.2/docx.umd.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js" crossorigin="anonymous"></script>
 <style>
 :root{
 --plum:#814e83;--plum-deep:#60345e;--plum-darker:#4a2648;
@@ -324,13 +325,14 @@ ISO/IEC 20889:2018
 <div class="drop-title">Arrastra archivos o haz clic para seleccionar</div>
 <div class="drop-sub">El texto se extrae localmente — ningún dato sale del navegador</div>
 <div class="ftype-wrap">
-<span class="ftype ok">PDF</span><span class="ftype ok">DOCX</span><span class="ftype ok">DOC</span>
-<span class="ftype ok">XLSX</span><span class="ftype ok">XLS</span><span class="ftype ok">ODS</span>
-<span class="ftype ok">RTF</span><span class="ftype ok">ODT</span>
-<span class="ftype ok">TXT</span><span class="ftype ok">CSV</span><span class="ftype ok">MD</span>
+  <span class="ftype ok">PDF</span><span class="ftype ok">DOCX</span><span class="ftype ok">DOC</span>
+  <span class="ftype ok">XLSX</span><span class="ftype ok">XLS</span><span class="ftype ok">ODS</span>
+  <span class="ftype ok">RTF</span><span class="ftype ok">ODT</span>
+  <span class="ftype ok">TXT</span><span class="ftype ok">CSV</span><span class="ftype ok">MD</span>
+  <span class="ftype ok">JPG</span><span class="ftype ok">PNG</span><span class="ftype ok">TIFF</span><span class="ftype ok">BMP</span>
 </div>
 </div>
-<input type="file" id="fileInput" multiple accept=".pdf,.docx,.doc,.xlsx,.xls,.ods,.rtf,.odt,.txt,.csv,.md,.tsv">
+<input type="file" id="fileInput" multiple accept=".pdf,.docx,.doc,.xlsx,.xls,.ods,.rtf,.odt,.txt,.csv,.md,.tsv,.jpg,.jpeg,.png,.tiff,.tif,.bmp,.webp">
 <div class="file-loaded-card hidden" id="fileLoadedCard">
 <div class="fext-badge ext-other" id="fextBadge">—</div>
 <div style="flex:1;min-width:0">
@@ -580,7 +582,7 @@ Separa los términos por comas. La lista blanca protege datos de ser anonimizado
 </div>
 <div style="background:rgba(96,52,94,.04);border:1px solid var(--border);border-radius:var(--r4);padding:10px 14px;font-size:.68rem;color:var(--text-muted);line-height:1.6">
 <strong style="color:var(--plum-deep)">Aviso metodológico:</strong>
-Motor local v3 basado en regex y diccionarios ES. Detecta: email, teléfono, DNI/NIE, IBAN, IPv4/v6, fechas, CP, edades, direcciones, nombres ES, <strong style="color:var(--plum-deep)">matrículas ES, coordenadas GPS, UUID/Cookie/Device ID, handles y URLs de RRSS</strong>. Los nombres inusuales o extranjeros pueden requerir revisión manual. Conforme a Guía PDPC/AEPD (Oct. 2022) y RGPD Art. 4(1).
+Motor local v3 basado en regex y diccionarios ES. Detecta: email, teléfono, DNI/NIE, IBAN, IPv4/v6, fechas, CP, edades, direcciones, nombres ES, <strong style="color:var(--plum-deep)">matrículas ES, coordenadas GPS, UUID/Cookie/Device ID, handles y URLs de RRSS (Twitter/X, Instagram, LinkedIn, Facebook, TikTok, YouTube)</strong>. <strong style="color:var(--green)">Incluye OCR para imágenes y PDFs escaneados</strong>. Los nombres inusuales o extranjeros pueden requerir revisión manual. Conforme a Guía PDPC/AEPD (Oct. 2022) y RGPD Art. 4(1).
 </div>
 </div>
 </div>
@@ -738,15 +740,36 @@ document.getElementById('btnDownloadZip').disabled=false;
 document.getElementById('batchStatus').textContent=files.length+' archivos procesados';
 log('Lote completado.','ok');
 }
-async function extractTextSilent(file){
-const ext=extOf(file.name);
-if(['txt','md','csv','tsv'].includes(ext))return await readAsText(file);
-if(['pdf'].includes(ext))return await extractPDF(file);
-if(['docx','odt'].includes(ext))return await extractDOCX(file);
-if(['doc'].includes(ext)){try{return await extractDOCX(file);}catch(_){return await readAsText(file);}}
-if(['rtf'].includes(ext))return await extractRTF(file);
-if(['xlsx','xls','ods','xlsm'].includes(ext))return await extractXLSX(file,ext==='xls');
-return await readAsText(file);
+async function extractOCR(file) {
+  setProgress(10, 'Inicializando OCR...');
+  if (typeof Tesseract === 'undefined') throw new Error('Tesseract.js no cargado');
+  
+  const result = await Tesseract.recognize(
+    file,
+    'spa',
+    {
+      logger: m => {
+        if (m.status === 'recognizing text') {
+          const pct = 40 + Math.round(m.progress * 60);
+          setProgress(pct, `OCR: ${Math.round(m.progress * 100)}%`);
+        }
+      }
+    }
+  );
+  
+  setProgress(100, 'OCR completado');
+  return result.data.text;
+}
+async function extractTextSilent(file) {
+  const ext = extOf(file.name);
+  if (['txt','md','csv','tsv'].includes(ext)) return await readAsText(file);
+  if (['pdf'].includes(ext)) return await extractPDF(file);
+  if (['docx','odt'].includes(ext)) return await extractDOCX(file);
+  if (['doc'].includes(ext)) { try { return await extractDOCX(file); } catch(_) { return await readAsText(file); } }
+  if (['rtf'].includes(ext)) return await extractRTF(file);
+  if (['xlsx','xls','ods','xlsm'].includes(ext)) return await extractXLSX(file, ext==='xls');
+  if (['jpg','jpeg','png','tiff','tif','bmp','webp'].includes(ext)) return await extractOCR(file);
+  return await readAsText(file);
 }
 async function downloadBatchZip(){
 if(typeof JSZip==='undefined'){alert('JSZip no cargado. Necesitas conexión la primera vez.');return;}
@@ -806,6 +829,7 @@ else if(['rtf'].includes(ext)){text=await extractRTF(file);}
 else if(['xlsx','xlsm'].includes(ext)){text=await extractXLSX(file,false);}
 else if(['xls'].includes(ext)){text=await extractXLSX(file,true);}
 else if(['ods'].includes(ext)){text=await extractXLSX(file,false);}
+else if(['jpg','jpeg','png','tiff','tif','bmp','webp'].includes(ext)){text = await extractOCR(file);}
 else{text=await readAsText(file);setProgress(100,'Texto extraído (genérico)');}
 if(!text||text.trim().length===0)throw new Error('No se pudo extraer texto del archivo');
 loadedFileText=text;
