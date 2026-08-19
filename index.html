@@ -231,12 +231,37 @@ table.etable tr:last-child td{border-bottom:none} table.etable tr:hover td{backg
 .rpt-method-box{background:rgba(129,78,131,.04);border:1px solid rgba(129,78,131,.18);border-left:3px solid var(--plum);border-radius:var(--r4);padding:10px 13px;font-size:.7rem;color:var(--text-muted);line-height:1.6}
 .rpt-method-box strong{color:var(--plum-deep);font-size:.68rem;display:block;margin-bottom:4px}
 .rpt-footer{border-top:1px solid var(--border);padding-top:14px;font-size:.65rem;color:var(--text-dim);display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace}
+/* ── Manual Modal ── */
+.manual-overlay{display:none;position:fixed;inset:0;background:rgba(74,38,72,.6);z-index:400;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.manual-overlay.open{display:flex}
+.manual-modal{background:#fff;width:100%;max-width:780px;max-height:90vh;border-radius:var(--r8);box-shadow:0 24px 64px rgba(96,52,94,.4);overflow:hidden;display:flex;flex-direction:column}
+.manual-topbar{background:var(--plum-deep);padding:14px 22px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.manual-title{font-family:'IBM Plex Serif',serif;font-size:1rem;color:#fff}
+.manual-close{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:var(--r4);padding:6px 12px;cursor:pointer;font-size:.75rem;transition:all .15s}
+.manual-close:hover{background:rgba(255,255,255,.25)}
+.manual-body{padding:28px 30px;overflow-y:auto;font-size:.85rem;line-height:1.65}
+.manual-body h2{font-family:'IBM Plex Serif',serif;font-size:1.2rem;color:var(--plum-deep);margin:24px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--plum)}
+.manual-body h2:first-child{margin-top:0}
+.manual-body h3{font-size:.95rem;color:var(--magenta);margin:16px 0 6px}
+.manual-body p{margin-bottom:10px;color:var(--text-mid)}
+.manual-body ul{margin:8px 0 12px 20px;color:var(--text-mid)}
+.manual-body li{margin-bottom:4px}
+.manual-body table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.8rem}
+.manual-body th{background:rgba(129,78,131,.06);border:1px solid var(--border);padding:6px 10px;text-align:left;font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim)}
+.manual-body td{border:1px solid var(--border);padding:6px 10px;vertical-align:top}
+.manual-body tr:nth-child(even) td{background:rgba(129,78,131,.02)}
+.manual-tip{background:rgba(26,122,74,.05);border-left:3px solid var(--green);padding:10px 14px;border-radius:0 4px 4px 0;margin:12px 0;font-size:.82rem}
+.manual-norm{padding:10px 14px;border-left:3px solid var(--plum);background:rgba(129,78,131,.03);margin-bottom:8px;border-radius:0 4px 4px 0}
+.manual-norm strong{color:var(--plum-deep);display:block;margin-bottom:2px}
+.manual-norm small{color:var(--text-muted);font-size:.78rem}
+.btn-manual{font-family:'IBM Plex Sans',sans-serif;font-size:.7rem;font-weight:500;color:var(--plum-deep);text-decoration:none;border:1px solid var(--border-med);border-radius:3px;padding:4px 10px;margin-left:8px;cursor:pointer;background:transparent;transition:all .15s}
+.btn-manual:hover{background:rgba(129,78,131,.07);border-color:var(--plum)}
 @media print{body{background:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.cls-bar,.topbar,.log-panel,.action-bar,.tabs,.main-cols,.results-section,#reportOverlay{display:none !important}.report-modal{box-shadow:none !important;border-radius:0 !important}.report-topbar{display:none}.rpt-text-box{max-height:none !important;overflow:visible !important}.rpt-table{page-break-inside:auto}.rpt-table tr{page-break-inside:avoid}.rpt-section{page-break-inside:avoid}}
 </style>
 </head>
 <body>
 <div class="cls-bar"><span class="pill">PDPC/AEPD</span>Anonimizador Local de Datos Personales · Guía Básica de Anonimización<span class="pill">RGPD Art.4(1)</span></div>
-<div class="topbar"><div class="brand"><div class="brand-mark">AN</div><div class="brand-name">AnonimizadorPD</div><div class="brand-sep"></div><div class="brand-norm">PDPC · AEPD · RGPD</div></div><div class="topbar-right"><div class="local-badge">100% local · sin red · sin API · sin cookies</div></div></div>
+<div class="topbar"><div class="brand"><div class="brand-mark">AN</div><div class="brand-name">AnonimizadorPD</div><div class="brand-sep"></div><div class="brand-norm">PDPC · AEPD · RGPD</div></div><div class="topbar-right"><div class="local-badge">100% local · sin red · sin API · sin cookies<button class="btn-manual" onclick="openManual()">📘 Manual</button></div></div></div>
 <div class="app">
 <div class="page-header"><div><div class="page-eyebrow">Protección de Datos Personales</div><h1 class="page-title">Anonimización de Documentos</h1><p class="page-desc">Motor local de detección y anonimización mediante expresiones regulares y OCR. Carga archivos (PDF, DOCX, XLSX, RTF, TXT, CSV, imágenes…) o pega texto directamente. Genera informe antes/después descargable. Ningún dato sale del navegador.</p></div><div class="norm-ref"><strong>Referencias normativas</strong>Guía PDPC/AEPD (Oct. 2022)<br>RGPD — Art. 4(1), Art. 5(1)(e)<br>Considerando 26 RGPD<br>ISO/IEC 20889:2018</div></div>
 <div class="stats-row"><div class="stat-card"><div class="stat-label">Entidades detectadas</div><div class="stat-value red" id="stat-total">—</div><div class="stat-sub">en el texto analizado</div></div><div class="stat-card"><div class="stat-label">Identificadores directos</div><div class="stat-value red" id="stat-dir">—</div><div class="stat-sub">nombre, email, DNI…</div></div><div class="stat-card"><div class="stat-label">Identificadores indirectos</div><div class="stat-value amber" id="stat-ind">—</div><div class="stat-sub">edad, dirección, CP…</div></div><div class="stat-card"><div class="stat-label">Score anonimización</div><div class="stat-value green" id="stat-score">—</div><div class="stat-sub" id="stat-score-sub">% del texto tratado</div><div class="stat-score-bar"><div class="stat-score-fill fill-green" id="statScoreFill" style="width:0%"></div></div></div><div class="stat-card"><div class="stat-label">Riesgo residual</div><div class="stat-value green" id="stat-riesgo">—</div><div class="stat-sub" id="stat-riesgo-sub">tras anonimización</div></div></div>
@@ -372,7 +397,133 @@ function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/<
 function yyyymmdd(){const d=new Date();return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');}
 function log(msg,type){const body=document.getElementById('logBody');const ts=new Date().toTimeString().slice(0,8);const line=document.createElement('div');line.className='log-line'+(type?' '+type:'');line.innerHTML='<span class="log-ts">'+ts+'</span><span>'+msg+'</span>';body.appendChild(line);body.scrollTop=body.scrollHeight;}
 function setLogActive(on){document.getElementById('logDot').className='log-dot'+(on?' active':'');}
+/* ──────────────────────────
+MANUAL MODAL
+────────────────────────────*/
+function openManual() {
+document.getElementById('manualOverlay').classList.add('open');
+document.body.style.overflow = 'hidden';
+}
+function closeManual() {
+document.getElementById('manualOverlay').classList.remove('open');
+document.body.style.overflow = '';
+}
+// Cerrar al hacer clic fuera del modal
+document.getElementById('manualOverlay').addEventListener('click', function(e) {
+if (e.target === this) closeManual();
+});
+// Cerrar con tecla Escape
+document.addEventListener('keydown', function(e) {
+if (e.key === 'Escape') closeManual();
+});
 function clearAll(){document.getElementById('inputText').value='';document.getElementById('charCount').textContent='0';removeFile();document.getElementById('resultsSection').classList.remove('visible');['stat-total','stat-dir','stat-ind','stat-riesgo'].forEach(id=>document.getElementById(id).textContent='—');document.getElementById('btnExportDoc').disabled=true;document.getElementById('btnReport').disabled=true;document.getElementById('btnDownloadPdf').disabled=true;document.getElementById('processingInfo').textContent='';lastResult=null;log('Pantalla limpiada.');}
 </script>
+<!-- ═══════════════════════════════════════
+MANUAL MODAL
+════════════════════════════════════════ -->
+<div class="manual-overlay" id="manualOverlay">
+<div class="manual-modal">
+<div class="manual-topbar">
+<div class="manual-title">📘 AnonimizadorPD · Manual de uso</div>
+<button class="manual-close" onclick="closeManual()">✕ Cerrar</button>
+</div>
+<div class="manual-body">
+
+<h2>1. Descripción de la herramienta</h2>
+<p><strong>AnonimizadorPD</strong> es una herramienta web 100% local diseñada para detectar y anonimizar datos personales en documentos de texto. Todo el procesamiento se realiza en el navegador del usuario: <strong>ningún dato sale de tu ordenador</strong>.</p>
+<p>Permite anonimizar archivos individuales o lotes completos, generar informes de trazabilidad y exportar los resultados en múltiples formatos (PDF, DOCX, TXT, XLSX).</p>
+<div class="manual-tip">✅ <strong>Privacidad garantizada:</strong> sin conexión a servidores externos, sin APIs, sin cookies, sin almacenamiento en la nube.</div>
+
+<h2>2. Manual de uso rápido</h2>
+
+<h3>Paso 1 · Cargar el documento</h3>
+<p>Arrastra un archivo a la zona de carga o haz clic para seleccionarlo. Formatos soportados: <strong>PDF, DOCX, DOC, ODT, XLSX, XLS, ODS, CSV, RTF, TXT, MD, JPG, PNG, TIFF</strong>. También puedes pegar texto directamente en la pestaña "Texto libre".</p>
+
+<h3>Paso 2 · Seleccionar los tipos de dato a detectar</h3>
+<p>En el panel lateral derecho, marca o desmarca los identificadores que deseas anonimizar (nombres, emails, DNI, teléfonos, direcciones, etc.). Por defecto vienen activados los de riesgo ALTO.</p>
+
+<h3>Paso 3 · Elegir la técnica de anonimización</h3>
+<p>Selecciona una de las 5 técnicas disponibles:</p>
+<ul>
+<li><strong>🔑 Seudonimización:</strong> sustitución por tokens únicos y consistentes (ej: Juan Pérez → PERSONA_001)</li>
+<li><strong>🎭 Enmascaramiento:</strong> ocultación parcial de caracteres (ej: j.l@mail.es → j***@***.es)</li>
+<li><strong>📊 Generalización:</strong> reducción de granularidad (ej: 37 años → 35-40 años)</li>
+<li><strong>🗑️ Supresión:</strong> eliminación completa del dato (ej: Juan García → [SUPRIMIDO])</li>
+<li><strong>🎲 Datos Sintéticos:</strong> reemplazo por datos ficticios realistas (ej: Juan Pérez → Carlos Gómez)</li>
+</ul>
+
+<h3>Paso 4 · (Opcional) Diccionarios personalizados</h3>
+<p>Usa la <strong>Lista Blanca</strong> para proteger términos que NO deben anonimizar (ej: nombre de tu empresa). Usa la <strong>Lista Negra</strong> para forzar la anonimización de términos específicos.</p>
+
+<h3>Paso 5 · Ejecutar y revisar</h3>
+<p>Pulsa "🔒 Anonimizar". Revisa el resultado en las tres columnas: <strong>ANTES</strong> (texto original resaltado), <strong>CAMBIOS</strong> (diff visual con tachado) y <strong>DESPUÉS</strong> (texto anonimizado).</p>
+
+<h3>Paso 6 · Exportar</h3>
+<p>Descarga el documento anonimizado como PDF, DOCX o TXT. También puedes generar un informe completo de anonimización o copiar el texto al portapapeles.</p>
+
+<h2>3. Tipos de datos soportados</h2>
+
+<h3>Identificadores directos (Riesgo ALTO)</h3>
+<table>
+<tr><th>Tipo</th><th>Formato</th><th>Ejemplo</th></tr>
+<tr><td>Nombre completo</td><td>Nombres y apellidos españoles</td><td>Juan Pérez García</td></tr>
+<tr><td>Correo electrónico</td><td>RFC 5322</td><td>usuario@dominio.es</td></tr>
+<tr><td>Teléfono</td><td>Móvil (6xx, 7xx) y fijo, con/sin +34</td><td>612 345 678</td></tr>
+<tr><td>DNI / NIF</td><td>8 dígitos + letra</td><td>12345678Z</td></tr>
+<tr><td>NIE</td><td>X/Y/Z + 7 dígitos + letra</td><td>X1234567Z</td></tr>
+<tr><td>CIF</td><td>Letra + 8 dígitos</td><td>A12345678</td></tr>
+<tr><td>IBAN / CCC</td><td>ES + 22 dígitos / 20 dígitos</td><td>ES12 3456 7890...</td></tr>
+<tr><td>Nº Seguridad Social</td><td>2 dígitos provincia + 8 / 11-12 dígitos</td><td>28 12345678</td></tr>
+<tr><td>Dirección IP</td><td>IPv4 e IPv6</td><td>192.168.1.1</td></tr>
+<tr><td>Dirección MAC</td><td>6 grupos hex</td><td>00:1A:2B:3C:4D:5E</td></tr>
+<tr><td>Matrícula</td><td>4 dígitos + 3 consonantes (ES)</td><td>1234 BCD</td></tr>
+<tr><td>UUID / Cookie ID</td><td>UUID v4</td><td>6ba7b810-9dad-...</td></tr>
+<tr><td>Handle RRSS</td><td>@usuario y URLs</td><td>@usuario</td></tr>
+<tr><td>Identificador usuario</td><td>nombre.apellidos</td><td>juan.perez</td></tr>
+</table>
+
+<h3>Identificadores indirectos (Riesgo MEDIO-BAJO)</h3>
+<table>
+<tr><th>Tipo</th><th>Formato</th><th>Ejemplo</th></tr>
+<tr><td>Fecha nacimiento</td><td>DD/MM/AAAA</td><td>15/03/1985</td></tr>
+<tr><td>Dirección postal</td><td>Calle + número</td><td>Calle Mayor 27</td></tr>
+<tr><td>Dirección completa</td><td>Calle + CP + Población</td><td>Calle Mayor 27, 28013 Madrid</td></tr>
+<tr><td>Código postal</td><td>5 dígitos ES</td><td>28013</td></tr>
+<tr><td>Coordenadas GPS</td><td>Lat, Lon con ≥4 decimales</td><td>40.4168, -3.7038</td></tr>
+<tr><td>Edad</td><td>Número + "años"</td><td>37 años</td></tr>
+<tr><td>Cargo / profesión</td><td>Lista 150+ términos</td><td>director general</td></tr>
+</table>
+
+<h2>4. Alineamiento normativo</h2>
+<p>La herramienta está diseñada conforme a los siguientes marcos normativos:</p>
+
+<div class="manual-norm">
+<strong>Reglamento (UE) 2016/679 (RGPD)</strong>
+<small>Art. 4(1) · Art. 5(1)(e) · Art. 25 · Art. 32 · Considerando 26</small>
+</div>
+<div class="manual-norm">
+<strong>Guía Básica de Anonimización · PDPC / AEPD (Octubre 2022)</strong>
+<small>Proceso de 5 pasos: Conocer los datos, Desidentificación, Técnica aplicada, Evaluación de riesgo, Controles recomendados</small>
+</div>
+<div class="manual-norm">
+<strong>ISO/IEC 20889:2018</strong>
+<small>Privacy enhancing data de-identification — Terminology and classification of techniques</small>
+</div>
+<div class="manual-norm">
+<strong>Dictamen 05/2014 del Grupo de Trabajo del Artículo 29</strong>
+<small>Técnicas de anonimización: singulación, correlación e inferencia</small>
+</div>
+<div class="manual-norm">
+<strong>Esquema Nacional de Seguridad (ENS) — RD 311/2022</strong>
+<small>Medidas de protección de datos en la administración electrónica</small>
+</div>
+
+<div class="manual-tip">
+⚠️ <strong>Aviso importante:</strong> Esta herramienta es una ayuda técnica y no sustituye el asesoramiento de un Delegado de Protección de Datos (DPD/DPO). La anonimización efectiva requiere una evaluación caso por caso del riesgo de reidentificación.
+</div>
+
+</div>
+</div>
+</div>  
 </body>
 </html>
