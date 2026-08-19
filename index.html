@@ -372,7 +372,73 @@ function dedupIntervals(arr){arr.sort((a,b)=>a.start-b.start);const out=[];let c
 function detectEntities(text,opts){const raw=[];for(const pat of PATTERNS){if(!opts[pat.ck]||!pat.re)continue;pat.re.lastIndex=0;let m;while((m=pat.re.exec(text))!==null){if(pat.validate&&!pat.validate(m))continue;const orig=m[0];if(!orig.trim())continue;if(pat.id==='user_id'){const parts=orig.split(/[._\-]/);if(!NOMBRES_ES.has(normalizeStr(parts[0])))continue;if(!parts.slice(1).some(p=>APELLIDOS_ES.has(normalizeStr(p))))continue;if(text[m.index-1]==='/'||text[m.index-1]===':')continue;}raw.push({start:m.index,end:m.index+orig.length,original:orig,type:pat.type,category:pat.cat,patId:pat.id});}pat.re.lastIndex=0;}if(opts['ck-nombre']){for(const n of detectNames(text))raw.push({start:n.start,end:n.end,original:n.original,type:'Nombre',category:'directo',patId:'nombre'});}raw.sort((a,b)=>a.start!==b.start?a.start-b.start:(b.end-b.start)-(a.end-a.start));const final=[];let cur=0;for(const x of raw){if(x.start>=cur){final.push(x);cur=x.end;}}return final;}
 class AnonEngine{constructor(){this.counters={};this.map=new Map();}token(type,val){const k=type+'::'+val.toLowerCase().trim();if(!this.map.has(k)){const key=type.toUpperCase().replace(/[^A-Z0-9]/g,'_');this.counters[key]=(this.counters[key]||0)+1;this.map.set(k,key+'_'+String(this.counters[key]).padStart(3,'0'));}return this.map.get(k);}apply(tech,type,val){switch(tech){case'seudonimización':return this.token(type.replace(/[^a-zA-Z0-9]/g,'_'),val);case'enmascaramiento':return this.mask(type,val);case'generalización':return this.generalize(type,val);case'supresión':return'[SUPRIMIDO]';case'sintético':return this.sintetico(type,val);default:return'[ANONIMIZADO]';}}mask(type,val){if(type==='email'){const at=val.indexOf('@');if(at<1)return val[0]+'***';const dom=val.slice(at+1).split('.');return val[0]+'***@***.'+dom[dom.length-1];}if(type==='Teléfono'){const d=val.replace(/\D/g,'');return'***-***-'+d.slice(-3);}if(type==='DNI'||type==='NIE'){return val.slice(0,-3).replace(/[A-Z0-9]/gi,'*')+val.slice(-3).toUpperCase();}if(type==='CIF')return val[0]+'***'+val.slice(-3);if(type==='IBAN / cuenta'){const c=val.replace(/\s/g,'');return c.slice(0,4)+' **** **** **** '+c.slice(-4);}if(type==='Cuenta bancaria (CCC)'){const c=val.replace(/\s/g,'');return c.slice(0,4)+' **** **** **** '+c.slice(-4);}if(type==='Nº Seguridad Social')return'**-'+val.slice(-4);if(type==='Dirección MAC')return val.slice(0,8)+'-**-**-**';if(type==='IP (v4)'){const p=val.split('.');return p[0]+'.'+p[1]+'.*.*';}if(type==='IP (v6)'){return val.split(':').slice(0,3).join(':')+':****:****:****';}if(type==='Fecha nacimiento'){const yr=val.match(/\b(19|20)\d{2}\b/);return yr?'**/**/'+yr[0]:'**/**/****';}if(type==='Código postal'){return val.slice(0,2)+'***';}if(type==='Edad'){const n=parseInt(val);const lo=Math.floor(n/5)*5;return lo+'-'+(lo+4)+' años';}if(type==='Matrícula'){return val.replace(/[0-9]/g,'#').replace(/##+/g,m=>'#'.repeat(m.length));}if(type==='UUID / Cookie ID'){return'00000000-0000-0000-0000-000000000000';}if(type==='Handle RRSS'||type==='Perfil RRSS'){return type==='Handle RRSS'?'@[usuario]':'[perfil-rrss-redactado]';}if(type==='Coordenadas GPS'){const parts=val.match(/-?\d+\.\d+/g);if(parts&&parts.length>=2)return parseFloat(parts[0]).toFixed(2)+', '+parseFloat(parts[1]).toFixed(2);return'[GPS_REDACTADO]';}if(type==='Identificador usuario')return val.split(/[._\-]/)[0][0]+'***';if(type==='Dirección completa')return'[DIRECCIÓN_COMPLETA]';return val.trim().split(/\s+/).map(w=>w.length<=1?w:w[0]+'***').join(' ');}generalize(type,val){if(type==='email')return'[CORREO_ELECTRÓNICO]';if(type==='Teléfono')return'[TELÉFONO]';if(type==='DNI'||type==='NIE')return'[DOC_IDENTIDAD]';if(type==='CIF')return'[CIF]';if(type==='IBAN / cuenta')return'[CUENTA_BANCARIA]';if(type==='Cuenta bancaria (CCC)')return'[CUENTA_BANCARIA]';if(type==='Nº Seguridad Social')return'[NUSS]';if(type==='Dirección MAC')return'[MAC_ADDRESS]';if(type==='IP (v4)'||type==='IP (v6)')return'[DIRECCIÓN_IP]';if(type==='Fecha nacimiento'){const yr=val.match(/\b(19|20)\d{2}\b/);if(yr){const y=parseInt(yr[0]);return'Década '+Math.floor(y/10)*10;}return'[FECHA]';}if(type==='Código postal')return val.slice(0,2)+'xxx';if(type==='Edad'){const n=parseInt(val);if(!isNaN(n)){const lo=Math.floor(n/5)*5;return lo+'-'+(lo+4)+' años';}return'[EDAD]';}if(type==='Dirección')return'[DIRECCIÓN]';if(type==='Dirección completa')return'[DIRECCIÓN_COMPLETA]';if(type==='Cargo / profesión')return'[CARGO_PROFESIONAL]';if(type==='Matrícula')return'[MATRÍCULA_VEHÍCULO]';if(type==='UUID / Cookie ID')return'[IDENTIFICADOR_ONLINE]';if(type==='Handle RRSS')return'[USUARIO_RRSS]';if(type==='Perfil RRSS')return'[PERFIL_RRSS]';if(type==='Coordenadas GPS')return'[UBICACIÓN_GPS]';if(type==='Identificador usuario')return'[USUARIO]';return'['+type.toUpperCase().replace(/[^A-Z0-9]/g,'_')+']';}sintetico(type,val){if(type==='Nombre')return sintNombre();if(type==='email')return sintEmail();if(type==='Teléfono')return sintTel();if(type==='DNI'||type==='NIE')return sintDNI();if(type==='CIF')return sintCIF();if(type==='IBAN / cuenta')return sintIBAN();if(type==='Cuenta bancaria (CCC)')return sintCCC();if(type==='Nº Seguridad Social')return sintNUSS();if(type==='IP (v4)'||type==='IP (v6)')return sintIP();if(type==='Dirección MAC')return sintMAC();if(type==='Código postal')return sintCP();if(type==='Dirección')return sintDir();if(type==='Dirección completa')return sintDirComp();if(type==='Edad')return sintEdad();if(type==='Fecha nacimiento')return sintFecha();if(type==='Cargo / profesión')return'[PROFESIONAL]';if(type==='Matrícula')return sintMatricula();if(type==='UUID / Cookie ID')return sintUUID();if(type==='Handle RRSS')return sintHandle();if(type==='Perfil RRSS')return'https://example.com/perfil/'+randInt(1000,9999);if(type==='Coordenadas GPS')return sintCoords();if(type==='Identificador usuario')return sintUserId();return'[DATO_SINTETICO]';}}
 function runAnonymization(){const originalText=currentTab==='file'?loadedFileText:document.getElementById('inputText').value;if(!originalText||!originalText.trim()){log(currentTab==='file'?'⚠ Carga un archivo primero.':'⚠ Introduce texto primero.','err');return;}const t0=performance.now();setLogActive(true);log('Analizando '+originalText.length.toLocaleString('es')+' caracteres…');const opts=getOptions();const rawEntities=detectEntities(originalText,opts);const dicts=obtenerDiccionarios();const engine=new AnonEngine();const anonEnts=[];let anonText='',pos=0;for(const e of rawEntities){anonText+=originalText.slice(pos,e.start);const valLower=e.original.toLowerCase();if(dicts.whitelist.some(w=>valLower===w)){anonText+=e.original;anonEnts.push({...e,anonymized:e.original,technique:'Protegido (Whitelist)'});}else if(dicts.blacklist.some(b=>valLower===b)){anonText+='[ANONIMIZADO_PERSONALIZADO]';anonEnts.push({...e,anonymized:'[ANONIMIZADO_PERSONALIZADO]',technique:'Forzado (Blacklist)'});}else{const anonVal=engine.apply(selectedTech,e.type,e.original);anonText+=anonVal;anonEnts.push({...e,anonymized:anonVal,technique:selectedTech});}pos=e.end;}anonText+=originalText.slice(pos);dicts.blacklist.forEach(termino=>{const escaped=termino.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const hasSpace=/\s/.test(termino);const regex=hasSpace?new RegExp('('+escaped+')','gi'):new RegExp('\\b('+escaped+')\\b','gi');if(regex.test(originalText))anonText=anonText.replace(regex,'[ANONIMIZADO_PERSONALIZADO]');});const nDir=anonEnts.filter(e=>e.category==='directo'&&e.technique!=='Protegido (Whitelist)').length;const nInd=anonEnts.filter(e=>e.category==='indirecto'&&e.technique!=='Protegido (Whitelist)').length;const rBefore=(rawEntities.filter(e=>e.category==='directo').length>0)?'ALTO':(rawEntities.filter(e=>e.category==='indirecto').length>0)?'MEDIO':'BAJO';const rAfter=anonEnts.filter(e=>e.technique!=='Protegido (Whitelist)').length===0?rBefore:(nDir>0?'MEDIO':'BAJO');const elapsed=((performance.now()-t0)/1000).toFixed(3);log('Procesadas '+anonEnts.length+' entidades en '+elapsed+'s','ok');setLogActive(false);lastResult={text:originalText,anonText,entities:anonEnts,riskBefore:rBefore,riskAfter:rAfter,filename:currentTab==='file'?(loadedFileName||'texto'):'texto-libre',tech:selectedTech,elapsed};renderResults(originalText,anonEnts,anonText,rBefore,rAfter);document.getElementById('processingInfo').textContent='⚡ '+elapsed+'s · '+anonEnts.length+' entidades';document.getElementById('btnExportDoc').disabled=false;document.getElementById('btnReport').disabled=false;document.getElementById('btnDownloadPdf').disabled=false;const isXls=loadedFileExt&&['xlsx','xls','ods','xlsm'].includes(loadedFileExt);document.getElementById('edm-xlsx').style.display=isXls?'':'none';}
-function renderResults(text,entities,anonText,rBefore,rAfter){const nDir=entities.filter(e=>e.category==='directo').length;const nInd=entities.filter(e=>e.category==='indirecto').length;document.getElementById('stat-total').textContent=entities.length;document.getElementById('stat-dir').textContent=nDir;document.getElementById('stat-ind').textContent=nInd;const rEl=document.getElementById('stat-riesgo');rEl.textContent=rAfter;rEl.className='stat-value '+(rAfter==='ALTO'?'red':rAfter==='MEDIO'?'amber':'green');document.getElementById('riskBefore').textContent=rBefore;const raEl=document.getElementById('riskAfter');raEl.textContent=rAfter;raEl.style.color=rAfter==='ALTO'?'var(--red)':rAfter==='MEDIO'?'var(--gold-dark)':'var(--green)';document.getElementById('beforeText').innerHTML=buildBeforeHTML(text,entities);document.getElementById('diffText').innerHTML=buildDiffHTML(text,entities);document.getElementById('afterText').innerHTML=buildAfterHTML(anonText,entities);renderTable(entities);document.getElementById('entityCount').textContent=entities.length+' entidad'+(entities.length!==1?'es':'');renderNotes(entities,rAfter);const wb=document.getElementById('warnBox');if(!entities.some(e=>e.patId==='nombre')&&getOptions()['ck-nombre']){wb.style.display='block';document.getElementById('warnText').textContent='No se detectaron nombres. El motor identifica nombres de la lista española conocida. Revisa manualmente nombres poco comunes o extranjeros.';}else wb.style.display='none';document.getElementById('resultsSection').classList.add('visible');setTimeout(()=>document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'}),80);document.getElementById('btnDownloadPdf').disabled=false;}
+function renderResults(text, entities, anonText, rBefore, rAfter) {
+  // ── Contadores de entidades ──
+  const nDir = entities.filter(e => e.category === 'directo').length;
+  const nInd = entities.filter(e => e.category === 'indirecto').length;
+
+  // ── CÁLCULO DEL % REAL DE TEXTO ANONIMIZADO ──
+  const totalChars = text.length;
+  const anonChars = entities.reduce((sum, e) => sum + e.original.length, 0);
+  const anonPct = totalChars > 0 ? Math.round((anonChars / totalChars) * 100) : 0;
+  // ───────────────────────────────────────────────
+
+  // ── Actualizar stats ──
+  document.getElementById('stat-total').textContent = entities.length;
+  document.getElementById('stat-dir').textContent   = nDir;
+  document.getElementById('stat-ind').textContent   = nInd;
+
+  // Score con % real
+  document.getElementById('stat-score').textContent = anonPct + '%';
+  document.getElementById('stat-score-sub').textContent = '% del texto tratado';
+
+  // Barra de progreso con color dinámico
+  const fillEl = document.getElementById('statScoreFill');
+  fillEl.style.width = anonPct + '%';
+  fillEl.className = 'stat-score-fill ' + (
+    anonPct >= 50 ? 'fill-green' :
+    anonPct >= 20 ? 'fill-amber' :
+    'fill-red'
+  );
+
+  // Riesgo residual
+  const rEl = document.getElementById('stat-riesgo');
+  rEl.textContent = rAfter;
+  rEl.className   = 'stat-value ' + (rAfter==='ALTO'?'red':rAfter==='MEDIO'?'amber':'green');
+
+  document.getElementById('riskBefore').textContent = rBefore;
+  const raEl = document.getElementById('riskAfter');
+  raEl.textContent = rAfter;
+  raEl.style.color  = rAfter==='ALTO'?'var(--red)':rAfter==='MEDIO'?'var(--gold-dark)':'var(--green)';
+
+  // ── Renderizar las 3 columnas (ANTES / CAMBIOS / DESPUÉS) ──
+  document.getElementById('beforeText').innerHTML = buildBeforeHTML(text, entities);
+  document.getElementById('diffText').innerHTML   = buildDiffHTML(text, entities);
+  document.getElementById('afterText').innerHTML  = buildAfterHTML(anonText, entities);
+
+  // ── Tabla de entidades ──
+  renderTable(entities);
+  document.getElementById('entityCount').textContent = `${entities.length} entidad${entities.length!==1?'es':''}`;
+
+  // ── Notas metodológicas ──
+  renderNotes(entities, rAfter);
+
+  // ── Aviso de nombres no detectados ──
+  const wb = document.getElementById('warnBox');
+  if (!entities.some(e => e.patId==='nombre') && getOptions()['ck-nombre']) {
+    wb.style.display = 'block';
+    document.getElementById('warnText').textContent = 'No se detectaron nombres. El motor identifica nombres de la lista española conocida. Revisa manualmente nombres poco comunes o extranjeros.';
+  } else {
+    wb.style.display = 'none';
+  }
+
+  // ── Mostrar sección de resultados y scroll suave ──
+  document.getElementById('resultsSection').classList.add('visible');
+  setTimeout(() => document.getElementById('resultsSection').scrollIntoView({ behavior:'smooth', block:'start' }), 80);
+
+  // ── Habilitar botones de exportación ──
+  document.getElementById('btnDownloadPdf').disabled = false;
+}
 function buildBeforeHTML(text,entities){let html='',pos=0;for(const e of entities){html+=esc(text.slice(pos,e.start));html+='<span class="'+(e.category==='directo'?'hl-directo':'hl-indirecto')+'" title="'+esc(e.type+' ('+e.category+')')+'">'+esc(e.original)+'</span>';pos=e.end;}return html+esc(text.slice(pos));}
 function buildAfterHTML(anonText,entities){const tokens=[...new Set(entities.map(e=>e.anonymized).filter(v=>v&&v.length>1))].sort((a,b)=>b.length-a.length);let escaped=esc(anonText);for(const t of tokens)escaped=escaped.split(esc(t)).join('<span class="hl-anon">'+esc(t)+'</span>');return escaped;}
 function buildDiffHTML(text,entities){let html='',pos=0;for(const e of entities){html+=esc(text.slice(pos,e.start));const originalClass=e.category==='directo'?'hl-directo':'hl-indirecto';html+='<span class="'+originalClass+'" style="text-decoration:line-through;opacity:0.7">'+esc(e.original)+'</span>';html+=' <span class="hl-anon" style="font-weight:600">→ '+esc(e.anonymized)+'</span> ';pos=e.end;}html+=esc(text.slice(pos));return html;}
