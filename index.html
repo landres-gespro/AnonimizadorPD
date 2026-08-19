@@ -367,6 +367,11 @@ ISO/IEC 20889:2018
 <div class="tech-desc">Elimina el dato completamente.</div>
 <span class="tech-example">Juan García → [SUPRIMIDO]</span>
 </div>
+<div class="tech-card" data-tech="sintético" onclick="selectTech(this,'file')">
+  <div class="tech-name">🎲 Datos Sintéticos</div>
+  <div class="tech-desc">Reemplaza con datos ficticios realistas.</div>
+  <span class="tech-example">Juan Pérez → Carlos Gómez</span>
+</div>  
 </div>
 </div>
 </div>
@@ -428,6 +433,11 @@ ISO/IEC 20889:2018
 </div>
 <div class="tech-card" data-tech="supresión" onclick="selectTech(this,'text')">
 <div class="tech-name">🗑️ Supresión</div><div class="tech-desc">Elimina el dato completamente.</div><span class="tech-example">Juan García → [SUPRIMIDO]</span>
+</div>
+<div class="tech-card" data-tech="sintético" onclick="selectTech(this,'file')">
+  <div class="tech-name">🎲 Datos Sintéticos</div>
+  <div class="tech-desc">Reemplaza con datos ficticios realistas.</div>
+  <span class="tech-example">Juan Pérez → Carlos Gómez</span>
 </div>
 </div>
 </div>
@@ -862,6 +872,73 @@ return text;
 }
 const NOMBRES_ES=new Set(['antonio','manuel','josé','jose','francisco','david','juan','jesús','jesus','javier','carlos','daniel','miguel','rafael','pedro','alejandro','pablo','luis','jorge','sergio','alberto','roberto','ricardo','fernando','gonzalo','ramón','ramon','ignacio','ángel','angel','andrés','andres','mario','rodrigo','víctor','victor','oscar','óscar','enrique','rubén','ruben','diego','iván','ivan','álvaro','alvaro','marcos','hugo','adrián','adrian','alex','nicolás','nicolas','eduardo','santiago','emilio','joaquín','joaquin','felipe','tomás','tomas','cristian','christian','samuel','benjamín','benjamin','martín','martin','raúl','raul','gabriel','marc','pol','gerard','arnau','biel','guillem','pau','jordi','oriol','xavier','ferran','cesar','césar','héctor','hector','borja','abel','ismael','elias','elías','ezequiel','mateo','leo','lucas','oliver','ian','eric','erik','kevin','jonathan','maria','maría','carmen','josefa','isabel','ana','dolores','pilar','teresa','rosa','cristina','laura','marta','patricia','sandra','elena','sara','lucía','lucia','paula','raquel','diana','mónica','monica','alicia','beatriz','natalia','silvia','eva','miriam','irene','yolanda','susana','virginia','andrea','nuria','esther','lorena','rebeca','noelia','jessica','jennifer','alejandra','sofía','sofia','valentina','noa','emma','olivia','julia','leire','inés','ines','claudia','carolina','amparo','concepción','concha','rocío','rocio','sonia','verónica','veronica','maribel','mercedes','encarnación','encarna','asunción','asun','inmaculada','trinidad','lola','maite','aitana','aroa','itziar','amaia','nerea','miren','naiara','ane','ainhoa','nagore','olatz','uxue','montse','montserrat','núria','laia','mar','anna','meritxell','gemma','roser','carme','blanca','alba','celia','vera','iris','luna','salma','fátima','fatima','martina','adela','adelaida','adriana','agata','ágata','agueda','águeda','aitziber','alegria','alegría','alexandra','almudena','ama','amaya','amelia','ana belen','ana belén','ana maria','ana maría','anabel','angela','ángela','antonia','arantxa','arantza','ariadna','arlet','arlette','ascension','ascensión','asia','aurora','azahara','begoña','belen','belén','benedetta','berenice','brenda','camila','candela','carla','carlota','carmela','cayetana','cecilia','chari','chiara','cintia','clara','consuelo','coral','daniela','deborah','déborah','delia','desiree','desirée','dolors','edurne','eider','eila','elisa','elisabet','elisabeth','elvira','encina','erika','estela','eulalia','eusebia','fabiana','fatou','flor','flora','francisca','gabriela','gema','genoveva','geraldine','gilda','gloria','guadalupe','helena','hilda','inesita','irantzu','iranzu','irune','isadora','isolina','jacqueline','jana','janet','jazmin','jazmín','jimena','joana','juana','judit','judith','karina','katia','kelly','lara','leticia','leyre','lidia','liliana','lina','lissette','lorraine','luciana','lucrecia','luisa','magdalena','maialen','malena','manuela','mara','marcela','margarita','mari','maria del mar','maria jose','maría jose','marian','maricarmen','marina','marisol','matilde','melania','melisa','melissa','mencia','mencía','micaela','milagros','mina','monserrat','naia','naomi','natalie','nazaret','nazareth','nekane','nélida','nelida','nicole','nidia','nieves','noemi','noemí','octavia','olga','paloma','pamela','paqui','paquita','pastora','paz','perla','petra','reina','remedios','rita','rosalia','rosalía','rosana','rosario','sabina','samara','samantha','selena','sheila','soledad','stefania','stefanía','tamara','tania','tatiana','telma','teodora','teresita','triana','valeria','vanesa','vanessa','verena','vicenta','victoria','violeta','viridiana','wanda','ximena','yaiza','yasmina','ylenia','zaida','zulema']);
 const APELLIDOS_ES=new Set(['garcía','garcia','martínez','martinez','lópez','lopez','sánchez','sanchez','pérez','perez','gómez','gomez','martín','martin','jiménez','jimenez','ruiz','hernández','hernandez','díaz','diaz','moreno','álvarez','alvarez','muñoz','munoz','romero','alonso','gutiérrez','gutierrez','navarro','torres','domínguez','dominguez','vázquez','vazquez','ramos','gil','ramírez','ramirez','serrano','blanco','molina','morales','suárez','suarez','ortega','delgado','castro','ortiz','rubio','marín','marin','sanz','núñez','nunez','iglesias','medina','garrido','santos','castillo','cortés','cortes','lozano','guerrero','cano','prieto','méndez','mendez','calvo','gallego','vidal','herrero','mora','fernández','fernandez','flores','nieto','carrasco','herrera','vargas','pascual','aguilar','campos','montero','ríos','rios','parra','reyes','vera','moya','bravo','vila','pons','mas','sala','camps','rovira','font','bosch','soler','puig','ferrer','pujol','roca','prat','carbonell','fuentes','peña','miranda','cabrera','ibáñez','ibañez','collado','hidalgo','arias','paredes','rojas','espinosa','oliver','valero','crespo','redondo','montes','caballero','esteban','bernal','nieves','bautista','segura','planas','abellán','abellan','abreu','acosta','aguirre','aguilera','alarcón','alarcon','alba','alberca','alcaraz','alcover','alcoraz','alcaide','alcántara','alcantara','alcolea','almenar','almendros','altamira','alvarado','amador','amor','amores','andreu','andreau','angulo','antón','anton','aparicio','aranda','araujo','arce','arcos','arenas','armengol','arnal','arnau','arranz','arrebola','arriaga','arroyo','artacho','asensio','atienza','avila','ávila','ayala','baena','bailón','bailon','ballester','ballesteros','barba','barbero','barceló','barcelo','barea','baroja','barquero','barragán','barragan','barranco','barrenechea','barrios','bas','basco','basurto','batista','bayona','bejarano','bello','beltrán','beltran','benavent','benavides','benítez','benitez','berenguer','bermejo','berrocal','bescós','bescos','blanes','boix','boluda','bonet','bonilla','borrego','borrás','borras','bote','boveda','boyer','briones','bujalance','burgués','burgues','burillo','bustamante','bustos','cabezas','cabello','cabrero','cadenas','calderón','calderon','calleja','camacho','camarena','cambra','campillo','campoy','canales','candel','candelas','canet','cánovas','canovas','cantalapiedra','cantó','canto','cañadas','canadas','caparrós','caparros','cardona','carmona','caro','carpio','carranza','carreño','carreno','carrillo','carvajal','casado','casanova','cascales','casero','casillas','castejón','castejon','castellanos','castelló','castello','castellví','castellvi','castilla','catalá','catala','ceballos','cervantes','cifuentes','cilleros','clavero','cobo','cobos','coca','codina','colom','colomer','comas','conde','contreras','cordero','cornejo','corral','corrales','cortina','cos','costa','costas','coves','cuevas','cuenca','cuesta','cueto','dalmau','damas','de la cruz','de la fuente','de la hoz','de la iglesia','de la rosa','de la torre','de la vega','de la peña','de la orden','de la oliva','de la mata','de la paz','de la calle','de la cuesta','de la cámara','de la cerda','de la sota','de la rubia','de la serna','del rio','del río','del campo','del moral','del olmo','del pino','del valle','del pozo','del castillo','del cerro','del corral','del monte','del barrio','del hierro','del solar','de los santos','de los reyes','de los rios','de los ríos','de los campos','de los ángeles','de los angeles','de las casas','de las heras','de las nieves','de las alas','san juan','san jose','san josé','san martín','san martin','san pedro','san sebastián','san sebastian','san miguel','san vicente','santa cruz','santa maria','santa maría','santos garcía','santos lopez','garcia lopez','garcía lopez','garcia lópez','garcía lópez','martinez garcia','martínez garcia','martinez garcía','martínez garcía','lopez martinez','lópez martinez','lopez martínez','lópez martínez','sanchez perez','sánchez pérez','sanchez pérez','sánchez perez','gomez rodriguez','gómez rodriguez','gomez rodríguez','gómez rodríguez','fernandez lopez','fernández lópez','fernandez lópez','fernández lopez','ruiz martinez','ruiz martínez','diaz garcia','díaz garcía','moreno jimenez','moreno jiménez','alvarez martin','álvarez martín','garcia-lopez','garcía-lópez','martinez-garcia','martínez-garcía','lopez-sanchez','lópez-sánchez','gomez-ruiz','gómez-ruiz','vila-real','villarreal','font de mora','roig i montserrat','puig i cadafalch','mas i lluch','serra i font','bosch i gimpera','garcia de cortazar','garcía de cortázar','lopez de heredia','lópez de heredia','martinez de irujo','martínez de irujo','perez de ayala','pérez de ayala','ruiz de azua','ruiz de azúa','diaz de cerio','díaz de cerio','uribe echevarria','uribe echevarría','ortiz de zarate','ortiz de zárate','costa rica','pena nieto','peña nieto','torres garcia','torres garcía','navarro lopez','navarro lópez','castro urdiales','calvo sotelo','suarez illana','suárez illana','arias navarro','gil robles','fernandez ordonez','fernández ordóñez','lopez de la o','lópez de la o','martin santos','martín santos','ruiz gallardon','ruiz gallardón']);
+/* ──────────────────────────
+   DATOS SINTÉTICOS
+────────────────────────────*/
+const NOMBRES_SINTETICOS = ['Carlos','María','Pedro','Ana','Luis','Laura','Jorge','Elena','Miguel','Carmen','Pablo','Isabel','Diego','Sofía','Andrés','Lucía','Fernando','Marta','Ricardo','Paula','Alberto','Cristina','Raúl','Natalia','Sergio','Beatriz','Javier','Rosa','Manuel','Teresa'];
+const APELLIDOS_SINTETICOS = ['Gómez','Rodríguez','Martínez','López','Sánchez','Pérez','García','Fernández','Torres','Ramírez','Flores','Rivera','González','Díaz','Reyes','Morales','Ortiz','Silva','Ruiz','Castro','Vargas','Mendoza','Romero','Herrera','Medina','Aguilar','Peña','Vega','Delgado','Serrano'];
+const CALLES_SINTETICAS = ['Calle Mayor','Avenida de la Constitución','Calle del Sol','Plaza de España','Paseo de la Castellana','Calle Gran Vía','Avenida de Andalucía','Calle de Alcalá','Plaza del Ayuntamiento','Calle de la Paz'];
+const CIUDADES_SINTETICAS = ['Madrid','Barcelona','Valencia','Sevilla','Zaragoza','Málaga','Murcia','Palma','Bilbao','Alicante'];
+
+function generarNombreSintetico() {
+  return NOMBRES_SINTETICOS[Math.floor(Math.random() * NOMBRES_SINTETICOS.length)] + ' ' + 
+         APELLIDOS_SINTETICOS[Math.floor(Math.random() * APELLIDOS_SINTETICOS.length)] + ' ' + 
+         APELLIDOS_SINTETICOS[Math.floor(Math.random() * APELLIDOS_SINTETICOS.length)];
+}
+
+function generarEmailSintetico() {
+  const nombre = NOMBRES_SINTETICOS[Math.floor(Math.random() * NOMBRES_SINTETICOS.length)].toLowerCase();
+  const apellido = APELLIDOS_SINTETICOS[Math.floor(Math.random() * APELLIDOS_SINTETICOS.length)].toLowerCase();
+  const num = Math.floor(Math.random() * 999);
+  const dominios = ['example.com','test.org','demo.net','ficticio.es'];
+  return `${nombre}.${apellido}${num}@${dominios[Math.floor(Math.random() * dominios.length)]}`;
+}
+
+function generarTelefonoSintetico() {
+  return '6' + Math.floor(Math.random() * 100000000).toString().padStart(8, '0');
+}
+
+function generarDNISintetico() {
+  const num = Math.floor(Math.random() * 100000000).toString().padStart(8, '0');
+  const letra = DNI_CTRL[parseInt(num, 10) % 23];
+  return num + letra;
+}
+
+function generarCPSintetico() {
+  return (Math.floor(Math.random() * 52) + 1).toString().padStart(2, '0') + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+}
+
+function generarDireccionSintetica() {
+  const calle = CALLES_SINTETICAS[Math.floor(Math.random() * CALLES_SINTETICAS.length)];
+  const num = Math.floor(Math.random() * 150) + 1;
+  const piso = String.fromCharCode(65 + Math.floor(Math.random() * 8));
+  return `${calle} ${num}, ${piso}º`;
+}
+
+function generarCiudadSintetica() {
+  return CIUDADES_SINTETICAS[Math.floor(Math.random() * CIUDADES_SINTETICAS.length)];
+}
+
+function generarIBANSintetico() {
+  let iban = 'ES';
+  for (let i = 0; i < 22; i++) iban += Math.floor(Math.random() * 10);
+  return iban;
+}
+
+function generarIPSintetica() {
+  return `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`;
+}
+
+function generarEdadSintetica() {
+  return Math.floor(Math.random() * 60) + 18;
+}
+
+function generarFechaSintetica() {
+  const año = 1960 + Math.floor(Math.random() * 40);
+  const mes = Math.floor(Math.random() * 12) + 1;
+  const dia = Math.floor(Math.random() * 28) + 1;
+  return `${dia.toString().padStart(2,'0')}/${mes.toString().padStart(2,'0')}/${año}`;
+}
 const DNI_CTRL='TRWAGMYFPDXBNJZSQVHLCKE';
 function validDNI(d,l){return DNI_CTRL[parseInt(d,10)%23]===l.toUpperCase();}
 const CARGOS_LIST=['director general','directora general','director de','directora de','jefe de','jefa de','jefe de sección','jefa de sección','responsable de','gerente de','gerente','subdirector','subdirectora','presidente ejecutivo','presidenta ejecutiva','presidente','presidenta','consejero delegado','consejera delegada','secretario general','secretaria general','secretario','secretaria','delegado de protección de datos','delegada de protección de datos','técnico superior','técnica superior','técnico','técnica','analista programador','analista','consultor senior','consultora senior','consultor','consultora','coordinador','coordinadora','médico especialista','médico de familia','médico','médica','enfermero','enfermera','farmacéutico','farmacéutica','abogado','abogada','notario','notaria','juez','jueza','fiscal','magistrado','magistrada','letrado','letrada','profesor titular','profesora titular','profesor','profesora','maestro','maestra','docente','catedrático','catedrática','investigador principal','investigadora principal','investigador','investigadora','ingeniero de sistemas','ingeniero','ingeniera','arquitecto','arquitecta','economista','contable','asesor','asesora','psicólogo','psicóloga','trabajador social','trabajadora social','auxiliar administrativo','auxiliar administrativa','administrativo','administrativa','policía local','guardia civil','funcionario','funcionaria','ceo','cto','cfo','coo','ciso','administrador único','administradora única','administrador','administradora','socio','socia','director financiero','directora financiera','director de operaciones','directora de operaciones','director de marketing','directora de marketing','director comercial','directora comercial','director de recursos humanos','directora de recursos humanos','director de tecnología','directora de tecnología','director de sistemas','directora de sistemas','director de seguridad','directora de seguridad','director de innovación','directora de innovación','director de estrategia','directora de estrategia','director de producto','directora de producto','director de negocio','directora de negocio','responsable de seguridad','responsable de sistemas','responsable de calidad','responsable de cumplimiento','compliance officer','chief compliance officer','delegado de cumplimiento','delegada de cumplimiento','desarrollador','desarrolladora','desarrollador backend','desarrolladora backend','desarrollador frontend','desarrolladora frontend','desarrollador full stack','desarrolladora full stack','ingeniero de software','ingeniera de software','ingeniero devops','ingeniera devops','administrador de sistemas','administradora de sistemas','administrador de bases de datos','administradora de bases de datos','analista de datos','científico de datos','científica de datos','data engineer','data analyst','arquitecto de software','arquitecta de software','especialista en ciberseguridad','analista de seguridad','hacker ético','pentester','auditor de seguridad','consultor de ciberseguridad','responsable de ciberseguridad','security engineer','cloud engineer','ingeniero cloud','oficial de cumplimiento','oficial de privacidad','data protection officer','dpo','responsable de privacidad','auditor interno','auditora interna','auditor externo','auditora externa','asesor jurídico','asesora jurídica','compliance manager','risk manager','gestor de riesgos','cirujano','cirujana','médico residente','médica residente','auxiliar de enfermería','fisioterapeuta','odontólogo','odontóloga','psiquiatra','pediatra','dermatólogo','dermatóloga','cardiólogo','cardióloga','celador','celadora','director de centro','directora de centro','rector','rectora','vicerrector','vicerrectora','decano','decana','investigador postdoctoral','investigadora postdoctoral','becario','becaria','recepcionista','secretaria de dirección','secretario de dirección','asistente','asistente ejecutivo','gestor administrativo','gestora administrativa','controller financiero','controller','comercial','ejecutivo de cuentas','ejecutiva de cuentas','account manager','key account manager','responsable de ventas','director de ventas','directora de ventas','especialista en marketing digital','community manager','seo specialist','especialista seo','especialista sem','jefe de producción','jefa de producción','operario','operaria','encargado','encargada','responsable de logística','jefe de almacén','jefa de almacén','técnico de mantenimiento','técnica de mantenimiento','inspector','inspectora','subinspector','subinspectora','agente','agente judicial','militar','teniente','capitán','capitana','sargento','sargenta','emprendedor','emprendedora','freelance','autónomo','autónoma','becario en prácticas','trainee','aprendiz'];
@@ -910,7 +987,7 @@ const final=[];let cur=0;for(const x of raw){if(x.start>=cur){final.push(x);cur=
 class AnonEngine{
 constructor(){this.counters={};this.map=new Map();}
 token(type,val){const k=type+'::'+val.toLowerCase().trim();if(!this.map.has(k)){const key=type.toUpperCase().replace(/[^A-Z0-9]/g,'_');this.counters[key]=(this.counters[key]||0)+1;this.map.set(k,key+'_'+String(this.counters[key]).padStart(3,'0'));}return this.map.get(k);}
-apply(tech,type,val){switch(tech){case'seudonimización':return this.token(type.replace(/[^a-zA-Z0-9]/g,'_'),val);case'enmascaramiento':return this.mask(type,val);case'generalización':return this.generalize(type,val);case'supresión':return'[SUPRIMIDO]';default:return'[ANONIMIZADO]';}}
+apply(tech,type,val){switch(tech){case'seudonimización':return this.token(type.replace(/[^a-zA-Z0-9]/g,'_'),val);case'enmascaramiento':return this.mask(type,val);case'generalización':return this.generalize(type,val);case'supresión':return'[SUPRIMIDO]';case 'sintético':return this.sintetico(type, val);default:return'[ANONIMIZADO]';}}
 mask(type,val){
 if(type==='email'){const at=val.indexOf('@');if(at<1)return val[0]+'***';const dom=val.slice(at+1).split('.');return val[0]+'***@***.'+dom[dom.length-1];}
 if(type==='Teléfono'){const d=val.replace(/\D/g,'');return'***-***-'+d.slice(-3);}
@@ -926,6 +1003,25 @@ if(type==='UUID / Cookie ID'){return'00000000-0000-0000-0000-000000000000';}
 if(type==='Handle RRSS'||type==='Perfil RRSS'){return type==='Handle RRSS'?'@[usuario]':'[perfil-rrss-redactado]';}
 if(type==='Coordenadas GPS'){const parts=val.match(/-?\d+\.\d+/g);if(parts&&parts.length>=2)return parseFloat(parts[0]).toFixed(2)+', '+parseFloat(parts[1]).toFixed(2);return'[GPS_REDACTADO]';}
 return val.trim().split(/\s+/).map(w=>w.length<=1?w:w[0]+'***').join(' ');
+}
+sintetico(type, val) {
+  if (type === 'Nombre') return generarNombreSintetico();
+  if (type === 'email') return generarEmailSintetico();
+  if (type === 'Teléfono') return generarTelefonoSintetico();
+  if (type === 'DNI' || type === 'NIE') return generarDNISintetico();
+  if (type === 'IBAN / cuenta') return generarIBANSintetico();
+  if (type === 'IP (v4)' || type === 'IP (v6)') return generarIPSintetica();
+  if (type === 'Código postal') return generarCPSintetico();
+  if (type === 'Dirección') return generarDireccionSintetica();
+  if (type === 'Edad') return generarEdadSintetica() + ' años';
+  if (type === 'Fecha nacimiento') return generarFechaSintetica();
+  if (type === 'Cargo / profesión') return '[PROFESIONAL]';
+  if (type === 'Matrícula') return Math.floor(Math.random()*9000+1000) + String.fromCharCode(66+Math.floor(Math.random()*20)) + String.fromCharCode(66+Math.floor(Math.random()*20)) + String.fromCharCode(66+Math.floor(Math.random()*20));
+  if (type === 'UUID / Cookie ID') return '00000000-0000-4000-8000-000000000000';
+  if (type === 'Handle RRSS') return '@usuario_' + Math.floor(Math.random()*9999);
+  if (type === 'Perfil RRSS') return 'https://example.com/perfil/' + Math.floor(Math.random()*9999);
+  if (type === 'Coordenadas GPS') return (40 + Math.random()).toFixed(4) + ', ' + (-3 + Math.random()).toFixed(4);
+  return '[DATO_SINTETICO]';
 }
 generalize(type,val){
 if(type==='email')return'[CORREO_ELECTRÓNICO]';
