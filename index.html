@@ -1203,7 +1203,7 @@ async function extractXLSX(file, isLegacy) {
   for (const sheetName of wb.SheetNames) {
     const ws   = wb.Sheets[sheetName];
     const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
-    text += `[Hoja: ${sheetName}]\n`;
+    text += '[Hoja: ${sheetName}]\n';
     for (const row of rows) {
       text += row.filter(c => c !== '').join('\t') + '\n';
     }
