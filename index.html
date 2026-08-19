@@ -615,11 +615,13 @@ btn.classList.add('active');
 document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
 document.getElementById('tab-'+tab).classList.add('active');
 }
-function selectTech(card,group){
-document.querySelectorAll('#tab-'+group+' .tech-card').forEach(c=>c.classList.remove('selected'));
-card.classList.add('selected');
-selectedTech=card.dataset.tech;
-log('Técnica: '+selectedTech);
+function selectTech(card, group) {
+  // Limpiar TODAS las tarjetas de ambos grupos (file y text)
+  document.querySelectorAll('.tech-card').forEach(c => c.classList.remove('selected'));
+  // Marcar solo la actual
+  card.classList.add('selected');
+  selectedTech = card.dataset.tech;
+  log(`Técnica: ${selectedTech}`);
 }
 document.getElementById('inputText').addEventListener('input',function(){
 document.getElementById('charCount').textContent=this.value.length.toLocaleString('es');
