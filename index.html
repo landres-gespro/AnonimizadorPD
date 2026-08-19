@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AnonimizadorPD v3 — Datos Personales · PDPC/AEPD</title>
+<title>AnonimizadorPD v4 — Datos Personales · PDPC/AEPD</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" crossorigin="anonymous"></script>
@@ -14,19 +14,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js" crossorigin="anonymous"></script>
 <style>
-:root{
---plum:#814e83;--plum-deep:#60345e;--plum-darker:#4a2648;
---gold:#ffe855;--gold-mid:#fcc123;--gold-dark:#b18a20;
---magenta:#b33f76;--rose:#ca7191;--blush:#dca0b5;
---green:#1a7a4a;--green-light:#22a860;
---red:#b83232;--amber-txt:#7a5008;
---bg:#f9f5fa;--surface:#fff;--surface2:#f3edf5;--surface3:#ecddf0;
---border:rgba(96,52,94,.13);--border-med:rgba(96,52,94,.22);
---text:#2e1430;--text-mid:#523658;--text-muted:#7a5080;--text-dim:#aa88b0;
---r4:4px;--r6:6px;--r8:8px;
---shadow:0 1px 4px rgba(96,52,94,.09),0 0 0 1px rgba(96,52,94,.07);
---shadow-md:0 4px 20px rgba(96,52,94,.12),0 0 0 1px rgba(96,52,94,.08);
-}
+:root{--plum:#814e83;--plum-deep:#60345e;--plum-darker:#4a2648;--gold:#ffe855;--gold-mid:#fcc123;--gold-dark:#b18a20;--magenta:#b33f76;--rose:#ca7191;--blush:#dca0b5;--green:#1a7a4a;--green-light:#22a860;--red:#b83232;--amber-txt:#7a5008;--bg:#f9f5fa;--surface:#fff;--surface2:#f3edf5;--surface3:#ecddf0;--border:rgba(96,52,94,.13);--border-med:rgba(96,52,94,.22);--text:#2e1430;--text-mid:#523658;--text-muted:#7a5080;--text-dim:#aa88b0;--r4:4px;--r6:6px;--r8:8px;--shadow:0 1px 4px rgba(96,52,94,.09),0 0 0 1px rgba(96,52,94,.07);--shadow-md:0 4px 20px rgba(96,52,94,.12),0 0 0 1px rgba(96,52,94,.08)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:13.5px;line-height:1.6;min-height:100vh}
@@ -89,6 +77,7 @@ input[type="file"]{display:none}
 .ext-word{background:rgba(129,78,131,.08);border-color:rgba(129,78,131,.22);color:var(--plum)}
 .ext-xls{background:rgba(177,138,32,.09);border-color:rgba(177,138,32,.25);color:var(--gold-dark)}
 .ext-txt{background:rgba(96,52,94,.06);border-color:rgba(96,52,94,.18);color:var(--plum-deep)}
+.ext-img{background:rgba(26,122,74,.07);border-color:rgba(26,122,74,.2);color:var(--green)}
 .ext-other{background:var(--surface3);border-color:var(--border-med);color:var(--text-dim)}
 .finfo-name{font-size:.78rem;color:var(--text);font-weight:500;margin-bottom:2px}
 .finfo-meta{font-size:.62rem;color:var(--text-dim);font-family:'IBM Plex Mono',monospace}
@@ -242,759 +231,105 @@ table.etable tr:last-child td{border-bottom:none} table.etable tr:hover td{backg
 .rpt-method-box{background:rgba(129,78,131,.04);border:1px solid rgba(129,78,131,.18);border-left:3px solid var(--plum);border-radius:var(--r4);padding:10px 13px;font-size:.7rem;color:var(--text-muted);line-height:1.6}
 .rpt-method-box strong{color:var(--plum-deep);font-size:.68rem;display:block;margin-bottom:4px}
 .rpt-footer{border-top:1px solid var(--border);padding-top:14px;font-size:.65rem;color:var(--text-dim);display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace}
-@media print{
-body{background:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.cls-bar,.topbar,.log-panel,.action-bar,.tabs,.main-cols,.results-section,#reportOverlay{display:none !important}
-.report-modal{box-shadow:none !important;border-radius:0 !important}
-.report-topbar{display:none}
-.rpt-text-box{max-height:none !important;overflow:visible !important}
-.rpt-table{page-break-inside:auto}
-.rpt-table tr{page-break-inside:avoid}
-.rpt-section{page-break-inside:avoid}
-}
+@media print{body{background:#fff !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.cls-bar,.topbar,.log-panel,.action-bar,.tabs,.main-cols,.results-section,#reportOverlay{display:none !important}.report-modal{box-shadow:none !important;border-radius:0 !important}.report-topbar{display:none}.rpt-text-box{max-height:none !important;overflow:visible !important}.rpt-table{page-break-inside:auto}.rpt-table tr{page-break-inside:avoid}.rpt-section{page-break-inside:avoid}}
 </style>
 </head>
 <body>
-<div class="cls-bar">
-<span class="pill">PDPC/AEPD</span>
-Anonimizador Local de Datos Personales · Guía Básica de Anonimización
-<span class="pill">RGPD Art.4(1)</span>
-</div>
-<div class="topbar">
-<div class="brand">
-<div class="brand-mark">AN</div>
-<div class="brand-name">AnonimizadorPD</div>
-<div class="brand-sep"></div>
-<div class="brand-norm">PDPC · AEPD · RGPD</div>
-</div>
-<div class="topbar-right">
-<div class="local-badge">100% local · sin red · sin API · sin cookies</div>
-</div>
-</div>
+<div class="cls-bar"><span class="pill">PDPC/AEPD</span>Anonimizador Local de Datos Personales · Guía Básica de Anonimización<span class="pill">RGPD Art.4(1)</span></div>
+<div class="topbar"><div class="brand"><div class="brand-mark">AN</div><div class="brand-name">AnonimizadorPD</div><div class="brand-sep"></div><div class="brand-norm">PDPC · AEPD · RGPD</div></div><div class="topbar-right"><div class="local-badge">100% local · sin red · sin API · sin cookies</div></div></div>
 <div class="app">
-<div class="page-header">
-<div>
-<div class="page-eyebrow">Protección de Datos Personales</div>
-<h1 class="page-title">Anonimización de Documentos</h1>
-<p class="page-desc">Motor local de detección y anonimización mediante expresiones regulares. Carga archivos (PDF, DOCX, XLSX, RTF, TXT, CSV…) o pega texto directamente. Genera informe antes/después descargable. Ningún dato sale del navegador.</p>
-</div>
-<div class="norm-ref">
-<strong>Referencias normativas</strong>
-Guía PDPC/AEPD (Oct. 2022)<br>
-RGPD — Art. 4(1), Art. 5(1)(e)<br>
-Considerando 26 RGPD<br>
-ISO/IEC 20889:2018
-</div>
-</div>
-<div class="stats-row">
-<div class="stat-card"><div class="stat-label">Entidades detectadas</div><div class="stat-value red" id="stat-total">—</div><div class="stat-sub">en el texto analizado</div></div>
-<div class="stat-card"><div class="stat-label">Identificadores directos</div><div class="stat-value red" id="stat-dir">—</div><div class="stat-sub">nombre, email, DNI…</div></div>
-<div class="stat-card"><div class="stat-label">Identificadores indirectos</div><div class="stat-value amber" id="stat-ind">—</div><div class="stat-sub">edad, dirección, CP…</div></div>
-<div class="stat-card">
-<div class="stat-label">Score anonimización</div>
-<div class="stat-value green" id="stat-score">—</div>
-<div class="stat-sub" id="stat-score-sub">% del texto tratado</div>
-<div class="stat-score-bar"><div class="stat-score-fill fill-green" id="statScoreFill" style="width:0%"></div></div>
-</div>
-<div class="stat-card"><div class="stat-label">Riesgo residual</div><div class="stat-value green" id="stat-riesgo">—</div><div class="stat-sub" id="stat-riesgo-sub">tras anonimización</div></div>
-</div>
-<div class="log-panel">
-<div class="log-header">
-<span class="log-title">Registro de proceso · motor local</span>
-<span class="log-dot" id="logDot"></span>
-</div>
-<div class="log-body" id="logBody">
-<div class="log-line"><span class="log-ts">00:00:00</span><span>Motor local v3 inicializado. Nuevos tipos: matrícula, GPS, UUID/cookie, RRSS.</span></div>
-</div>
-</div>
-<div class="tabs">
-<button class="tab active" onclick="switchTab('file',this)"> Cargar archivo</button>
-<button class="tab" onclick="switchTab('text',this)"> Texto libre</button>
-</div>
-<div class="tab-pane active" id="tab-file">
-<div class="main-cols">
-<div>
-<div class="panel">
-<div class="panel-header">
-<div class="panel-title"><span class="dot"></span>Archivo de entrada</div>
-<span style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--text-dim)">PASO 1 · Guía PDPC/AEPD</span>
-</div>
-<div class="panel-body">
-<div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
-<div class="drop-icon">📂</div>
-<div class="drop-title">Arrastra archivos o haz clic para seleccionar</div>
-<div class="drop-sub">El texto se extrae localmente — ningún dato sale del navegador</div>
-<div class="ftype-wrap">
-  <span class="ftype ok">PDF</span><span class="ftype ok">DOCX</span><span class="ftype ok">DOC</span>
-  <span class="ftype ok">XLSX</span><span class="ftype ok">XLS</span><span class="ftype ok">ODS</span>
-  <span class="ftype ok">RTF</span><span class="ftype ok">ODT</span>
-  <span class="ftype ok">TXT</span><span class="ftype ok">CSV</span><span class="ftype ok">MD</span>
-  <span class="ftype ok">JPG</span><span class="ftype ok">PNG</span><span class="ftype ok">TIFF</span><span class="ftype ok">BMP</span>
-</div>
-</div>
-<input type="file" id="fileInput" multiple accept=".pdf,.docx,.doc,.xlsx,.xls,.ods,.rtf,.odt,.txt,.csv,.md,.tsv,.jpg,.jpeg,.png,.tiff,.tif,.bmp,.webp">
-<div class="file-loaded-card hidden" id="fileLoadedCard">
-<div class="fext-badge ext-other" id="fextBadge">—</div>
-<div style="flex:1;min-width:0">
-<div class="finfo-name" id="finfoName">—</div>
-<div class="finfo-meta" id="finfoMeta">—</div>
-</div>
-<div class="finfo-status fstatus-loading" id="finfoStatus">Extrayendo…</div>
-<button class="btn-remove-file" onclick="removeFile()" title="Quitar archivo">✕</button>
-</div>
-<div class="progress-wrap" id="progressWrap">
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-<div class="progress-label" id="progressLabel">Inicializando…</div>
-</div>
-<div style="margin-top:16px">
-<div class="options-title">Técnica de anonimización (Paso 3)</div>
-<div class="technique-grid">
-<div class="tech-card selected" data-tech="seudonimización" onclick="selectTech(this,'file')">
-<div class="tech-name">🔑 Seudonimización</div>
-<div class="tech-desc">Tokens únicos y consistentes.</div>
-<span class="tech-example">Juan López → PERSONA_001</span>
-</div>
-<div class="tech-card" data-tech="enmascaramiento" onclick="selectTech(this,'file')">
-<div class="tech-name">🎭 Enmascaramiento</div>
-<div class="tech-desc">Oculta caracteres internos con asteriscos.</div>
-<span class="tech-example">j.l@mail.es → j***@***.es</span>
-</div>
-<div class="tech-card" data-tech="generalización" onclick="selectTech(this,'file')">
-<div class="tech-name"> Generalización</div>
-<div class="tech-desc">Reduce granularidad: fechas → año, edad → rango.</div>
-<span class="tech-example">37 años → 35-40 años</span>
-</div>
-<div class="tech-card" data-tech="supresión" onclick="selectTech(this,'file')">
-<div class="tech-name">️ Supresión</div>
-<div class="tech-desc">Elimina el dato completamente.</div>
-<span class="tech-example">Juan García → [SUPRIMIDO]</span>
-</div>
-<div class="tech-card" data-tech="sintético" onclick="selectTech(this,'file')">
-  <div class="tech-name">🎲 Datos Sintéticos</div>
-  <div class="tech-desc">Reemplaza con datos ficticios realistas.</div>
-  <span class="tech-example">Juan Pérez → Carlos Gómez</span>
-</div>  
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="sidebarFile">
-<div class="panel">
-<div class="panel-header"><div class="panel-title"><span class="dot red"></span>Identificadores directos</div></div>
-<div class="panel-body" style="padding:10px 12px">
-<div class="options-title">Riesgo ALTO</div>
-<label class="check-row"><input type="checkbox" checked class="ck-nombre"><span class="check-box">✓</span><span class="check-label">Nombre completo<small>Nombres y apellidos</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-email"><span class="check-box">✓</span><span class="check-label">Correo electrónico<small>Dirección email</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-telefono"><span class="check-box">✓</span><span class="check-label">Teléfono<small>Móvil / fijo español</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-dni"><span class="check-box">✓</span><span class="check-label">DNI / NIE / NIF<small>Doc. de identidad</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-cuenta"><span class="check-box">✓</span><span class="check-label">IBAN / Cuenta<small>ES + 22 dígitos</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-ip"><span class="check-box">✓</span><span class="check-label">Dirección IP<small>IPv4 e IPv6</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-matricula"><span class="check-box">✓</span><span class="check-label">Matrícula vehículo<small>Formato ES (post-2000)</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-uuid"><span class="check-box">✓</span><span class="check-label">UUID / Cookie ID<small>Identificadores online</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-social"><span class="check-box">✓</span><span class="check-label">Handle RRSS<small>@usuario, URL perfil</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-cif"><span class="check-box">✓</span><span class="check-label">CIF<small>Código de Identificación Fiscal</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-mac"><span class="check-box">✓</span><span class="check-label">Dirección MAC<small>Identificador de red</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-nuss"><span class="check-box">✓</span><span class="check-label">Nº Seguridad Social<small>NAF / NUSS</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-userid"><span class="check-box">✓</span><span class="check-label">Identificador usuario<small>nombre.apellidos, nombre_apellidos</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-</div>
-</div>
-<div class="panel">
-<div class="panel-header"><div class="panel-title"><span class="dot amber"></span>Identificadores indirectos</div></div>
-<div class="panel-body" style="padding:10px 12px">
-<div class="options-title">Riesgo MEDIO-BAJO</div>
-<label class="check-row"><input type="checkbox" checked class="ck-fecha"><span class="check-box">✓</span><span class="check-label">Fecha de nacimiento<small>DD/MM/AAAA y texto</small></span><span class="risk-badge risk-medio">MEDIO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-direccion"><span class="check-box">✓</span><span class="check-label">Dirección postal<small>Calle, avenida…</small></span><span class="risk-badge risk-medio">MEDIO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-cp"><span class="check-box">✓</span><span class="check-label">Código postal<small>5 dígitos ES</small></span><span class="risk-badge risk-medio">MEDIO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-coords"><span class="check-box">✓</span><span class="check-label">Coordenadas GPS<small>Latitud, longitud decimales</small></span><span class="risk-badge risk-medio">MEDIO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-edad"><span class="check-box">✓</span><span class="check-label">Edad<small>«N años»</small></span><span class="risk-badge risk-bajo">BAJO</span></label>
-<label class="check-row"><input type="checkbox" class="ck-cargo"><span class="check-box">✓</span><span class="check-label">Cargo / profesión<small>Lista 100+ términos</small></span><span class="risk-badge risk-bajo">BAJO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-dircomp"><span class="check-box">✓</span><span class="check-label">Dirección completa<small>Calle + CP + Población</small></span><span class="risk-badge risk-medio">MEDIO</span></label>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="tab-pane" id="tab-text">
-<div class="main-cols">
-<div>
-<div class="panel">
-<div class="panel-header">
-<div class="panel-title"><span class="dot"></span>Texto a anonimizar</div>
-<span style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--text-dim)">PASOS 1-3 · Guía PDPC/AEPD</span>
-</div>
-<div class="panel-body">
-<textarea class="input-area" id="inputText" placeholder="Pega aquí el texto con datos personales…"></textarea>
-<div class="char-count"><span id="charCount">0</span> caracteres</div>
-<div style="margin-top:16px">
-<div class="options-title">Técnica de anonimización (Paso 3)</div>
-<div class="technique-grid">
-<div class="tech-card selected" data-tech="seudonimización" onclick="selectTech(this,'text')">
-<div class="tech-name">🔑 Seudonimización</div><div class="tech-desc">Tokens únicos y consistentes.</div><span class="tech-example">Juan López → PERSONA_001</span>
-</div>
-<div class="tech-card" data-tech="enmascaramiento" onclick="selectTech(this,'text')">
-<div class="tech-name">🎭 Enmascaramiento</div><div class="tech-desc">Oculta caracteres internos.</div><span class="tech-example">j.l@mail.es → j***@***.es</span>
-</div>
-<div class="tech-card" data-tech="generalización" onclick="selectTech(this,'text')">
-<div class="tech-name">📊 Generalización</div><div class="tech-desc">Reduce granularidad.</div><span class="tech-example">37 años → 35-40 años</span>
-</div>
-<div class="tech-card" data-tech="supresión" onclick="selectTech(this,'text')">
-<div class="tech-name">🗑️ Supresión</div><div class="tech-desc">Elimina el dato completamente.</div><span class="tech-example">Juan García → [SUPRIMIDO]</span>
-</div>
-<div class="tech-card" data-tech="sintético" onclick="selectTech(this,'file')">
-  <div class="tech-name">🎲 Datos Sintéticos</div>
-  <div class="tech-desc">Reemplaza con datos ficticios realistas.</div>
-  <span class="tech-example">Juan Pérez → Carlos Gómez</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="sidebarText">
-<div class="panel">
-<div class="panel-header"><div class="panel-title"><span class="dot red"></span>Identificadores directos</div></div>
-<div class="panel-body" style="padding:10px 12px">
-<div class="options-title">Riesgo ALTO</div>
-<label class="check-row"><input type="checkbox" checked class="ck-nombre"><span class="check-box">✓</span><span class="check-label">Nombre completo<small>Nombres y apellidos</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-email"><span class="check-box">✓</span><span class="check-label">Correo electrónico</span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-telefono"><span class="check-box">✓</span><span class="check-label">Teléfono<small>Móvil / fijo español</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-dni"><span class="check-box">✓</span><span class="check-label">DNI / NIE / NIF</span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-cuenta"><span class="check-box">✓</span><span class="check-label">IBAN / Cuenta<small>ES + 22 dígitos</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-ip"><span class="check-box">✓</span><span class="check-label">Dirección IP<small>IPv4 e IPv6</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-matricula"><span class="check-box">✓</span><span class="check-label">Matrícula vehículo<small>Formato ES (post-2000)</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-uuid"><span class="check-box">✓</span><span class="check-label">UUID / Cookie ID<small>Identificadores online</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-social"><span class="check-box">✓</span><span class="check-label">Handle RRSS<small>@usuario, URL perfil</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-cif"><span class="check-box">✓</span><span class="check-label">CIF<small>Código de Identificación Fiscal</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-mac"><span class="check-box">✓</span><span class="check-label">Dirección MAC<small>Identificador de red</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-nuss"><span class="check-box">✓</span><span class="check-label">Nº Seguridad Social<small>NAF / NUSS</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-userid"><span class="check-box">✓</span><span class="check-label">Identificador usuario<small>nombre.apellidos, nombre_apellidos</small></span><span class="risk-badge risk-alto">ALTO</span></label>
-</div>
-</div>
-<div class="panel">
-<div class="panel-header"><div class="panel-title"><span class="dot amber"></span>Identificadores indirectos</div></div>
-<div class="panel-body" style="padding:10px 12px">
-<div class="options-title">Riesgo MEDIO-BAJO</div>
-<label class="check-row"><input type="checkbox" checked class="ck-fecha"><span class="check-box">✓</span><span class="check-label">Fecha de nacimiento<small>DD/MM/AAAA y texto</small></span><span class="risk-badge risk-medio">MEDIO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-direccion"><span class="check-box">✓</span><span class="check-label">Dirección postal</span><span class="risk-badge risk-medio">MEDIO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-cp"><span class="check-box">✓</span><span class="check-label">Código postal</span><span class="risk-badge risk-medio">MEDIO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-coords"><span class="check-box">✓</span><span class="check-label">Coordenadas GPS<small>Latitud, longitud</small></span><span class="risk-badge risk-medio">MEDIO</span></label>
-<label class="check-row"><input type="checkbox" checked class="ck-edad"><span class="check-box">✓</span><span class="check-label">Edad<small>«N años»</small></span><span class="risk-badge risk-bajo">BAJO</span></label>
-<label class="check-row"><input type="checkbox" class="ck-cargo"><span class="check-box">✓</span><span class="check-label">Cargo / profesión</span><span class="risk-badge risk-bajo">BAJO</span></label>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="panel" style="margin-bottom: 16px;">
-<div class="panel-header">
-<div class="panel-title"><span class="dot"></span>⚙️ Diccionarios Personalizados (100% local)</div>
-</div>
-<div class="panel-body">
-<p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">
-Separa los términos por comas. La lista blanca protege datos de ser anonimizados. La lista negra fuerza su anonimización.
-</p>
-<label for="whitelist" style="display: block; margin-bottom: 4px; font-size: 0.75rem; font-weight: 600; color: var(--text);">
-✅ Lista Blanca (proteger):
-</label>
-<input type="text" id="whitelist" placeholder="Ej: MiEmpresa S.L., Ayuntamiento de Madrid" style="width: 100%; padding: 8px; margin-bottom: 12px; border: 1px solid var(--border-med); border-radius: var(--r4); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem;">
-<label for="blacklist" style="display: block; margin-bottom: 4px; font-size: 0.75rem; font-weight: 600; color: var(--text);">
-⛔ Lista Negra (forzar anonimización):
-</label>
-<input type="text" id="blacklist" placeholder="Ej: confidencial, secreto, interno" style="width: 100%; padding: 8px; border: 1px solid var(--border-med); border-radius: var(--r4); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem;">
-</div>
-</div>
-<div class="panel" id="batchPanel" style="display:none; margin-bottom: 16px;">
-<div class="panel-header">
-<div class="panel-title"><span class="dot" style="background:var(--gold-mid)"></span>📂 Procesamiento por Lotes</div>
-<span style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--text-dim)" id="batchStatus">0 archivos</span>
-</div>
-<div class="panel-body">
-<div id="batchList" style="max-height: 200px; overflow-y: auto; margin-bottom: 12px; font-size: 0.75rem; font-family: 'IBM Plex Mono', monospace;"></div>
-<button class="btn btn-primary" id="btnDownloadZip" disabled onclick="downloadBatchZip()" style="width:100%; justify-content:center;">
-⬇️ Descargar todos anonimizados (.zip con PDFs)
-</button>
-</div>
-</div>
-<div class="action-bar">
-<button class="btn btn-primary" id="btnAnon" onclick="runAnonymization()">🔒 Anonimizar</button>
-<button class="btn btn-report" id="btnDownloadPdf" disabled onclick="downloadSinglePdf()" style="background:rgba(179,63,118,.08);color:var(--magenta);border:1px solid rgba(179,63,118,.25)">📕 Descargar PDF</button>
-<button class="btn btn-secondary" onclick="clearAll()">↩ Limpiar</button>
-<div class="export-doc-group">
-<button class="btn btn-export" id="btnExportDoc" disabled onclick="toggleExportMenu(event)"> Exportar doc ▾</button>
-<div class="export-doc-menu" id="exportDocMenu">
-<button class="edm-item" onclick="exportDoc('txt')">📄 Texto plano (.txt)</button>
-<button class="edm-item" id="edm-docx" onclick="exportDoc('docx')"> Word (.docx)</button>
-<button class="edm-item" id="edm-pdf" onclick="exportDoc('pdf')">📕 PDF (.pdf)</button>
-<button class="edm-item" id="edm-xlsx" onclick="exportDoc('xlsx')" style="display:none">📊 Excel (.xlsx)</button>
-<div class="edm-sep"></div>
-<button class="edm-item" onclick="copyResult()">📋 Copiar al portapapeles</button>
-</div>
-</div>
-<button class="btn btn-report" id="btnReport" disabled onclick="openReport()">📊 Ver informe</button>
-<span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--text-dim)" id="processingInfo"></span>
-</div>
-<div class="results-section" id="resultsSection">
-<div class="risk-row">
-<span style="font-weight:500;letter-spacing:.5px">Riesgo estimado:</span>
-<span class="risk-before" id="riskBefore">ALTO</span>
-<span class="risk-arrow">→</span>
-<span class="risk-after" id="riskAfter">BAJO</span>
-<span style="margin-left:auto;font-size:.6rem;color:var(--text-dim)">k-anonimidad · Guía PDPC/AEPD Paso 4</span>
-</div>
-<div class="warn-box" id="warnBox" style="display:none">
-<strong>⚠ Cobertura parcial:</strong> <span id="warnText"></span>
-</div>
-<div class="ba-grid">
-<div class="ba-col">
-<div class="ba-col-header before">
-<span class="ba-dot"></span>ANTES — Datos originales
-<div class="legend" style="margin-left:auto">
-<div class="legend-item"><span class="legend-swatch sw-directo"></span>Directo</div>
-<div class="legend-item"><span class="legend-swatch sw-indirecto"></span>Indirecto</div>
-</div>
-</div>
-<div class="ba-col-body" id="beforeText"></div>
-</div>
-<div class="ba-col">
-<div class="ba-col-header" style="background:rgba(177,138,32,.08);color:var(--gold-dark);border-color:rgba(177,138,32,.25)">
-<span class="ba-dot" style="background:var(--gold-mid)"></span>CAMBIOS — Diff visual
-<div class="legend" style="margin-left:auto">
-<div class="legend-item"><span class="legend-swatch sw-anon"></span>Anonimizado</div>
-</div>
-</div>
-<div class="ba-col-body" id="diffText" style="background:var(--surface2)"></div>
-</div>
-<div class="ba-col">
-<div class="ba-col-header after">
-<span class="ba-dot"></span>DESPUÉS — Texto anonimizado
-<div class="legend" style="margin-left:auto">
-<div class="legend-item"><span class="legend-swatch sw-anon"></span>Anonimizado</div>
-</div>
-</div>
-<div class="ba-col-body" id="afterText"></div>
-</div>
-</div>
-<div class="entity-table-wrap">
-<div class="entity-table-header">
-<div class="panel-title"><span class="dot"></span>Registro de entidades</div>
-<span style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--text-dim)" id="entityCount">0 entidades</span>
-</div>
-<table class="etable">
-<thead><tr><th style="width:130px">Tipo</th><th style="width:90px">Categoría</th><th>Valor original</th><th>Valor anonimizado</th><th style="width:130px">Técnica</th></tr></thead>
-<tbody id="entityTableBody"></tbody>
-</table>
-</div>
-<div class="notes-panel">
-<strong>ℹ Observaciones metodológicas (Paso 5 · Gestión de riesgos)</strong>
-<span id="notesText">—</span>
-</div>
-<div style="background:rgba(96,52,94,.04);border:1px solid var(--border);border-radius:var(--r4);padding:10px 14px;font-size:.68rem;color:var(--text-muted);line-height:1.6">
-<strong style="color:var(--plum-deep)">Aviso metodológico:</strong>
-Motor local v3 basado en regex y diccionarios ES. Detecta: email, teléfono, DNI/NIE, IBAN, IPv4/v6, fechas, CP, edades, direcciones, nombres ES, <strong style="color:var(--plum-deep)">matrículas ES, coordenadas GPS, UUID/Cookie/Device ID, handles y URLs de RRSS (Twitter/X, Instagram, LinkedIn, Facebook, TikTok, YouTube)</strong>. <strong style="color:var(--green)">Incluye OCR para imágenes y PDFs escaneados</strong>. Los nombres inusuales o extranjeros pueden requerir revisión manual. Conforme a Guía PDPC/AEPD (Oct. 2022) y RGPD Art. 4(1).
-</div>
-</div>
-</div>
-<div id="reportOverlay">
-<div class="report-modal">
-<div class="report-topbar">
-<div>
-<div class="report-topbar-title">📊 Informe de Anonimización</div>
-<div style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:rgba(255,255,255,.5);margin-top:2px">PDPC/AEPD · Guía Básica de Anonimización · Oct 2022</div>
-</div>
-<div class="report-topbar-actions">
-<button class="btn-rpt btn-rpt-print" onclick="printReport()">🖨️ Imprimir / Guardar PDF</button>
-<button class="btn-rpt btn-rpt-close" onclick="closeReport()">✕ Cerrar</button>
-</div>
-</div>
-<div class="report-body" id="reportBody"></div>
-</div>
-</div>
+<div class="page-header"><div><div class="page-eyebrow">Protección de Datos Personales</div><h1 class="page-title">Anonimización de Documentos</h1><p class="page-desc">Motor local de detección y anonimización mediante expresiones regulares y OCR. Carga archivos (PDF, DOCX, XLSX, RTF, TXT, CSV, imágenes…) o pega texto directamente. Genera informe antes/después descargable. Ningún dato sale del navegador.</p></div><div class="norm-ref"><strong>Referencias normativas</strong>Guía PDPC/AEPD (Oct. 2022)<br>RGPD — Art. 4(1), Art. 5(1)(e)<br>Considerando 26 RGPD<br>ISO/IEC 20889:2018</div></div>
+<div class="stats-row"><div class="stat-card"><div class="stat-label">Entidades detectadas</div><div class="stat-value red" id="stat-total">—</div><div class="stat-sub">en el texto analizado</div></div><div class="stat-card"><div class="stat-label">Identificadores directos</div><div class="stat-value red" id="stat-dir">—</div><div class="stat-sub">nombre, email, DNI…</div></div><div class="stat-card"><div class="stat-label">Identificadores indirectos</div><div class="stat-value amber" id="stat-ind">—</div><div class="stat-sub">edad, dirección, CP…</div></div><div class="stat-card"><div class="stat-label">Score anonimización</div><div class="stat-value green" id="stat-score">—</div><div class="stat-sub" id="stat-score-sub">% del texto tratado</div><div class="stat-score-bar"><div class="stat-score-fill fill-green" id="statScoreFill" style="width:0%"></div></div></div><div class="stat-card"><div class="stat-label">Riesgo residual</div><div class="stat-value green" id="stat-riesgo">—</div><div class="stat-sub" id="stat-riesgo-sub">tras anonimización</div></div></div>
+<div class="log-panel"><div class="log-header"><span class="log-title">Registro de proceso · motor local</span><span class="log-dot" id="logDot"></span></div><div class="log-body" id="logBody"><div class="log-line"><span class="log-ts">00:00:00</span><span>Motor local v4 inicializado. OCR, sintéticos, CIF, MAC, NUSS, CCC, user_id.</span></div></div></div>
+<div class="tabs"><button class="tab active" onclick="switchTab('file',this)">📂 Cargar archivo</button><button class="tab" onclick="switchTab('text',this)">📝 Texto libre</button></div>
+<div class="tab-pane active" id="tab-file"><div class="main-cols"><div><div class="panel"><div class="panel-header"><div class="panel-title"><span class="dot"></span>Archivo de entrada</div><span style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--text-dim)">PASO 1 · Guía PDPC/AEPD</span></div><div class="panel-body"><div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()"><div class="drop-icon">📂</div><div class="drop-title">Arrastra archivos o haz clic para seleccionar</div><div class="drop-sub">El texto se extrae localmente — ningún dato sale del navegador</div><div class="ftype-wrap"><span class="ftype ok">PDF</span><span class="ftype ok">DOCX</span><span class="ftype ok">DOC</span><span class="ftype ok">XLSX</span><span class="ftype ok">XLS</span><span class="ftype ok">ODS</span><span class="ftype ok">RTF</span><span class="ftype ok">ODT</span><span class="ftype ok">TXT</span><span class="ftype ok">CSV</span><span class="ftype ok">MD</span><span class="ftype ok">JPG</span><span class="ftype ok">PNG</span><span class="ftype ok">TIFF</span></div></div><input type="file" id="fileInput" multiple accept=".pdf,.docx,.doc,.xlsx,.xls,.ods,.rtf,.odt,.txt,.csv,.md,.tsv,.jpg,.jpeg,.png,.tiff,.tif,.bmp,.webp"><div class="file-loaded-card hidden" id="fileLoadedCard"><div class="fext-badge ext-other" id="fextBadge">—</div><div style="flex:1;min-width:0"><div class="finfo-name" id="finfoName">—</div><div class="finfo-meta" id="finfoMeta">—</div></div><div class="finfo-status fstatus-loading" id="finfoStatus">Extrayendo…</div><button class="btn-remove-file" onclick="removeFile()" title="Quitar archivo">✕</button></div><div class="progress-wrap" id="progressWrap"><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div><div class="progress-label" id="progressLabel">Inicializando…</div></div><div style="margin-top:16px"><div class="options-title">Técnica de anonimización (Paso 3)</div><div class="technique-grid"><div class="tech-card selected" data-tech="seudonimización" onclick="selectTech(this,'file')"><div class="tech-name">🔑 Seudonimización</div><div class="tech-desc">Tokens únicos y consistentes.</div><span class="tech-example">Juan López → PERSONA_001</span></div><div class="tech-card" data-tech="enmascaramiento" onclick="selectTech(this,'file')"><div class="tech-name">🎭 Enmascaramiento</div><div class="tech-desc">Oculta caracteres internos con asteriscos.</div><span class="tech-example">j.l@mail.es → j***@***.es</span></div><div class="tech-card" data-tech="generalización" onclick="selectTech(this,'file')"><div class="tech-name">📊 Generalización</div><div class="tech-desc">Reduce granularidad: fechas → año, edad → rango.</div><span class="tech-example">37 años → 35-40 años</span></div><div class="tech-card" data-tech="supresión" onclick="selectTech(this,'file')"><div class="tech-name">🗑️ Supresión</div><div class="tech-desc">Elimina el dato completamente.</div><span class="tech-example">Juan García → [SUPRIMIDO]</span></div><div class="tech-card" data-tech="sintético" onclick="selectTech(this,'file')"><div class="tech-name">🎲 Datos Sintéticos</div><div class="tech-desc">Reemplaza con datos ficticios realistas.</div><span class="tech-example">Juan Pérez → Carlos Gómez</span></div></div></div></div></div></div><div id="sidebarFile"><div class="panel"><div class="panel-header"><div class="panel-title"><span class="dot red"></span>Identificadores directos</div></div><div class="panel-body" style="padding:10px 12px"><div class="options-title">Riesgo ALTO</div><label class="check-row"><input type="checkbox" checked class="ck-nombre"><span class="check-box">✓</span><span class="check-label">Nombre completo<small>Nombres y apellidos</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-email"><span class="check-box">✓</span><span class="check-label">Correo electrónico<small>Dirección email</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-telefono"><span class="check-box">✓</span><span class="check-label">Teléfono<small>Móvil / fijo español</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-dni"><span class="check-box">✓</span><span class="check-label">DNI / NIE / NIF<small>Doc. de identidad</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-cif"><span class="check-box">✓</span><span class="check-label">CIF<small>Código Identificación Fiscal</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-cuenta"><span class="check-box">✓</span><span class="check-label">IBAN / Cuenta<small>ES + 22 dígitos / CCC</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-nuss"><span class="check-box">✓</span><span class="check-label">Nº Seguridad Social<small>NAF / NUSS</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-ip"><span class="check-box">✓</span><span class="check-label">Dirección IP<small>IPv4 e IPv6</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-mac"><span class="check-box">✓</span><span class="check-label">Dirección MAC<small>Identificador de red</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-matricula"><span class="check-box">✓</span><span class="check-label">Matrícula vehículo<small>Formato ES (post-2000)</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-uuid"><span class="check-box">✓</span><span class="check-label">UUID / Cookie ID<small>Identificadores online</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-social"><span class="check-box">✓</span><span class="check-label">Handle RRSS<small>@usuario, URL perfil</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-userid"><span class="check-box">✓</span><span class="check-label">Identificador usuario<small>nombre.apellidos</small></span><span class="risk-badge risk-alto">ALTO</span></label></div></div><div class="panel"><div class="panel-header"><div class="panel-title"><span class="dot amber"></span>Identificadores indirectos</div></div><div class="panel-body" style="padding:10px 12px"><div class="options-title">Riesgo MEDIO-BAJO</div><label class="check-row"><input type="checkbox" checked class="ck-fecha"><span class="check-box">✓</span><span class="check-label">Fecha de nacimiento<small>DD/MM/AAAA y texto</small></span><span class="risk-badge risk-medio">MEDIO</span></label><label class="check-row"><input type="checkbox" checked class="ck-direccion"><span class="check-box">✓</span><span class="check-label">Dirección postal<small>Calle, avenida…</small></span><span class="risk-badge risk-medio">MEDIO</span></label><label class="check-row"><input type="checkbox" checked class="ck-dircomp"><span class="check-box">✓</span><span class="check-label">Dirección completa<small>Calle + CP + Población</small></span><span class="risk-badge risk-medio">MEDIO</span></label><label class="check-row"><input type="checkbox" checked class="ck-cp"><span class="check-box">✓</span><span class="check-label">Código postal<small>5 dígitos ES</small></span><span class="risk-badge risk-medio">MEDIO</span></label><label class="check-row"><input type="checkbox" checked class="ck-coords"><span class="check-box">✓</span><span class="check-label">Coordenadas GPS<small>Latitud, longitud decimales</small></span><span class="risk-badge risk-medio">MEDIO</span></label><label class="check-row"><input type="checkbox" checked class="ck-edad"><span class="check-box">✓</span><span class="check-label">Edad<small>«N años»</small></span><span class="risk-badge risk-bajo">BAJO</span></label><label class="check-row"><input type="checkbox" class="ck-cargo"><span class="check-box">✓</span><span class="check-label">Cargo / profesión<small>Lista 100+ términos</small></span><span class="risk-badge risk-bajo">BAJO</span></label></div></div></div></div></div>
+<div class="tab-pane" id="tab-text"><div class="main-cols"><div><div class="panel"><div class="panel-header"><div class="panel-title"><span class="dot"></span>Texto a anonimizar</div><span style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--text-dim)">PASOS 1-3 · Guía PDPC/AEPD</span></div><div class="panel-body"><textarea class="input-area" id="inputText" placeholder="Pega aquí el texto con datos personales…"></textarea><div class="char-count"><span id="charCount">0</span> caracteres</div><div style="margin-top:16px"><div class="options-title">Técnica de anonimización (Paso 3)</div><div class="technique-grid"><div class="tech-card selected" data-tech="seudonimización" onclick="selectTech(this,'text')"><div class="tech-name">🔑 Seudonimización</div><div class="tech-desc">Tokens únicos y consistentes.</div><span class="tech-example">Juan López → PERSONA_001</span></div><div class="tech-card" data-tech="enmascaramiento" onclick="selectTech(this,'text')"><div class="tech-name">🎭 Enmascaramiento</div><div class="tech-desc">Oculta caracteres internos.</div><span class="tech-example">j.l@mail.es → j***@***.es</span></div><div class="tech-card" data-tech="generalización" onclick="selectTech(this,'text')"><div class="tech-name">📊 Generalización</div><div class="tech-desc">Reduce granularidad.</div><span class="tech-example">37 años → 35-40 años</span></div><div class="tech-card" data-tech="supresión" onclick="selectTech(this,'text')"><div class="tech-name">🗑️ Supresión</div><div class="tech-desc">Elimina el dato completamente.</div><span class="tech-example">Juan García → [SUPRIMIDO]</span></div><div class="tech-card" data-tech="sintético" onclick="selectTech(this,'text')"><div class="tech-name">🎲 Datos Sintéticos</div><div class="tech-desc">Reemplaza con datos ficticios realistas.</div><span class="tech-example">Juan Pérez → Carlos Gómez</span></div></div></div></div></div></div><div id="sidebarText"><div class="panel"><div class="panel-header"><div class="panel-title"><span class="dot red"></span>Identificadores directos</div></div><div class="panel-body" style="padding:10px 12px"><div class="options-title">Riesgo ALTO</div><label class="check-row"><input type="checkbox" checked class="ck-nombre"><span class="check-box">✓</span><span class="check-label">Nombre completo<small>Nombres y apellidos</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-email"><span class="check-box">✓</span><span class="check-label">Correo electrónico</span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-telefono"><span class="check-box">✓</span><span class="check-label">Teléfono<small>Móvil / fijo español</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-dni"><span class="check-box">✓</span><span class="check-label">DNI / NIE / NIF</span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-cif"><span class="check-box">✓</span><span class="check-label">CIF</span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-cuenta"><span class="check-box">✓</span><span class="check-label">IBAN / Cuenta</span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-nuss"><span class="check-box">✓</span><span class="check-label">Nº Seguridad Social</span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-ip"><span class="check-box">✓</span><span class="check-label">Dirección IP<small>IPv4 e IPv6</small></span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-mac"><span class="check-box">✓</span><span class="check-label">Dirección MAC</span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-matricula"><span class="check-box">✓</span><span class="check-label">Matrícula vehículo</span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-uuid"><span class="check-box">✓</span><span class="check-label">UUID / Cookie ID</span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-social"><span class="check-box">✓</span><span class="check-label">Handle RRSS</span><span class="risk-badge risk-alto">ALTO</span></label><label class="check-row"><input type="checkbox" checked class="ck-userid"><span class="check-box">✓</span><span class="check-label">Identificador usuario</span><span class="risk-badge risk-alto">ALTO</span></label></div></div><div class="panel"><div class="panel-header"><div class="panel-title"><span class="dot amber"></span>Identificadores indirectos</div></div><div class="panel-body" style="padding:10px 12px"><div class="options-title">Riesgo MEDIO-BAJO</div><label class="check-row"><input type="checkbox" checked class="ck-fecha"><span class="check-box">✓</span><span class="check-label">Fecha de nacimiento</span><span class="risk-badge risk-medio">MEDIO</span></label><label class="check-row"><input type="checkbox" checked class="ck-direccion"><span class="check-box">✓</span><span class="check-label">Dirección postal</span><span class="risk-badge risk-medio">MEDIO</span></label><label class="check-row"><input type="checkbox" checked class="ck-dircomp"><span class="check-box">✓</span><span class="check-label">Dirección completa</span><span class="risk-badge risk-medio">MEDIO</span></label><label class="check-row"><input type="checkbox" checked class="ck-cp"><span class="check-box">✓</span><span class="check-label">Código postal</span><span class="risk-badge risk-medio">MEDIO</span></label><label class="check-row"><input type="checkbox" checked class="ck-coords"><span class="check-box">✓</span><span class="check-label">Coordenadas GPS</span><span class="risk-badge risk-medio">MEDIO</span></label><label class="check-row"><input type="checkbox" checked class="ck-edad"><span class="check-box">✓</span><span class="check-label">Edad</span><span class="risk-badge risk-bajo">BAJO</span></label><label class="check-row"><input type="checkbox" class="ck-cargo"><span class="check-box">✓</span><span class="check-label">Cargo / profesión</span><span class="risk-badge risk-bajo">BAJO</span></label></div></div></div></div></div>
+<div class="panel" style="margin-bottom:16px"><div class="panel-header"><div class="panel-title"><span class="dot"></span>⚙️ Diccionarios Personalizados (100% local)</div></div><div class="panel-body"><p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:10px">Separa los términos por comas. La lista blanca protege datos de ser anonimizados. La lista negra fuerza su anonimización.</p><label for="whitelist" style="display:block;margin-bottom:4px;font-size:0.75rem;font-weight:600;color:var(--text)">✅ Lista Blanca (proteger):</label><input type="text" id="whitelist" placeholder="Ej: MiEmpresa S.L., Ayuntamiento de Madrid" style="width:100%;padding:8px;margin-bottom:12px;border:1px solid var(--border-med);border-radius:var(--r4);font-family:'IBM Plex Sans',sans-serif;font-size:0.8rem"><label for="blacklist" style="display:block;margin-bottom:4px;font-size:0.75rem;font-weight:600;color:var(--text)">⛔ Lista Negra (forzar anonimización):</label><input type="text" id="blacklist" placeholder="Ej: confidencial, secreto, interno" style="width:100%;padding:8px;border:1px solid var(--border-med);border-radius:var(--r4);font-family:'IBM Plex Sans',sans-serif;font-size:0.8rem"></div></div>
+<div class="panel" id="batchPanel" style="display:none;margin-bottom:16px"><div class="panel-header"><div class="panel-title"><span class="dot" style="background:var(--gold-mid)"></span>📂 Procesamiento por Lotes</div><span style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--text-dim)" id="batchStatus">0 archivos</span></div><div class="panel-body"><div id="batchList" style="max-height:200px;overflow-y:auto;margin-bottom:12px;font-size:0.75rem;font-family:'IBM Plex Mono',monospace"></div><button class="btn btn-primary" id="btnDownloadZip" disabled onclick="downloadBatchZip()" style="width:100%;justify-content:center">⬇️ Descargar todos anonimizados (.zip con PDFs)</button></div></div>
+<div class="action-bar"><button class="btn btn-primary" id="btnAnon" onclick="runAnonymization()">🔒 Anonimizar</button><button class="btn btn-report" id="btnDownloadPdf" disabled onclick="downloadSinglePdf()" style="background:rgba(179,63,118,.08);color:var(--magenta);border:1px solid rgba(179,63,118,.25)">📕 Descargar PDF</button><button class="btn btn-secondary" onclick="clearAll()">↩ Limpiar</button><div class="export-doc-group"><button class="btn btn-export" id="btnExportDoc" disabled onclick="toggleExportMenu(event)">⬇ Exportar doc ▾</button><div class="export-doc-menu" id="exportDocMenu"><button class="edm-item" onclick="exportDoc('txt')"> Texto plano (.txt)</button><button class="edm-item" id="edm-docx" onclick="exportDoc('docx')">📝 Word (.docx)</button><button class="edm-item" id="edm-pdf" onclick="exportDoc('pdf')"> PDF (.pdf)</button><button class="edm-item" id="edm-xlsx" onclick="exportDoc('xlsx')" style="display:none">📊 Excel (.xlsx)</button><div class="edm-sep"></div><button class="edm-item" onclick="copyResult()">📋 Copiar al portapapeles</button></div></div><button class="btn btn-report" id="btnReport" disabled onclick="openReport()">📊 Ver informe</button><span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--text-dim)" id="processingInfo"></span></div>
+<div class="results-section" id="resultsSection"><div class="risk-row"><span style="font-weight:500;letter-spacing:.5px">Riesgo estimado:</span><span class="risk-before" id="riskBefore">ALTO</span><span class="risk-arrow">→</span><span class="risk-after" id="riskAfter">BAJO</span><span style="margin-left:auto;font-size:.6rem;color:var(--text-dim)">k-anonimidad · Guía PDPC/AEPD Paso 4</span></div><div class="warn-box" id="warnBox" style="display:none"><strong> Cobertura parcial:</strong> <span id="warnText"></span></div><div class="ba-grid"><div class="ba-col"><div class="ba-col-header before"><span class="ba-dot"></span>ANTES — Datos originales<div class="legend" style="margin-left:auto"><div class="legend-item"><span class="legend-swatch sw-directo"></span>Directo</div><div class="legend-item"><span class="legend-swatch sw-indirecto"></span>Indirecto</div></div></div><div class="ba-col-body" id="beforeText"></div></div><div class="ba-col"><div class="ba-col-header" style="background:rgba(177,138,32,.08);color:var(--gold-dark);border-color:rgba(177,138,32,.25)"><span class="ba-dot" style="background:var(--gold-mid)"></span>CAMBIOS — Diff visual<div class="legend" style="margin-left:auto"><div class="legend-item"><span class="legend-swatch sw-anon"></span>Anonimizado</div></div></div><div class="ba-col-body" id="diffText" style="background:var(--surface2)"></div></div><div class="ba-col"><div class="ba-col-header after"><span class="ba-dot"></span>DESPUÉS — Texto anonimizado<div class="legend" style="margin-left:auto"><div class="legend-item"><span class="legend-swatch sw-anon"></span>Anonimizado</div></div></div><div class="ba-col-body" id="afterText"></div></div></div><div class="entity-table-wrap"><div class="entity-table-header"><div class="panel-title"><span class="dot"></span>Registro de entidades</div><span style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--text-dim)" id="entityCount">0 entidades</span></div><table class="etable"><thead><tr><th style="width:130px">Tipo</th><th style="width:90px">Categoría</th><th>Valor original</th><th>Valor anonimizado</th><th style="width:130px">Técnica</th></tr></thead><tbody id="entityTableBody"></tbody></table></div><div class="notes-panel"><strong>ℹ Observaciones metodológicas (Paso 5 · Gestión de riesgos)</strong><span id="notesText">—</span></div><div style="background:rgba(96,52,94,.04);border:1px solid var(--border);border-radius:var(--r4);padding:10px 14px;font-size:.68rem;color:var(--text-muted);line-height:1.6"><strong style="color:var(--plum-deep)">Aviso metodológico:</strong>Motor local v4 basado en regex, diccionarios ES y OCR. Detecta: email, teléfono, DNI/NIE/CIF, IBAN/CCC, NUSS, IPv4/v6, MAC, fechas, CP, edades, direcciones, nombres ES, matrículas ES, coordenadas GPS, UUID/Cookie/Device ID, handles y URLs de RRSS, identificadores tipo nombre.apellidos. <strong style="color:var(--green)">Incluye OCR para imágenes y PDFs escaneados</strong>. Los nombres inusuales o extranjeros pueden requerir revisión manual. Conforme a Guía PDPC/AEPD (Oct. 2022) y RGPD Art. 4(1).</div></div></div>
+<div id="reportOverlay"><div class="report-modal"><div class="report-topbar"><div><div class="report-topbar-title"> Informe de Anonimización</div><div style="font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:rgba(255,255,255,.5);margin-top:2px">PDPC/AEPD · Guía Básica de Anonimización · Oct 2022</div></div><div class="report-topbar-actions"><button class="btn-rpt btn-rpt-print" onclick="printReport()">🖨️ Imprimir / Guardar PDF</button><button class="btn-rpt btn-rpt-close" onclick="closeReport()">✕ Cerrar</button></div></div><div class="report-body" id="reportBody"></div></div></div>
 <script>
-let selectedTech='seudonimización',currentTab='file',loadedFileText=null,loadedFileName=null,loadedFileExt=null,loadedWB=null,lastResult=null;
-let batchFiles=[],batchResults=[];
-
-function obtenerDiccionarios(){
-const w=(document.getElementById('whitelist')?.value||'').split(',').map(s=>s.trim().toLowerCase()).filter(s=>s.length>0);
-const b=(document.getElementById('blacklist')?.value||'').split(',').map(s=>s.trim().toLowerCase()).filter(s=>s.length>0);
-return{whitelist:w,blacklist:b};
-}
-function switchTab(tab,btn){
-currentTab=tab;
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-btn.classList.add('active');
-document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-document.getElementById('tab-'+tab).classList.add('active');
-}
-function selectTech(card, group) {
-  // Limpiar TODAS las tarjetas de ambos grupos (file y text)
-  document.querySelectorAll('.tech-card').forEach(c => c.classList.remove('selected'));
-  // Marcar solo la actual
-  card.classList.add('selected');
-  selectedTech = card.dataset.tech;
-  log(`Técnica: ${selectedTech}`);
-}
-document.getElementById('inputText').addEventListener('input',function(){
-document.getElementById('charCount').textContent=this.value.length.toLocaleString('es');
-});
-function getOptions(){
-const tab=document.getElementById('tab-'+currentTab);
-const get=cls=>tab.querySelector('.'+cls)?.checked??false;
-if (type === 'CIF') return v[0] + '***' + v.slice(-3);
-if (type === 'Cuenta bancaria (CCC)') { const c=v.replace(/\s/g,''); return c.slice(0,4)+' **** **** **** '+c.slice(-4); }
-if (type === 'Nº Seguridad Social') return '**-'+v.slice(-4);
-if (type === 'Dirección MAC') return v.slice(0,8)+'-**-**-**';
-if (type === 'Identificador usuario') return v.split(/[._\-]/)[0][0]+'***';
-if (type === 'Dirección completa') return '[DIRECCIÓN_COMPLETA]';
-return{'ck-nombre':get('ck-nombre'),'ck-email':get('ck-email'),'ck-telefono':get('ck-telefono'),'ck-dni':get('ck-dni'),'ck-cuenta':get('ck-cuenta'),'ck-ip':get('ck-ip'),'ck-matricula':get('ck-matricula'),'ck-uuid':get('ck-uuid'),'ck-social':get('ck-social'),'ck-coords':get('ck-coords'),'ck-fecha':get('ck-fecha'),'ck-direccion':get('ck-direccion'),'ck-cp':get('ck-cp'),'ck-edad':get('ck-edad'),'ck-cargo':get('ck-cargo')};
-}
+let selectedTech='seudonimización',currentTab='file',loadedFileText=null,loadedFileName=null,loadedFileExt=null,loadedWB=null,lastResult=null,batchFiles=[],batchResults=[];
+function obtenerDiccionarios(){const w=(document.getElementById('whitelist')?.value||'').split(',').map(s=>s.trim().toLowerCase()).filter(s=>s.length>0);const b=(document.getElementById('blacklist')?.value||'').split(',').map(s=>s.trim().toLowerCase()).filter(s=>s.length>0);return{whitelist:w,blacklist:b};}
+function switchTab(tab,btn){currentTab=tab;document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));document.getElementById('tab-'+tab).classList.add('active');}
+function selectTech(card,group){document.querySelectorAll('.tech-card').forEach(c=>c.classList.remove('selected'));card.classList.add('selected');selectedTech=card.dataset.tech;log('Técnica: '+selectedTech);}
+document.getElementById('inputText').addEventListener('input',function(){document.getElementById('charCount').textContent=this.value.length.toLocaleString('es');});
+function getOptions(){const tab=document.getElementById('tab-'+currentTab);const get=cls=>tab.querySelector('.'+cls)?.checked??false;return{'ck-nombre':get('ck-nombre'),'ck-email':get('ck-email'),'ck-telefono':get('ck-telefono'),'ck-dni':get('ck-dni'),'ck-cif':get('ck-cif'),'ck-cuenta':get('ck-cuenta'),'ck-nuss':get('ck-nuss'),'ck-ip':get('ck-ip'),'ck-mac':get('ck-mac'),'ck-matricula':get('ck-matricula'),'ck-uuid':get('ck-uuid'),'ck-social':get('ck-social'),'ck-userid':get('ck-userid'),'ck-coords':get('ck-coords'),'ck-fecha':get('ck-fecha'),'ck-direccion':get('ck-direccion'),'ck-dircomp':get('ck-dircomp'),'ck-cp':get('ck-cp'),'ck-edad':get('ck-edad'),'ck-cargo':get('ck-cargo')};}
 const dropZone=document.getElementById('dropZone');
 dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag-over');});
 dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag-over'));
 dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('drag-over');const files=Array.from(e.dataTransfer.files);if(files.length>0)handleFiles(files);});
 function extOf(name){return(name.split('.').pop()||'').toLowerCase();}
-function extClass(ext){
-if(['pdf'].includes(ext))return'ext-pdf';
-if(['doc','docx','rtf','odt'].includes(ext))return'ext-word';
-if(['xls','xlsx','ods','csv','tsv'].includes(ext))return'ext-xls';
-if(['txt','md'].includes(ext))return'ext-txt';
-return'ext-other';
-}
-function showFileCard(name,size,status,statusClass){
-const ext=extOf(name);
-const card=document.getElementById('fileLoadedCard');
-card.classList.remove('hidden');
-document.getElementById('fextBadge').textContent=ext.toUpperCase();
-document.getElementById('fextBadge').className='fext-badge '+extClass(ext);
-document.getElementById('finfoName').textContent=name;
-document.getElementById('finfoMeta').textContent=fmtSize(size)+' · '+ext.toUpperCase();
-const st=document.getElementById('finfoStatus');
-st.textContent=status;st.className='finfo-status '+statusClass;
-}
-function fmtSize(b){
-if(b<1024)return b+' B';
-if(b<1048576)return(b/1024).toFixed(1)+' KB';
-return(b/1048576).toFixed(1)+' MB';
-}
-function setProgress(pct,label){
-const wrap=document.getElementById('progressWrap');
-wrap.classList.add('visible');
-document.getElementById('progressFill').style.width=pct+'%';
-document.getElementById('progressLabel').textContent=label;
-if(pct>=100)setTimeout(()=>wrap.classList.remove('visible'),800);
-}
-function removeFile(){
-loadedFileText=null;loadedFileName=null;loadedFileExt=null;loadedWB=null;
-document.getElementById('fileLoadedCard').classList.add('hidden');
-document.getElementById('progressWrap').classList.remove('visible');
-dropZone.classList.remove('has-file');
-log('Archivo eliminado.');
-}
-document.getElementById('fileInput').addEventListener('change',e=>{
-const files=Array.from(e.target.files);
-if(files.length>0)handleFiles(files);
-e.target.value='';
-});
-async function handleFiles(files){
-batchFiles=files;batchResults=[];
-if(files.length===1){
-document.getElementById('batchPanel').style.display='none';
-document.getElementById('fileLoadedCard').classList.remove('hidden');
-await loadFile(files[0]);
-}else{
-document.getElementById('batchPanel').style.display='block';
-document.getElementById('fileLoadedCard').classList.add('hidden');
-renderBatchList(files.map(f=>({name:f.name,status:'Pendiente',statusClass:''})));
-document.getElementById('batchStatus').textContent=files.length+' archivos en cola';
-log('Lote iniciado: '+files.length+' archivos.','ok');
-await processBatchLoop(files);
-}
-}
-function renderBatchList(items){
-const list=document.getElementById('batchList');
-list.innerHTML=items.map(item=>'<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:70%;">'+item.name+'</span><span class="'+item.statusClass+'" style="font-size:0.65rem;">'+item.status+'</span></div>').join('');
-}
-async function processBatchLoop(files){
-const opts=getOptions();const tech=selectedTech;
-const listItems=files.map(f=>({name:f.name,status:'Pendiente',statusClass:''}));
-for(let i=0;i<files.length;i++){
-const file=files[i];
-listItems[i].status='Procesando...';listItems[i].statusClass='fstatus-loading';
-renderBatchList(listItems);
-try{
-const text=await extractTextSilent(file);
-const entities=detectEntities(text,opts);
-const engine=new AnonEngine();
-let anonText='',pos=0;
-const dicts=obtenerDiccionarios();
-for(const e of entities){
-anonText+=text.slice(pos,e.start);
-const valLower=e.original.toLowerCase();
-if(dicts.whitelist.some(w=>valLower===w)){anonText+=e.original;}
-else if(dicts.blacklist.some(b=>valLower===b)){anonText+='[ANONIMIZADO_PERSONALIZADO]';}
-else{anonText+=engine.apply(tech,e.type,e.original);}
-pos=e.end;
-}
-anonText+=text.slice(pos);
-dicts.blacklist.forEach(termino=>{
-const escaped=termino.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-const hasSpace=/\s/.test(termino);
-const regex=hasSpace?new RegExp('('+escaped+')','gi'):new RegExp('\\b('+escaped+')\\b','gi');
-if(regex.test(text))anonText=anonText.replace(regex,'[ANONIMIZADO_PERSONALIZADO]');
-});
-const ext=extOf(file.name);
-batchResults.push({name:'anon_'+file.name,anonText:anonText,ext:ext});
-listItems[i].status='✓ OK';listItems[i].statusClass='fstatus-ok';
-}catch(err){
-listItems[i].status='✗ Error';listItems[i].statusClass='fstatus-err';
-log('Error en '+file.name+': '+err.message,'err');
-}
-renderBatchList(listItems);
-}
-document.getElementById('btnDownloadZip').disabled=false;
-document.getElementById('batchStatus').textContent=files.length+' archivos procesados';
-log('Lote completado.','ok');
-}
-async function extractOCR(file) {
-  setProgress(10, 'Inicializando OCR...');
-  if (typeof Tesseract === 'undefined') throw new Error('Tesseract.js no cargado');
-  
-  const result = await Tesseract.recognize(
-    file,
-    'spa',
-    {
-      logger: m => {
-        if (m.status === 'recognizing text') {
-          const pct = 40 + Math.round(m.progress * 60);
-          setProgress(pct, `OCR: ${Math.round(m.progress * 100)}%`);
-        }
-      }
-    }
-  );
-  
-  setProgress(100, 'OCR completado');
-  return result.data.text;
-}
-async function extractTextSilent(file) {
-  const ext = extOf(file.name);
-  if (['txt','md','csv','tsv'].includes(ext)) return await readAsText(file);
-  if (['pdf'].includes(ext)) return await extractPDF(file);
-  if (['docx','odt'].includes(ext)) return await extractDOCX(file);
-  if (['doc'].includes(ext)) { try { return await extractDOCX(file); } catch(_) { return await readAsText(file); } }
-  if (['rtf'].includes(ext)) return await extractRTF(file);
-  if (['xlsx','xls','ods','xlsm'].includes(ext)) return await extractXLSX(file, ext==='xls');
-  if (['jpg','jpeg','png','tiff','tif','bmp','webp'].includes(ext)) return await extractOCR(file);
-  return await readAsText(file);
-}
-async function downloadBatchZip(){
-if(typeof JSZip==='undefined'){alert('JSZip no cargado. Necesitas conexión la primera vez.');return;}
-if(typeof jspdf==='undefined'){alert('jsPDF no cargado. Necesitas conexión la primera vez.');return;}
-const zip=new JSZip();
-log('Generando ZIP con todos los archivos en PDF...','ok');
-for(const res of batchResults){
-try{
-const pdfName=res.name.replace(/\.[^.]+$/,'')+'.pdf';
-const blob=await generatePdfBlob(res.anonText,res.name);
-zip.file(pdfName,blob);
-log('✓ '+pdfName+' añadido al ZIP','ok');
-}catch(err){
-log('✗ Error con '+res.name+': '+err.message,'err');
-}
-}
-const zipBlob=await zip.generateAsync({type:'blob'});
-const url=URL.createObjectURL(zipBlob);
-const a=document.createElement('a');
-a.href=url;a.download='lote_anonimizado_'+yyyymmdd()+'.zip';a.click();
-URL.revokeObjectURL(url);
-log('ZIP descargado correctamente.','ok');
-}
-async function generatePdfBlob(text,originalName){
-if(typeof jspdf==='undefined')throw new Error('jsPDF no cargado');
-const{jsPDF}=jspdf;
-const pdf=new jsPDF({unit:'mm',format:'a4'});
-const margin=18,lineH=5.5,pageH=282,contentW=174;
-pdf.setFont('helvetica','bold');pdf.setFontSize(11);pdf.setTextColor(96,52,94);
-pdf.text('Documento anonimizado — AnonimizadorPD',margin,13);
-pdf.setDrawColor(96,52,94);pdf.setLineWidth(0.3);pdf.line(margin,15.5,192,15.5);
-pdf.setFont('helvetica','normal');pdf.setFontSize(7.5);pdf.setTextColor(122,80,128);
-pdf.text('Original: '+originalName+' · '+new Date().toLocaleDateString('es-ES'),margin,19.5);
-pdf.setFontSize(9);pdf.setTextColor(46,20,48);
-let y=26;
-const lines=pdf.splitTextToSize(text,contentW);
-for(const line of lines){
-if(y+lineH>pageH){pdf.addPage();y=14;pdf.setFontSize(7);pdf.setTextColor(170,136,176);pdf.text('AnonimizadorPD · PDPC/AEPD · RGPD Art.4(1)',margin,9);pdf.setFontSize(9);pdf.setTextColor(46,20,48);}
-pdf.text(line,margin,y);y+=lineH;
-}
-return pdf.output('blob');
-}
-async function loadFile(file){
-const ext=extOf(file.name);
-loadedFileName=file.name;loadedFileExt=ext;loadedWB=null;
-showFileCard(file.name,file.size,'Extrayendo…','fstatus-loading');
-setProgress(10,'Leyendo archivo…');
-log('Cargando "'+file.name+'" ('+fmtSize(file.size)+', '+ext.toUpperCase()+')');
-setLogActive(true);
-try{
-let text='';
-if(['txt','md','csv','tsv'].includes(ext)){text=await readAsText(file);setProgress(100,'Texto extraído');}
-else if(['pdf'].includes(ext)){text=await extractPDF(file);}
-else if(['docx','odt'].includes(ext)){text=await extractDOCX(file);}
-else if(['doc'].includes(ext)){try{text=await extractDOCX(file);}catch(_){text=await readAsText(file);}}
-else if(['rtf'].includes(ext)){text=await extractRTF(file);}
-else if(['xlsx','xlsm'].includes(ext)){text=await extractXLSX(file,false);}
-else if(['xls'].includes(ext)){text=await extractXLSX(file,true);}
-else if(['ods'].includes(ext)){text=await extractXLSX(file,false);}
-else if(['jpg','jpeg','png','tiff','tif','bmp','webp'].includes(ext)){text = await extractOCR(file);}
-else{text=await readAsText(file);setProgress(100,'Texto extraído (genérico)');}
-if(!text||text.trim().length===0)throw new Error('No se pudo extraer texto del archivo');
-loadedFileText=text;
-dropZone.classList.add('has-file');
-showFileCard(file.name,file.size,'✓ '+text.length.toLocaleString('es')+' caracteres','fstatus-ok');
-setProgress(100,'Texto listo — '+text.length.toLocaleString('es')+' caracteres');
-log('Texto extraído: '+text.length.toLocaleString('es')+' caracteres','ok');
-}catch(err){
-showFileCard(file.name,file.size,'✗ Error al extraer','fstatus-err');
-log('Error: '+err.message,'err');
-loadedFileText=null;
-}finally{setLogActive(false);}
-}
+function extClass(ext){if(['pdf'].includes(ext))return'ext-pdf';if(['doc','docx','rtf','odt'].includes(ext))return'ext-word';if(['xls','xlsx','ods','csv','tsv'].includes(ext))return'ext-xls';if(['txt','md'].includes(ext))return'ext-txt';if(['jpg','jpeg','png','tiff','tif','bmp','webp'].includes(ext))return'ext-img';return'ext-other';}
+function showFileCard(name,size,status,statusClass){const ext=extOf(name);const card=document.getElementById('fileLoadedCard');card.classList.remove('hidden');document.getElementById('fextBadge').textContent=ext.toUpperCase();document.getElementById('fextBadge').className='fext-badge '+extClass(ext);document.getElementById('finfoName').textContent=name;document.getElementById('finfoMeta').textContent=fmtSize(size)+' · '+ext.toUpperCase();const st=document.getElementById('finfoStatus');st.textContent=status;st.className='finfo-status '+statusClass;}
+function fmtSize(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB';}
+function setProgress(pct,label){const wrap=document.getElementById('progressWrap');wrap.classList.add('visible');document.getElementById('progressFill').style.width=pct+'%';document.getElementById('progressLabel').textContent=label;if(pct>=100)setTimeout(()=>wrap.classList.remove('visible'),800);}
+function removeFile(){loadedFileText=null;loadedFileName=null;loadedFileExt=null;loadedWB=null;document.getElementById('fileLoadedCard').classList.add('hidden');document.getElementById('progressWrap').classList.remove('visible');dropZone.classList.remove('has-file');log('Archivo eliminado.');}
+document.getElementById('fileInput').addEventListener('change',e=>{const files=Array.from(e.target.files);if(files.length>0)handleFiles(files);e.target.value='';});
+async function handleFiles(files){batchFiles=files;batchResults=[];if(files.length===1){document.getElementById('batchPanel').style.display='none';document.getElementById('fileLoadedCard').classList.remove('hidden');await loadFile(files[0]);}else{document.getElementById('batchPanel').style.display='block';document.getElementById('fileLoadedCard').classList.add('hidden');renderBatchList(files.map(f=>({name:f.name,status:'Pendiente',statusClass:''})));document.getElementById('batchStatus').textContent=files.length+' archivos en cola';log('Lote iniciado: '+files.length+' archivos.','ok');await processBatchLoop(files);}}
+function renderBatchList(items){const list=document.getElementById('batchList');list.innerHTML=items.map(item=>'<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:70%">'+item.name+'</span><span class="'+item.statusClass+'" style="font-size:0.65rem">'+item.status+'</span></div>').join('');}
+async function processBatchLoop(files){const opts=getOptions();const tech=selectedTech;const listItems=files.map(f=>({name:f.name,status:'Pendiente',statusClass:''}));for(let i=0;i<files.length;i++){const file=files[i];listItems[i].status='Procesando...';listItems[i].statusClass='fstatus-loading';renderBatchList(listItems);try{const text=await extractTextSilent(file);const entities=detectEntities(text,opts);const engine=new AnonEngine();let anonText='',pos=0;const dicts=obtenerDiccionarios();for(const e of entities){anonText+=text.slice(pos,e.start);const valLower=e.original.toLowerCase();if(dicts.whitelist.some(w=>valLower===w)){anonText+=e.original;}else if(dicts.blacklist.some(b=>valLower===b)){anonText+='[ANONIMIZADO_PERSONALIZADO]';}else{anonText+=engine.apply(tech,e.type,e.original);}pos=e.end;}anonText+=text.slice(pos);dicts.blacklist.forEach(termino=>{const escaped=termino.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const hasSpace=/\s/.test(termino);const regex=hasSpace?new RegExp('('+escaped+')','gi'):new RegExp('\\b('+escaped+')\\b','gi');if(regex.test(text))anonText=anonText.replace(regex,'[ANONIMIZADO_PERSONALIZADO]');});const ext=extOf(file.name);batchResults.push({name:'anon_'+file.name,anonText:anonText,ext:ext});listItems[i].status='✓ OK';listItems[i].statusClass='fstatus-ok';}catch(err){listItems[i].status=' Error';listItems[i].statusClass='fstatus-err';log('Error en '+file.name+': '+err.message,'err');}renderBatchList(listItems);}document.getElementById('btnDownloadZip').disabled=false;document.getElementById('batchStatus').textContent=files.length+' archivos procesados';log('Lote completado.','ok');}
+async function extractTextSilent(file){const ext=extOf(file.name);if(['txt','md','csv','tsv'].includes(ext))return await readAsText(file);if(['pdf'].includes(ext))return await extractPDF(file);if(['docx','odt'].includes(ext))return await extractDOCX(file);if(['doc'].includes(ext)){try{return await extractDOCX(file);}catch(_){return await readAsText(file);}}if(['rtf'].includes(ext))return await extractRTF(file);if(['xlsx','xls','ods','xlsm'].includes(ext))return await extractXLSX(file,ext==='xls');if(['jpg','jpeg','png','tiff','tif','bmp','webp'].includes(ext))return await extractOCR(file);return await readAsText(file);}
+async function downloadBatchZip(){if(typeof JSZip==='undefined'){alert('JSZip no cargado. Necesitas conexión la primera vez.');return;}if(typeof jspdf==='undefined'){alert('jsPDF no cargado. Necesitas conexión la primera vez.');return;}const zip=new JSZip();log('Generando ZIP con todos los archivos en PDF...','ok');for(const res of batchResults){try{const pdfName=res.name.replace(/\.[^.]+$/,'')+'.pdf';const blob=await generatePdfBlob(res.anonText,res.name);zip.file(pdfName,blob);log('✓ '+pdfName+' añadido al ZIP','ok');}catch(err){log('✗ Error con '+res.name+': '+err.message,'err');}}const zipBlob=await zip.generateAsync({type:'blob'});const url=URL.createObjectURL(zipBlob);const a=document.createElement('a');a.href=url;a.download='lote_anonimizado_'+yyyymmdd()+'.zip';a.click();URL.revokeObjectURL(url);log('ZIP descargado correctamente.','ok');}
+async function generatePdfBlob(text,originalName){if(typeof jspdf==='undefined')throw new Error('jsPDF no cargado');const{jsPDF}=jspdf;const pdf=new jsPDF({unit:'mm',format:'a4'});const margin=18,lineH=5.5,pageH=282,contentW=174;pdf.setFont('helvetica','bold');pdf.setFontSize(11);pdf.setTextColor(96,52,94);pdf.text('Documento anonimizado — AnonimizadorPD',margin,13);pdf.setDrawColor(96,52,94);pdf.setLineWidth(0.3);pdf.line(margin,15.5,192,15.5);pdf.setFont('helvetica','normal');pdf.setFontSize(7.5);pdf.setTextColor(122,80,128);pdf.text('Original: '+originalName+' · '+new Date().toLocaleDateString('es-ES'),margin,19.5);pdf.setFontSize(9);pdf.setTextColor(46,20,48);let y=26;const lines=pdf.splitTextToSize(text,contentW);for(const line of lines){if(y+lineH>pageH){pdf.addPage();y=14;pdf.setFontSize(7);pdf.setTextColor(170,136,176);pdf.text('AnonimizadorPD · PDPC/AEPD · RGPD Art.4(1)',margin,9);pdf.setFontSize(9);pdf.setTextColor(46,20,48);}pdf.text(line,margin,y);y+=lineH;}return pdf.output('blob');}
+async function extractOCR(file){setProgress(10,'Inicializando OCR...');if(typeof Tesseract==='undefined')throw new Error('Tesseract.js no cargado');const result=await Tesseract.recognize(file,'spa',{logger:m=>{if(m.status==='recognizing text'){const pct=40+Math.round(m.progress*60);setProgress(pct,'OCR: '+Math.round(m.progress*100)+'%');}}});setProgress(100,'OCR completado');return result.data.text;}
+async function loadFile(file){const ext=extOf(file.name);loadedFileName=file.name;loadedFileExt=ext;loadedWB=null;showFileCard(file.name,file.size,'Extrayendo…','fstatus-loading');setProgress(10,'Leyendo archivo…');log('Cargando "'+file.name+'" ('+fmtSize(file.size)+', '+ext.toUpperCase()+')');setLogActive(true);try{let text='';if(['txt','md','csv','tsv'].includes(ext)){text=await readAsText(file);setProgress(100,'Texto extraído');}else if(['pdf'].includes(ext)){text=await extractPDF(file);}else if(['docx','odt'].includes(ext)){text=await extractDOCX(file);}else if(['doc'].includes(ext)){try{text=await extractDOCX(file);}catch(_){text=await readAsText(file);}}else if(['rtf'].includes(ext)){text=await extractRTF(file);}else if(['xlsx','xlsm'].includes(ext)){text=await extractXLSX(file,false);}else if(['xls'].includes(ext)){text=await extractXLSX(file,true);}else if(['ods'].includes(ext)){text=await extractXLSX(file,false);}else if(['jpg','jpeg','png','tiff','tif','bmp','webp'].includes(ext)){text=await extractOCR(file);}else{text=await readAsText(file);setProgress(100,'Texto extraído (genérico)');}if(!text||text.trim().length===0)throw new Error('No se pudo extraer texto del archivo');loadedFileText=text;dropZone.classList.add('has-file');showFileCard(file.name,file.size,'✓ '+text.length.toLocaleString('es')+' caracteres','fstatus-ok');setProgress(100,'Texto listo — '+text.length.toLocaleString('es')+' caracteres');log('Texto extraído: '+text.length.toLocaleString('es')+' caracteres','ok');}catch(err){showFileCard(file.name,file.size,'✗ Error al extraer','fstatus-err');log('Error: '+err.message,'err');loadedFileText=null;}finally{setLogActive(false);}}
 function readAsText(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=()=>rej(new Error('Error de lectura'));r.readAsText(file,'UTF-8');});}
 function readAsArrayBuffer(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=()=>rej(new Error('Error de lectura'));r.readAsArrayBuffer(file);});}
-async function extractPDF(file){
-setProgress(15,'Inicializando pdf.js…');
-if(typeof pdfjsLib==='undefined')throw new Error('pdf.js no cargado');
-pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-const ab=await readAsArrayBuffer(file);
-setProgress(30,'Cargando PDF…');
-const pdf=await pdfjsLib.getDocument({data:new Uint8Array(ab)}).promise;
-let text='';
-for(let i=1;i<=pdf.numPages;i++){
-setProgress(30+Math.round((i/pdf.numPages)*60),'Extrayendo página '+i+'/'+pdf.numPages+'…');
-const page=await pdf.getPage(i);
-const content=await page.getTextContent();
-text+=content.items.map(s=>s.str).join(' ')+'\n';
-}
-setProgress(100,'PDF: '+pdf.numPages+' páginas extraídas');
-return text.trim();
-}
-async function extractDOCX(file){
-setProgress(20,'Inicializando mammoth.js…');
-if(typeof mammoth==='undefined')throw new Error('mammoth.js no cargado');
-const ab=await readAsArrayBuffer(file);
-setProgress(60,'Extrayendo texto DOCX…');
-const result=await mammoth.extractRawText({arrayBuffer:ab});
-setProgress(100,'DOCX extraído');
-return result.value;
-}
-async function extractXLSX(file,isLegacy){
-setProgress(20,'Inicializando SheetJS…');
-if(typeof XLSX==='undefined')throw new Error('SheetJS no cargado');
-const ab=await readAsArrayBuffer(file);
-setProgress(50,'Leyendo hojas de cálculo…');
-const wb=XLSX.read(ab,{type:'array'});
-loadedWB=wb;
-let text='';
-for(const sheetName of wb.SheetNames){
-const ws=wb.Sheets[sheetName];
-const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
-text+='[Hoja: '+sheetName+']\n';
-for(const row of rows){text+=row.filter(c=>c!=='').join('\t')+'\n';}
-text+='\n';
-}
-setProgress(100,wb.SheetNames.length+' hoja(s) extraídas');
-return text.trim();
-}
-async function extractRTF(file){
-setProgress(20,'Extrayendo texto RTF…');
-const raw=await readAsText(file);
-let text=raw.replace(/\{[^{}]*\}/g,' ').replace(/\\[a-z]+\-?\d*\s?/gi,'').replace(/\\\*/g,'').replace(/[{}\\]/g,'').replace(/\r\n|\r|\n/g,'\n').replace(/[ \t]{2,}/g,' ').trim();
-setProgress(100,'RTF extraído');
-return text;
-}
-const NOMBRES_ES=new Set(['antonio','manuel','josé','jose','francisco','david','juan','jesús','jesus','javier','carlos','daniel','miguel','rafael','pedro','alejandro','pablo','luis','jorge','sergio','alberto','roberto','ricardo','fernando','gonzalo','ramón','ramon','ignacio','ángel','angel','andrés','andres','mario','rodrigo','víctor','victor','oscar','óscar','enrique','rubén','ruben','diego','iván','ivan','álvaro','alvaro','marcos','hugo','adrián','adrian','alex','nicolás','nicolas','eduardo','santiago','emilio','joaquín','joaquin','felipe','tomás','tomas','cristian','christian','samuel','benjamín','benjamin','martín','martin','raúl','raul','gabriel','marc','pol','gerard','arnau','biel','guillem','pau','jordi','oriol','xavier','ferran','cesar','césar','héctor','hector','borja','abel','ismael','elias','elías','ezequiel','mateo','leo','lucas','oliver','ian','eric','erik','kevin','jonathan','maria','maría','carmen','josefa','isabel','ana','dolores','pilar','teresa','rosa','cristina','laura','marta','patricia','sandra','elena','sara','lucía','lucia','paula','raquel','diana','mónica','monica','alicia','beatriz','natalia','silvia','eva','miriam','irene','yolanda','susana','virginia','andrea','nuria','esther','lorena','rebeca','noelia','jessica','jennifer','alejandra','sofía','sofia','valentina','noa','emma','olivia','julia','leire','inés','ines','claudia','carolina','amparo','concepción','concha','rocío','rocio','sonia','verónica','veronica','maribel','mercedes','encarnación','encarna','asunción','asun','inmaculada','trinidad','lola','maite','aitana','aroa','itziar','amaia','nerea','miren','naiara','ane','ainhoa','nagore','olatz','uxue','montse','montserrat','núria','laia','mar','anna','meritxell','gemma','roser','carme','blanca','alba','celia','vera','iris','luna','salma','fátima','fatima','martina','adela','adelaida','adriana','agata','ágata','agueda','águeda','aitziber','alegria','alegría','alexandra','almudena','ama','amaya','amelia','ana belen','ana belén','ana maria','ana maría','anabel','angela','ángela','antonia','arantxa','arantza','ariadna','arlet','arlette','ascension','ascensión','asia','aurora','azahara','begoña','belen','belén','benedetta','berenice','brenda','camila','candela','carla','carlota','carmela','cayetana','cecilia','chari','chiara','cintia','clara','consuelo','coral','daniela','deborah','déborah','delia','desiree','desirée','dolors','edurne','eider','eila','elisa','elisabet','elisabeth','elvira','encina','erika','estela','eulalia','eusebia','fabiana','fatou','flor','flora','francisca','gabriela','gema','genoveva','geraldine','gilda','gloria','guadalupe','helena','hilda','inesita','irantzu','iranzu','irune','isadora','isolina','jacqueline','jana','janet','jazmin','jazmín','jimena','joana','juana','judit','judith','karina','katia','kelly','lara','leticia','leyre','lidia','liliana','lina','lissette','lorraine','luciana','lucrecia','luisa','magdalena','maialen','malena','manuela','mara','marcela','margarita','mari','maria del mar','maria jose','maría jose','marian','maricarmen','marina','marisol','matilde','melania','melisa','melissa','mencia','mencía','micaela','milagros','mina','monserrat','naia','naomi','natalie','nazaret','nazareth','nekane','nélida','nelida','nicole','nidia','nieves','noemi','noemí','octavia','olga','paloma','pamela','paqui','paquita','pastora','paz','perla','petra','reina','remedios','rita','rosalia','rosalía','rosana','rosario','sabina','samara','samantha','selena','sheila','soledad','stefania','stefanía','tamara','tania','tatiana','telma','teodora','teresita','triana','valeria','vanesa','vanessa','verena','vicenta','victoria','violeta','viridiana','wanda','ximena','yaiza','yasmina','ylenia','zaida','zulema']);
-const APELLIDOS_ES=new Set(['garcía','garcia','martínez','martinez','lópez','lopez','sánchez','sanchez','pérez','perez','gómez','gomez','martín','martin','jiménez','jimenez','ruiz','hernández','hernandez','díaz','diaz','moreno','álvarez','alvarez','muñoz','munoz','romero','alonso','gutiérrez','gutierrez','navarro','torres','domínguez','dominguez','vázquez','vazquez','ramos','gil','ramírez','ramirez','serrano','blanco','molina','morales','suárez','suarez','ortega','delgado','castro','ortiz','rubio','marín','marin','sanz','núñez','nunez','iglesias','medina','garrido','santos','castillo','cortés','cortes','lozano','guerrero','cano','prieto','méndez','mendez','calvo','gallego','vidal','herrero','mora','fernández','fernandez','flores','nieto','carrasco','herrera','vargas','pascual','aguilar','campos','montero','ríos','rios','parra','reyes','vera','moya','bravo','vila','pons','mas','sala','camps','rovira','font','bosch','soler','puig','ferrer','pujol','roca','prat','carbonell','fuentes','peña','miranda','cabrera','ibáñez','ibañez','collado','hidalgo','arias','paredes','rojas','espinosa','oliver','valero','crespo','redondo','montes','caballero','esteban','bernal','nieves','bautista','segura','planas','abellán','abellan','abreu','acosta','aguirre','aguilera','alarcón','alarcon','alba','alberca','alcaraz','alcover','alcoraz','alcaide','alcántara','alcantara','alcolea','almenar','almendros','altamira','alvarado','amador','amor','amores','andreu','andreau','angulo','antón','anton','aparicio','aranda','araujo','arce','arcos','arenas','armengol','arnal','arnau','arranz','arrebola','arriaga','arroyo','artacho','asensio','atienza','avila','ávila','ayala','baena','bailón','bailon','ballester','ballesteros','barba','barbero','barceló','barcelo','barea','baroja','barquero','barragán','barragan','barranco','barrenechea','barrios','bas','basco','basurto','batista','bayona','bejarano','bello','beltrán','beltran','benavent','benavides','benítez','benitez','berenguer','bermejo','berrocal','bescós','bescos','blanes','boix','boluda','bonet','bonilla','borrego','borrás','borras','bote','boveda','boyer','briones','bujalance','burgués','burgues','burillo','bustamante','bustos','cabezas','cabello','cabrero','cadenas','calderón','calderon','calleja','camacho','camarena','cambra','campillo','campoy','canales','candel','candelas','canet','cánovas','canovas','cantalapiedra','cantó','canto','cañadas','canadas','caparrós','caparros','cardona','carmona','caro','carpio','carranza','carreño','carreno','carrillo','carvajal','casado','casanova','cascales','casero','casillas','castejón','castejon','castellanos','castelló','castello','castellví','castellvi','castilla','catalá','catala','ceballos','cervantes','cifuentes','cilleros','clavero','cobo','cobos','coca','codina','colom','colomer','comas','conde','contreras','cordero','cornejo','corral','corrales','cortina','cos','costa','costas','coves','cuevas','cuenca','cuesta','cueto','dalmau','damas','de la cruz','de la fuente','de la hoz','de la iglesia','de la rosa','de la torre','de la vega','de la peña','de la orden','de la oliva','de la mata','de la paz','de la calle','de la cuesta','de la cámara','de la cerda','de la sota','de la rubia','de la serna','del rio','del río','del campo','del moral','del olmo','del pino','del valle','del pozo','del castillo','del cerro','del corral','del monte','del barrio','del hierro','del solar','de los santos','de los reyes','de los rios','de los ríos','de los campos','de los ángeles','de los angeles','de las casas','de las heras','de las nieves','de las alas','san juan','san jose','san josé','san martín','san martin','san pedro','san sebastián','san sebastian','san miguel','san vicente','santa cruz','santa maria','santa maría','santos garcía','santos lopez','garcia lopez','garcía lopez','garcia lópez','garcía lópez','martinez garcia','martínez garcia','martinez garcía','martínez garcía','lopez martinez','lópez martinez','lopez martínez','lópez martínez','sanchez perez','sánchez pérez','sanchez pérez','sánchez perez','gomez rodriguez','gómez rodriguez','gomez rodríguez','gómez rodríguez','fernandez lopez','fernández lópez','fernandez lópez','fernández lopez','ruiz martinez','ruiz martínez','diaz garcia','díaz garcía','moreno jimenez','moreno jiménez','alvarez martin','álvarez martín','garcia-lopez','garcía-lópez','martinez-garcia','martínez-garcía','lopez-sanchez','lópez-sánchez','gomez-ruiz','gómez-ruiz','vila-real','villarreal','font de mora','roig i montserrat','puig i cadafalch','mas i lluch','serra i font','bosch i gimpera','garcia de cortazar','garcía de cortázar','lopez de heredia','lópez de heredia','martinez de irujo','martínez de irujo','perez de ayala','pérez de ayala','ruiz de azua','ruiz de azúa','diaz de cerio','díaz de cerio','uribe echevarria','uribe echevarría','ortiz de zarate','ortiz de zárate','costa rica','pena nieto','peña nieto','torres garcia','torres garcía','navarro lopez','navarro lópez','castro urdiales','calvo sotelo','suarez illana','suárez illana','arias navarro','gil robles','fernandez ordonez','fernández ordóñez','lopez de la o','lópez de la o','martin santos','martín santos','ruiz gallardon','ruiz gallardón']);
-/* ──────────────────────────
-   DATOS SINTÉTICOS
-────────────────────────────*/
-const NOMBRES_SINTETICOS = ['Carlos','María','Pedro','Ana','Luis','Laura','Jorge','Elena','Miguel','Carmen','Pablo','Isabel','Diego','Sofía','Andrés','Lucía','Fernando','Marta','Ricardo','Paula','Alberto','Cristina','Raúl','Natalia','Sergio','Beatriz','Javier','Rosa','Manuel','Teresa'];
-const APELLIDOS_SINTETICOS = ['Gómez','Rodríguez','Martínez','López','Sánchez','Pérez','García','Fernández','Torres','Ramírez','Flores','Rivera','González','Díaz','Reyes','Morales','Ortiz','Silva','Ruiz','Castro','Vargas','Mendoza','Romero','Herrera','Medina','Aguilar','Peña','Vega','Delgado','Serrano'];
-const CALLES_SINTETICAS = ['Calle Mayor','Avenida de la Constitución','Calle del Sol','Plaza de España','Paseo de la Castellana','Calle Gran Vía','Avenida de Andalucía','Calle de Alcalá','Plaza del Ayuntamiento','Calle de la Paz'];
-const CIUDADES_SINTETICAS = ['Madrid','Barcelona','Valencia','Sevilla','Zaragoza','Málaga','Murcia','Palma','Bilbao','Alicante'];
-
-function generarNombreSintetico() {
-  return NOMBRES_SINTETICOS[Math.floor(Math.random() * NOMBRES_SINTETICOS.length)] + ' ' + 
-         APELLIDOS_SINTETICOS[Math.floor(Math.random() * APELLIDOS_SINTETICOS.length)] + ' ' + 
-         APELLIDOS_SINTETICOS[Math.floor(Math.random() * APELLIDOS_SINTETICOS.length)];
-}
-
-function generarEmailSintetico() {
-  const nombre = NOMBRES_SINTETICOS[Math.floor(Math.random() * NOMBRES_SINTETICOS.length)].toLowerCase();
-  const apellido = APELLIDOS_SINTETICOS[Math.floor(Math.random() * APELLIDOS_SINTETICOS.length)].toLowerCase();
-  const num = Math.floor(Math.random() * 999);
-  const dominios = ['example.com','test.org','demo.net','ficticio.es'];
-  return `${nombre}.${apellido}${num}@${dominios[Math.floor(Math.random() * dominios.length)]}`;
-}
-
-function generarTelefonoSintetico() {
-  return '6' + Math.floor(Math.random() * 100000000).toString().padStart(8, '0');
-}
-
-function generarDNISintetico() {
-  const num = Math.floor(Math.random() * 100000000).toString().padStart(8, '0');
-  const letra = DNI_CTRL[parseInt(num, 10) % 23];
-  return num + letra;
-}
-
-function generarCPSintetico() {
-  return (Math.floor(Math.random() * 52) + 1).toString().padStart(2, '0') + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-}
-
-function generarDireccionSintetica() {
-  const calle = CALLES_SINTETICAS[Math.floor(Math.random() * CALLES_SINTETICAS.length)];
-  const num = Math.floor(Math.random() * 150) + 1;
-  const piso = String.fromCharCode(65 + Math.floor(Math.random() * 8));
-  return `${calle} ${num}, ${piso}º`;
-}
-
-function generarCiudadSintetica() {
-  return CIUDADES_SINTETICAS[Math.floor(Math.random() * CIUDADES_SINTETICAS.length)];
-}
-
-function generarIBANSintetico() {
-  let iban = 'ES';
-  for (let i = 0; i < 22; i++) iban += Math.floor(Math.random() * 10);
-  return iban;
-}
-
-function generarIPSintetica() {
-  return `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`;
-}
-
-function generarEdadSintetica() {
-  return Math.floor(Math.random() * 60) + 18;
-}
-
-function generarFechaSintetica() {
-  const año = 1960 + Math.floor(Math.random() * 40);
-  const mes = Math.floor(Math.random() * 12) + 1;
-  const dia = Math.floor(Math.random() * 28) + 1;
-  return `${dia.toString().padStart(2,'0')}/${mes.toString().padStart(2,'0')}/${año}`;
-}
+async function extractPDF(file){setProgress(15,'Inicializando pdf.js…');if(typeof pdfjsLib==='undefined')throw new Error('pdf.js no cargado');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const ab=await readAsArrayBuffer(file);setProgress(30,'Cargando PDF…');const pdf=await pdfjsLib.getDocument({data:new Uint8Array(ab)}).promise;let text='';for(let i=1;i<=pdf.numPages;i++){setProgress(30+Math.round((i/pdf.numPages)*60),'Extrayendo página '+i+'/'+pdf.numPages+'…');const page=await pdf.getPage(i);const content=await page.getTextContent();text+=content.items.map(s=>s.str).join(' ')+'\n';}setProgress(100,'PDF: '+pdf.numPages+' páginas extraídas');return text.trim();}
+async function extractDOCX(file){setProgress(20,'Inicializando mammoth.js…');if(typeof mammoth==='undefined')throw new Error('mammoth.js no cargado');const ab=await readAsArrayBuffer(file);setProgress(60,'Extrayendo texto DOCX…');const result=await mammoth.extractRawText({arrayBuffer:ab});setProgress(100,'DOCX extraído');return result.value;}
+async function extractXLSX(file,isLegacy){setProgress(20,'Inicializando SheetJS…');if(typeof XLSX==='undefined')throw new Error('SheetJS no cargado');const ab=await readAsArrayBuffer(file);setProgress(50,'Leyendo hojas de cálculo…');const wb=XLSX.read(ab,{type:'array'});loadedWB=wb;let text='';for(const sheetName of wb.SheetNames){const ws=wb.Sheets[sheetName];const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});text+='[Hoja: '+sheetName+']\n';for(const row of rows){text+=row.filter(c=>c!=='').join('\t')+'\n';}text+='\n';}setProgress(100,wb.SheetNames.length+' hoja(s) extraídas');return text.trim();}
+async function extractRTF(file){setProgress(20,'Extrayendo texto RTF…');const raw=await readAsText(file);let text=raw.replace(/\{[^{}]*\}/g,' ').replace(/\\[a-z]+\-?\d*\s?/gi,'').replace(/\\\*/g,'').replace(/[{}\\]/g,'').replace(/\r\n|\r|\n/g,'\n').replace(/[ \t]{2,}/g,' ').trim();setProgress(100,'RTF extraído');return text;}
+const NOMBRES_ES=new Set(['antonio','manuel','josé','jose','francisco','david','juan','jesús','jesus','javier','carlos','daniel','miguel','rafael','pedro','alejandro','pablo','luis','jorge','sergio','alberto','roberto','ricardo','fernando','gonzalo','ramón','ramon','ignacio','ángel','angel','andrés','andres','mario','rodrigo','víctor','victor','oscar','óscar','enrique','rubén','ruben','diego','iván','ivan','álvaro','alvaro','marcos','hugo','adrián','adrian','alex','maria','maría','carmen','josefa','isabel','ana','dolores','pilar','teresa','rosa','cristina','laura','marta','patricia','sandra','elena','sara','lucía','lucia','paula','raquel','diana','mónica','monica','alicia','beatriz','natalia','silvia','eva','miriam','irene','yolanda','susana','virginia','andrea','nuria','esther','lorena','rebeca','noelia','jessica','jennifer','alejandra','sofía','sofia','valentina','noa','emma','olivia','julia','leire','inés','ines','claudia','carolina','amparo','concepción','concha','rocío','rocio','sonia','verónica','veronica','maribel','mercedes','encarnación','encarna','asunción','asun','inmaculada','trinidad','lola','maite','aitana','aroa','itziar','amaia','nerea','miren','naiara','ane','ainhoa','nagore','olatz','uxue','montse','montserrat','núria','laia','mar','anna','meritxell','gemma','roser','carme','blanca','alba','celia','vera','iris','luna','salma','fátima','fatima','martina','adela','adelaida','adriana','agata','ágata','agueda','águeda','aitziber','alegria','alegría','alexandra','almudena','ama','amaya','amelia','ana belen','ana belén','ana maria','ana maría','anabel','angela','ángela','antonia','arantxa','arantza','ariadna','arlet','arlette','ascension','ascensión','asia','aurora','azahara','begoña','belen','belén','benedetta','berenice','blanca','brenda','camila','candela','carla','carlota','carmela','cayetana','cecilia','chari','chiara','cintia','clara','consuelo','coral','cristina','daniela','deborah','déborah','delia','desiree','desirée','dolors','edurne','eider','eila','elisa','elisabet','elisabeth','elvira','emma','encina','erika','estela','eulalia','eusebia','fabiana','fatou','flor','flora','francisca','gabriela','gema','genoveva','geraldine','gilda','gloria','guadalupe','helena','hilda','inesita','irantzu','iranzu','irune','isadora','isolina','jacqueline','jana','janet','jazmin','jazmín','jimena','joana','juana','judit','judith','karina','katia','kelly','lara','leticia','leyre','lidia','liliana','lina','lissette','lorraine','luciana','lucrecia','luisa','magdalena','maialen','malena','manuela','mara','marcela','margarita','mari','maria del mar','maria jose','maría jose','marian','maricarmen','marina','marisol','marta','matilde','melania','melisa','melissa','mencia','mencía','micaela','milagros','mina','monserrat','naia','naomi','natalie','nazaret','nazareth','nekane','nélida','nelida','nicole','nidia','nieves','noemi','noemí','octavia','olga','paloma','pamela','paqui','paquita','pastora','paz','perla','petra','reina','remedios','rita','rosalia','rosalía','rosana','rosario','sabina','samara','samantha','selena','sheila','soledad','stefania','stefanía','tamara','tania','tatiana','telma','teodora','teresita','triana','valeria','vanesa','vanessa','verena','vicenta','victoria','violeta','viridiana','wanda','ximena','yaiza','yasmina','ylenia','yolanda','zaida','zulema']);
+const APELLIDOS_ES=new Set(['garcía','garcia','martínez','martinez','lópez','lopez','sánchez','sanchez','pérez','perez','gómez','gomez','martín','martin','jiménez','jimenez','ruiz','hernández','hernandez','díaz','diaz','moreno','álvarez','alvarez','muñoz','munoz','romero','alonso','gutiérrez','gutierrez','navarro','torres','domínguez','dominguez','vázquez','vazquez','ramos','gil','ramírez','ramirez','serrano','blanco','molina','morales','suárez','suarez','ortega','delgado','castro','ortiz','rubio','marín','marin','sanz','núñez','nunez','iglesias','medina','garrido','santos','castillo','cortés','cortes','lozano','guerrero','cano','prieto','méndez','mendez','calvo','gallego','vidal','herrero','mora','fernández','fernandez','flores','nieto','carrasco','herrera','vargas','pascual','aguilar','campos','montero','ríos','rios','parra','reyes','vera','moya','bravo','vila','pons','mas','sala','camps','rovira','font','bosch','soler','puig','ferrer','pujol','roca','prat','carbonell','fuentes','peña','miranda','cabrera','ibáñez','ibañez','collado','hidalgo','arias','paredes','rojas','espinosa','oliver','valero','crespo','redondo','montes','caballero','esteban','bernal','nieves','bautista','segura','planas','abellán','abellan','abreu','acosta','aguirre','aguilera','alarcón','alarcon','alba','alberca','alcaraz','alcover','alcoraz','alcaide','alcántara','alcantara','alcolea','almenar','almendros','alonso','altamira','alvarado','amador','amor','amores','andreu','andreau','angulo','antón','anton','aparicio','aranda','araujo','arce','arcos','arenas','arias','armengol','arnal','arnau','arranz','arrebola','arriaga','arroyo','artacho','asensio','atienza','avila','ávila','ayala','baena','bailón','bailon','ballester','ballesteros','barba','barbero','barceló','barcelo','barea','baroja','barquero','barragán','barragan','barranco','barrenechea','barrios','bas','basco','basurto','batista','bayona','bejarano','bello','beltrán','beltran','benavent','benavides','benítez','benitez','berenguer','bermejo','bernal','berrocal','bescós','bescos','blanes','boix','boluda','bonet','bonilla','borrego','borrás','borras','bosch','bote','boveda','boyer','briones','bujalance','burgués','burgues','burillo','bustamante','bustos','cabezas','cabello','cabrero','cadenas','calderón','calderon','calleja','calvo','camacho','camarena','cambra','campillo','campoy','canales','candel','candelas','canet','cano','cánovas','canovas','cantalapiedra','cantó','canto','cañadas','canadas','caparrós','caparros','cardona','carmona','caro','carpio','carranza','carreño','carreno','carrillo','carvajal','casado','casanova','cascales','casero','casillas','castejón','castejon','castellanos','castelló','castello','castellví','castellvi','castilla','castillo','castro','catalá','catala','ceballos','cervantes','cifuentes','cilleros','clavero','cobo','cobos','coca','codina','colom','colomer','comas','conde','contreras','cordero','cornejo','corral','corrales','cortina','cos','costa','costas','coves','cuevas','cuenca','cuesta','cueto','dalmau','damas','de la cruz','de la fuente','de la hoz','de la iglesia','de la rosa','de la torre','de la vega','de la peña','de la orden','de la oliva','de la mata','de la paz','de la calle','de la cuesta','de la cámara','de la cerda','de la sota','de la rubia','de la serna','del rio','del río','del campo','del moral','del olmo','del pino','del valle','del pozo','del castillo','del cerro','del corral','del monte','del barrio','del hierro','del solar','de los santos','de los reyes','de los rios','de los ríos','de los campos','de los ángeles','de los angeles','de las casas','de las heras','de las nieves','de las alas','san juan','san jose','san josé','san martín','san martin','san pedro','san sebastián','san sebastian','san miguel','san vicente','santa cruz','santa maria','santa maría','santos garcía','santos lopez','garcia lopez','garcía lopez','garcia lópez','garcía lópez','martinez garcia','martínez garcia','martinez garcía','martínez garcía','lopez martinez','lópez martinez','lopez martínez','lópez martínez','sanchez perez','sánchez pérez','sanchez pérez','sánchez perez','gomez rodriguez','gómez rodriguez','gomez rodríguez','gómez rodríguez','fernandez lopez','fernández lópez','fernandez lópez','fernández lopez','ruiz martinez','ruiz martínez','diaz garcia','díaz garcía','moreno jimenez','moreno jiménez','alvarez martin','álvarez martín','garcia-lopez','garcía-lópez','martinez-garcia','martínez-garcía','lopez-sanchez','lópez-sánchez','gomez-ruiz','gómez-ruiz','vila-real','villarreal','font de mora','roig i montserrat','puig i cadafalch','mas i lluch','serra i font','bosch i gimpera','garcia de cortazar','garcía de cortázar','lopez de heredia','lópez de heredia','martinez de irujo','martínez de irujo','perez de ayala','pérez de ayala','ruiz de azua','ruiz de azúa','diaz de cerio','díaz de cerio','uribe echevarria','uribe echevarría','ortiz de zarate','ortiz de zárate','costa rica','pena nieto','peña nieto','torres garcia','torres garcía','navarro lopez','navarro lópez','castro urdiales','calvo sotelo','suarez illana','suárez illana','arias navarro','gil robles','fernandez ordonez','fernández ordóñez','lopez de la o','lópez de la o','martin santos','martín santos','ruiz gallardon','ruiz gallardón']);
 const DNI_CTRL='TRWAGMYFPDXBNJZSQVHLCKE';
 function validDNI(d,l){return DNI_CTRL[parseInt(d,10)%23]===l.toUpperCase();}
 const CARGOS_LIST=['director general','directora general','director de','directora de','jefe de','jefa de','jefe de sección','jefa de sección','responsable de','gerente de','gerente','subdirector','subdirectora','presidente ejecutivo','presidenta ejecutiva','presidente','presidenta','consejero delegado','consejera delegada','secretario general','secretaria general','secretario','secretaria','delegado de protección de datos','delegada de protección de datos','técnico superior','técnica superior','técnico','técnica','analista programador','analista','consultor senior','consultora senior','consultor','consultora','coordinador','coordinadora','médico especialista','médico de familia','médico','médica','enfermero','enfermera','farmacéutico','farmacéutica','abogado','abogada','notario','notaria','juez','jueza','fiscal','magistrado','magistrada','letrado','letrada','profesor titular','profesora titular','profesor','profesora','maestro','maestra','docente','catedrático','catedrática','investigador principal','investigadora principal','investigador','investigadora','ingeniero de sistemas','ingeniero','ingeniera','arquitecto','arquitecta','economista','contable','asesor','asesora','psicólogo','psicóloga','trabajador social','trabajadora social','auxiliar administrativo','auxiliar administrativa','administrativo','administrativa','policía local','guardia civil','funcionario','funcionaria','ceo','cto','cfo','coo','ciso','administrador único','administradora única','administrador','administradora','socio','socia','director financiero','directora financiera','director de operaciones','directora de operaciones','director de marketing','directora de marketing','director comercial','directora comercial','director de recursos humanos','directora de recursos humanos','director de tecnología','directora de tecnología','director de sistemas','directora de sistemas','director de seguridad','directora de seguridad','director de innovación','directora de innovación','director de estrategia','directora de estrategia','director de producto','directora de producto','director de negocio','directora de negocio','responsable de seguridad','responsable de sistemas','responsable de calidad','responsable de cumplimiento','compliance officer','chief compliance officer','delegado de cumplimiento','delegada de cumplimiento','desarrollador','desarrolladora','desarrollador backend','desarrolladora backend','desarrollador frontend','desarrolladora frontend','desarrollador full stack','desarrolladora full stack','ingeniero de software','ingeniera de software','ingeniero devops','ingeniera devops','administrador de sistemas','administradora de sistemas','administrador de bases de datos','administradora de bases de datos','analista de datos','científico de datos','científica de datos','data engineer','data analyst','arquitecto de software','arquitecta de software','especialista en ciberseguridad','analista de seguridad','hacker ético','pentester','auditor de seguridad','consultor de ciberseguridad','responsable de ciberseguridad','security engineer','cloud engineer','ingeniero cloud','oficial de cumplimiento','oficial de privacidad','data protection officer','dpo','responsable de privacidad','auditor interno','auditora interna','auditor externo','auditora externa','asesor jurídico','asesora jurídica','compliance manager','risk manager','gestor de riesgos','cirujano','cirujana','médico residente','médica residente','auxiliar de enfermería','fisioterapeuta','odontólogo','odontóloga','psiquiatra','pediatra','dermatólogo','dermatóloga','cardiólogo','cardióloga','celador','celadora','director de centro','directora de centro','rector','rectora','vicerrector','vicerrectora','decano','decana','investigador postdoctoral','investigadora postdoctoral','becario','becaria','recepcionista','secretaria de dirección','secretario de dirección','asistente','asistente ejecutivo','gestor administrativo','gestora administrativa','controller financiero','controller','comercial','ejecutivo de cuentas','ejecutiva de cuentas','account manager','key account manager','responsable de ventas','director de ventas','directora de ventas','especialista en marketing digital','community manager','seo specialist','especialista seo','especialista sem','jefe de producción','jefa de producción','operario','operaria','encargado','encargada','responsable de logística','jefe de almacén','jefa de almacén','técnico de mantenimiento','técnica de mantenimiento','inspector','inspectora','subinspector','subinspectora','agente','agente judicial','militar','teniente','capitán','capitana','sargento','sargenta','emprendedor','emprendedora','freelance','autónomo','autónoma','becario en prácticas','trainee','aprendiz'];
 const cargosRe=new RegExp('\\b(?:'+CARGOS_LIST.sort((a,b)=>b.length-a.length).map(c=>c.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')\\b','gi');
+const NOMBRES_SINT=['Carlos','María','Pedro','Ana','Luis','Laura','Jorge','Elena','Miguel','Carmen','Pablo','Isabel','Diego','Sofía','Andrés','Lucía','Fernando','Marta','Ricardo','Paula','Alberto','Cristina','Raúl','Natalia','Sergio','Beatriz','Javier','Rosa','Manuel','Teresa'];
+const APELLIDOS_SINT=['Gómez','Rodríguez','Martínez','López','Sánchez','Pérez','García','Fernández','Torres','Ramírez','Flores','Rivera','González','Díaz','Reyes','Morales','Ortiz','Silva','Ruiz','Castro'];
+const CALLES_SINT=['Calle Mayor','Avenida Constitución','Calle del Sol','Plaza España','Paseo Castellana','Gran Vía','Avenida Andalucía','Calle Alcalá','Plaza Ayuntamiento','Calle de la Paz'];
+const CIUDADES_SINT=['Madrid','Barcelona','Valencia','Sevilla','Zaragoza','Málaga','Murcia','Palma','Bilbao','Alicante'];
+const DOMINIOS_SINT=['example.com','test.org','demo.net','ficticio.es'];
+function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function randInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function sintNombre(){return rand(NOMBRES_SINT)+' '+rand(APELLIDOS_SINT)+' '+rand(APELLIDOS_SINT);}
+function sintEmail(){const n=rand(NOMBRES_SINT).toLowerCase();const a=rand(APELLIDOS_SINT).toLowerCase();return n+'.'+a+randInt(1,999)+'@'+rand(DOMINIOS_SINT);}
+function sintTel(){return '6'+String(randInt(10000000,99999999));}
+function sintDNI(){const n=String(randInt(10000000,99999999));const l=DNI_CTRL[parseInt(n,10)%23];return n+l;}
+function sintCIF(){const l='ABCDEFGHJKLMNPQRSUVW'[randInt(0,19)];let n='';for(let i=0;i<8;i++)n+=randInt(0,9);return l+n;}
+function sintCCC(){let n='';for(let i=0;i<20;i++)n+=randInt(0,9);return n;}
+function sintNUSS(){const p=String(randInt(1,52)).padStart(2,'0');let n='';for(let i=0;i<8;i++)n+=randInt(0,9);return p+n;}
+function sintCP(){return String(randInt(1,52)).padStart(2,'0')+String(randInt(100,999));}
+function sintDir(){return rand(CALLES_SINT)+' '+randInt(1,150)+', '+String.fromCharCode(65+randInt(0,7))+'º';}
+function sintDirComp(){return rand(CALLES_SINT)+' '+randInt(1,150)+', '+randInt(10000,52999)+' '+rand(CIUDADES_SINT);}
+function sintIBAN(){let i='ES';for(let j=0;j<22;j++)i+=randInt(0,9);return i;}
+function sintIP(){return randInt(1,254)+'.'+randInt(0,254)+'.'+randInt(0,254)+'.'+randInt(1,254);}
+function sintMAC(){const h='0123456789ABCDEF';let m='';for(let i=0;i<6;i++){if(i)m+=':';m+=h[randInt(0,15)]+h[randInt(0,15)];}return m;}
+function sintEdad(){return randInt(18,75)+' años';}
+function sintFecha(){const a=randInt(1960,2000);const m=randInt(1,12);const d=randInt(1,28);return String(d).padStart(2,'0')+'/'+String(m).padStart(2,'0')+'/'+a;}
+function sintMatricula(){return randInt(1000,9999)+String.fromCharCode(66+randInt(0,19))+String.fromCharCode(66+randInt(0,19))+String.fromCharCode(66+randInt(0,19));}
+function sintUUID(){return '00000000-0000-4000-8000-'+String(randInt(100000000000,999999999999));}
+function sintHandle(){return '@usuario_'+randInt(1000,9999);}
+function sintCoords(){return (40+Math.random()).toFixed(4)+', '+(-3+Math.random()).toFixed(4);}
+function sintUserId(){return rand(NOMBRES_SINT).toLowerCase()+'.'+rand(APELLIDOS_SINT).toLowerCase();}
 const PATTERNS=[
 {id:'email',type:'email',cat:'directo',ck:'ck-email',re:/\b[a-zA-Z0-9._%+\-]{1,64}@[a-zA-Z0-9.\-]{1,253}\.[a-zA-Z]{2,10}\b/g},
 {id:'iban',type:'IBAN / cuenta',cat:'directo',ck:'ck-cuenta',re:/\b(?:ES|es)\d{2}[\s\-]?\d{4}[\s\-]?\d{4}[\s\-]?\d{4}[\s\-]?\d{4}[\s\-]?\d{4}\b/g},
+{id:'ccc',type:'Cuenta bancaria (CCC)',cat:'directo',ck:'ck-cuenta',re:/\b\d{4}[\s\-]?\d{4}[\s\-]?\d{2}[\s\-]?\d{10}\b/g,validate(m){const d=m[0].replace(/[\s\-]/g,'');return d.length===20&&/^\d+$/.test(d);}},
 {id:'dni',type:'DNI',cat:'directo',ck:'ck-dni',re:/\b(\d{8})([A-TRWAGMYFPDXBNJZSQVHLCKE])\b/gi,validate(m){return validDNI(m[1],m[2]);}},
 {id:'nie',type:'NIE',cat:'directo',ck:'ck-dni',re:/\b([XYZ])(\d{7})([A-TRWAGMYFPDXBNJZSQVHLCKE])\b/gi},
+{id:'cif',type:'CIF',cat:'directo',ck:'ck-cif',re:/\b[A-HNP-SUVW]\d{8}\b/g},
+{id:'nuss',type:'Nº Seguridad Social',cat:'directo',ck:'ck-nuss',re:/\b\d{2}[\s\-]?\d{8}\b|\b\d{11,12}\b/g,validate(m){const d=m[0].replace(/[\s\-]/g,'');if(d.length===10){const p=parseInt(d.slice(0,2));return p>=1&&p<=52;}if(d.length===11||d.length===12)return true;return false;}},
 {id:'ip4',type:'IP (v4)',cat:'directo',ck:'ck-ip',re:/\b(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\b/g},
 {id:'ip6',type:'IP (v6)',cat:'directo',ck:'ck-ip',re:/\b(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\b/g},
+{id:'mac',type:'Dirección MAC',cat:'directo',ck:'ck-mac',re:/\b(?:[0-9A-Fa-f]{2}[:\-]){5}[0-9A-Fa-f]{2}\b|\b[0-9A-Fa-f]{12}\b/g,validate(m){const v=m[0].replace(/[:\-]/g,'');if(v.length!==12)return false;if(/^0+$/.test(v)||/^F+$/i.test(v))return false;if(/^\d+$/.test(v)&&v.length===12)return false;return true;}},
 {id:'telf',type:'Teléfono',cat:'directo',ck:'ck-telefono',re:/(?:\+34[\s.\-]?|0034[\s.\-]?)?(?:\(?(?:[89]\d{1,2})\)?[\s.\-]?\d{3}[\s.\-]?\d{2}[\s.\-]?\d{2}|\(?(?:[89]\d{2})\)?[\s.\-]?\d{3}[\s.\-]?\d{3}|(?:6\d{2}|7[0-9]\d)[\s.\-]?\d{3}[\s.\-]?\d{3})/g,validate(m){return m[0].replace(/\D/g,'').replace(/^(0034|34)/,'').length===9;}},
 {id:'fecha_n',type:'Fecha nacimiento',cat:'indirecto',ck:'ck-fecha',re:/\b(?:0?[1-9]|[12]\d|3[01])[\/\-.](?:0?[1-9]|1[0-2])[\/\-.](?:19|20)\d{2}\b/g},
 {id:'fecha_t',type:'Fecha nacimiento',cat:'indirecto',ck:'ck-fecha',re:/\b\d{1,2}\s+de\s+(?:enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)\s+de\s+(?:19|20)\d{2}\b/gi},
 {id:'dir',type:'Dirección',cat:'indirecto',ck:'ck-direccion',re:/\b(?:C(?:alle|[\/\.])\.?\s*|Avd?a?\.?\s*|Avenida\s+|Plaza\s+|Pza\.?\s*|Paseo\s+|Pso\.?\s*|Ronda\s+|Travesía\s+|Trav\.?\s*|Camino\s+|Carretera\s+|Ctra\.?\s*|Vía\s+|Pasaje\s+|Callejón\s+)[^\n,;]{3,50}(?:\s*,?\s*n[ºo°]?\s*\d+)?(?:\s*[,\-]\s*\d+[ºª°]?\s*[a-zA-Z]?)?(?:\s*[,\-]\s*[a-zA-Z0-9]{1,4})?\b/gi},
+{id:'dircomp',type:'Dirección completa',cat:'indirecto',ck:'ck-dircomp',re:/\b(?:C(?:alle|[\/\.])\.?\s*|Avd?a?\.?\s*|Avenida\s+|Plaza\s+|Pza\.?\s*|Paseo\s+|Pso\.?\s*|Ronda\s+|Travesía\s+|Camino\s+|Carretera\s+|Ctra\.?\s*|Vía\s+|Pasaje\s+|Callejón\s+)[^\n,;]{3,40}(?:\s*,?\s*n[ºo°]?\s*\d+[a-zA-Z]?)?(?:\s*,\s*(?:0[1-9]|[1-4]\d|5[0-2])\d{3})?(?:\s*,\s*[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)?)?(?:\s*[\(–-]\s*(?:0[1-9]|[1-4]\d|5[0-2])\d{3}\s*[\)–-])?\b/gi},
 {id:'cp',type:'Código postal',cat:'indirecto',ck:'ck-cp',re:/(?<![,.\d])(?:0[1-9]|[1-4]\d|5[0-2])\d{3}(?![,.\d])/g},
 {id:'edad',type:'Edad',cat:'indirecto',ck:'ck-edad',re:/\b(\d{1,3})\s+años(?:\s+de\s+edad)?\b/gi,validate(m){const n=parseInt(m[1]||m[0]);return n>=1&&n<=120;}},
 {id:'cargo',type:'Cargo / profesión',cat:'indirecto',ck:'ck-cargo',re:null},
@@ -1002,233 +337,21 @@ const PATTERNS=[
 {id:'uuid',type:'UUID / Cookie ID',cat:'directo',ck:'ck-uuid',re:/\b[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\b/g},
 {id:'social_at',type:'Handle RRSS',cat:'directo',ck:'ck-social',re:/(?<![a-zA-Z0-9._%+\-])@[a-zA-Z0-9_]{2,50}\b/g},
 {id:'social_url',type:'Perfil RRSS',cat:'directo',ck:'ck-social',re:/\bhttps?:\/\/(?:www\.)?(?:twitter\.com|x\.com|instagram\.com|facebook\.com|linkedin\.com\/in|tiktok\.com\/@?|youtube\.com\/@?)\/[a-zA-Z0-9_\-.]{1,100}\b(?:\/[a-zA-Z0-9_\-.]{0,60})*/gi},
-{id:'coords',type:'Coordenadas GPS',cat:'indirecto',ck:'ck-coords',re:/(?:(?:latitud|lat(?:itude)?|gps)[\s:=]+)?-?(?:[1-8]?\d(?:\.\d{4,})|90(?:\.0+)?)[\s]*[,;][\s]*(?:(?:longitud|lon(?:g(?:itude)?)?|lng)[\s:=]+)?-?(?:1[0-7]\d(?:\.\d{4,})|[1-9]?\d(?:\.\d{4,})|180(?:\.0+)?)/gi}
-// CIF: letra inicial (A-H, N, P, Q, R, S, U, V, W) + 8 dígitos
-{id:'cif', type:'CIF', cat:'directo', ck:'ck-dni',
- re:/\b[A-HNP-SUVW]\d{8}\b/g,
- validate(m){
-   const v=m[0];
-   const digits=v.slice(1);
-   const sum=[...digits].reduce((a,d,i)=>a+parseInt(d)*(i%2===0?2:1),0);
-   const ctrl=(10-(sum%10))%10;
-   const letters='JABCDEFGHI';
-   return v[0]===letters[ctrl] || ctrl===parseInt(v.slice(-1));
- }},
-
-// CCC (Cuenta Corriente Cliente): 20 dígitos, formato ES BB BB CCCC CCCC CC
-{id:'ccc', type:'Cuenta bancaria (CCC)', cat:'directo', ck:'ck-cuenta',
- re:/\b\d{4}[\s\-]?\d{4}[\s\-]?\d{2}[\s\-]?\d{10}\b/g,
- validate(m){
-   const d=m[0].replace(/[\s\-]/g,'');
-   return d.length===20 && /^\d+$/.test(d);
- }},
-
-// NAF / NUSS (Seguridad Social): 2 dígitos provincia + 8 dígitos (antiguo) o 11-12 dígitos (nuevo)
-{id:'nuss', type:'Nº Seguridad Social', cat:'directo', ck:'ck-dni',
- re:/\b\d{2}[\s\-]?\d{8}\b|\b\d{11,12}\b/g,
- validate(m){
-   const d=m[0].replace(/[\s\-]/g,'');
-   if(d.length===10){const p=parseInt(d.slice(0,2));return p>=1&&p<=52;}
-   if(d.length===11||d.length===12)return true;
-   return false;
- }},
-
-// Dirección MAC: 6 grupos de 2 hex separados por : o - o 12 hex juntos
-{id:'mac', type:'Dirección MAC', cat:'directo', ck:'ck-ip',
- re:/\b(?:[0-9A-Fa-f]{2}[:\-]){5}[0-9A-Fa-f]{2}\b|\b[0-9A-Fa-f]{12}\b/g,
- validate(m){
-   const v=m[0].replace(/[:\-]/g,'');
-   if(v.length!==12)return false;
-   // Evitar falsos positivos: no debe ser todo ceros ni todo F
-   if(/^0+$/.test(v)||/^F+$/i.test(v))return false;
-   // Comprobar que no es un número de teléfono o DNI
-   if(/^\d+$/.test(v)&&v.length===12)return false;
-   return true;
- }},
-
-// Identificadores tipo usuario: nombre.apellidos, nombre_apellidos, nombre-apellidos
-// Usa el diccionario de nombres y apellidos ya existente para reducir falsos positivos
-{id:'user_id', type:'Identificador usuario', cat:'directo', ck:'ck-nombre', re:null},
-
-// Dirección física completa: calle + número + CP + población
-{id:'dir_completa', type:'Dirección completa', cat:'indirecto', ck:'ck-direccion',
- re:/\b(?:C(?:alle|[\/\.])\.?\s*|Avd?a?\.?\s*|Avenida\s+|Plaza\s+|Pza\.?\s*|Paseo\s+|Pso\.?\s*|Ronda\s+|Travesía\s+|Camino\s+|Carretera\s+|Ctra\.?\s*)[^\n,;]{3,40}(?:\s*,?\s*n[ºo°]?\s*\d+[a-zA-Z]?)?(?:\s*,\s*(?:0[1-9]|[1-4]\d|5[0-2])\d{3})?(?:\s*,\s*[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)?)?(?:\s*[\(–-]\s*(?:0[1-9]|[1-4]\d|5[0-2])\d{3}\s*[\)–-])?\b/gi}
+{id:'coords',type:'Coordenadas GPS',cat:'indirecto',ck:'ck-coords',re:/(?:(?:latitud|lat(?:itude)?|gps)[\s:=]+)?-?(?:[1-8]?\d(?:\.\d{4,})|90(?:\.0+)?)[\s]*[,;][\s]*(?:(?:longitud|lon(?:g(?:itude)?)?|lng)[\s:=]+)?-?(?:1[0-7]\d(?:\.\d{4,})|[1-9]?\d(?:\.\d{4,})|180(?:\.0+)?)/gi},
+{id:'user_id',type:'Identificador usuario',cat:'directo',ck:'ck-userid',re:/\b[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,}[._\-][A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,}(?:[._\-][A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,})?\b/g}
 ];
 PATTERNS.find(p=>p.id==='cargo').re=cargosRe;
-// Construir regex para identificadores tipo usuario (nombre.apellidos, nombre_apellidos, nombre-apellidos)
-(function buildUserIdRe(){
-  const sep='[._\\-]';
-  const ini='[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,}';
-  // Patrón: Nombre+separador+Apellido (conocido) o Nombre+separador+Nombre+separador+Apellido
-  const re=new RegExp('\\b'+ini+sep+ini+'(?:'+sep+ini+')?(?=[\\s,;:])','g');
-  const pat=PATTERNS.find(p=>p.id==='user_id');
-  if(pat)pat.re=re;
-})();
 function normalizeStr(s){return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
-function detectNames(text){
-const results=[];const seenFirstNames=new Set();
-const honorRe=/\b(D\.|Da\.|D\.ª|Doña?|Don|Sr\.?|Sra\.?|Dr\.?|Dra\.?|Prof\.?|Lic\.?|Srta\.?|Excmo\.?|Ilmo\.?)\s+([A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,})(?:\s+[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,}){0,3}/g;
-let m;
-while((m=honorRe.exec(text))!==null){results.push({start:m.index,end:m.index+m[0].length,original:m[0].trim()});m[0].split(/\s+/).slice(1).forEach(w=>seenFirstNames.add(normalizeStr(w)));}
-const nameRe=/\b([A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,})(?:\s+(?:de\s+|del?\s+)?[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{2,}){1,3}\b/g;
-while((m=nameRe.exec(text))!==null){const fw=normalizeStr(m[1]);if(!NOMBRES_ES.has(fw))continue;const parts=m[0].split(/\s+/).filter(w=>!/^de[l]?$/i.test(w));if(!parts.slice(1).some(w=>APELLIDOS_ES.has(normalizeStr(w))))continue;if(results.some(r=>m.index>=r.start&&m.index<r.end))continue;results.push({start:m.index,end:m.index+m[0].length,original:m[0]});parts.filter(w=>NOMBRES_ES.has(normalizeStr(w))).forEach(w=>seenFirstNames.add(normalizeStr(w)));}
-const contextClue=/(?:^|[\s,;.:"(])((?:[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,})(?:\s+[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,}){0,1})\b/g;
-while((m=contextClue.exec(text))!==null){const tokens=m[1].split(/\s+/);const allKnown=tokens.every(t=>NOMBRES_ES.has(normalizeStr(t)));const anyAlias=tokens.some(t=>seenFirstNames.has(normalizeStr(t)));if(!allKnown)continue;if(!anyAlias)continue;const start=m.index+m[0].indexOf(m[1]);const end=start+m[1].length;if(results.some(r=>start>=r.start&&start<r.end))continue;results.push({start,end,original:m[1]});}
-return dedupIntervals(results);
-}
+function detectNames(text){const results=[];const seenFirstNames=new Set();const honorRe=/\b(D\.|Da\.|D\.ª|Doña?|Don|Sr\.?|Sra\.?|Dr\.?|Dra\.?|Prof\.?|Lic\.?|Srta\.?|Excmo\.?|Ilmo\.?)\s+([A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,})(?:\s+[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,}){0,3}/g;let m;while((m=honorRe.exec(text))!==null){results.push({start:m.index,end:m.index+m[0].length,original:m[0].trim()});m[0].split(/\s+/).slice(1).forEach(w=>seenFirstNames.add(normalizeStr(w)));}const nameRe=/\b([A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,})(?:\s+(?:de\s+|del?\s+)?[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{2,}){1,3}\b/g;while((m=nameRe.exec(text))!==null){const fw=normalizeStr(m[1]);if(!NOMBRES_ES.has(fw))continue;const parts=m[0].split(/\s+/).filter(w=>!/^de[l]?$/i.test(w));if(!parts.slice(1).some(w=>APELLIDOS_ES.has(normalizeStr(w))))continue;if(results.some(r=>m.index>=r.start&&m.index<r.end))continue;results.push({start:m.index,end:m.index+m[0].length,original:m[0]});parts.filter(w=>NOMBRES_ES.has(normalizeStr(w))).forEach(w=>seenFirstNames.add(normalizeStr(w)));}const contextClue=/(?:^|[\s,;.:"(])((?:[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,})(?:\s+[A-ZÁÉÍÓÚÜÑ][a-záéíóúüñ]{1,}){0,1})\b/g;while((m=contextClue.exec(text))!==null){const tokens=m[1].split(/\s+/);const allKnown=tokens.every(t=>NOMBRES_ES.has(normalizeStr(t)));const anyAlias=tokens.some(t=>seenFirstNames.has(normalizeStr(t)));if(!allKnown)continue;if(!anyAlias)continue;const start=m.index+m[0].indexOf(m[1]);const end=start+m[1].length;if(results.some(r=>start>=r.start&&start<r.end))continue;results.push({start,end,original:m[1]});}return dedupIntervals(results);}
 function dedupIntervals(arr){arr.sort((a,b)=>a.start-b.start);const out=[];let cur=0;for(const x of arr){if(x.start>=cur){out.push(x);cur=x.end;}}return out;}
-function detectEntities(text,opts){
-const raw=[];
-for(const pat of PATTERNS){if(!opts[pat.ck]||!pat.re)continue;pat.re.lastIndex=0;let m;while((m=pat.re.exec(text))!==null){if(pat.validate&&!pat.validate(m))continue;
-  // Validación contextual para identificadores de usuario
-if (pat.id === 'user_id') {
-  const parts = orig.split(/[._\-]/);
-  // Al menos la primera parte debe ser un nombre conocido
-  if (!NOMBRES_ES.has(normalizeStr(parts[0]))) continue;
-  // Al menos una de las siguientes partes debe ser un apellido conocido
-  if (!parts.slice(1).some(p => APELLIDOS_ES.has(normalizeStr(p)))) continue;
-  // Evitar URLs y dominios
-  if (text[m.index - 1] === '/' || text[m.index - 1] === ':') continue;
-}const orig=m[0];if(!orig.trim())continue;raw.push({start:m.index,end:m.index+orig.length,original:orig,type:pat.type,category:pat.cat,patId:pat.id});}pat.re.lastIndex=0;}
-if(opts['ck-nombre']){for(const n of detectNames(text))raw.push({start:n.start,end:n.end,original:n.original,type:'Nombre',category:'directo',patId:'nombre'});}
-raw.sort((a,b)=>a.start!==b.start?a.start-b.start:(b.end-b.start)-(a.end-a.start));
-const final=[];let cur=0;for(const x of raw){if(x.start>=cur){final.push(x);cur=x.end;}}return final;
-}
-class AnonEngine{
-constructor(){this.counters={};this.map=new Map();}
-token(type,val){const k=type+'::'+val.toLowerCase().trim();if(!this.map.has(k)){const key=type.toUpperCase().replace(/[^A-Z0-9]/g,'_');this.counters[key]=(this.counters[key]||0)+1;this.map.set(k,key+'_'+String(this.counters[key]).padStart(3,'0'));}return this.map.get(k);}
-apply(tech,type,val){switch(tech){case'seudonimización':return this.token(type.replace(/[^a-zA-Z0-9]/g,'_'),val);case'enmascaramiento':return this.mask(type,val);case'generalización':return this.generalize(type,val);case'supresión':return'[SUPRIMIDO]';case 'sintético':return this.sintetico(type, val);default:return'[ANONIMIZADO]';}}
-mask(type,val){
-if(type==='email'){const at=val.indexOf('@');if(at<1)return val[0]+'***';const dom=val.slice(at+1).split('.');return val[0]+'***@***.'+dom[dom.length-1];}
-if(type==='Teléfono'){const d=val.replace(/\D/g,'');return'***-***-'+d.slice(-3);}
-if(type==='DNI'||type==='NIE'){return val.slice(0,-3).replace(/[A-Z0-9]/gi,'*')+val.slice(-3).toUpperCase();}
-if(type==='IBAN / cuenta'){const c=val.replace(/\s/g,'');return c.slice(0,4)+' **** **** **** '+c.slice(-4);}
-if(type==='IP (v4)'){const p=val.split('.');return p[0]+'.'+p[1]+'.*.*';}
-if(type==='IP (v6)'){return val.split(':').slice(0,3).join(':')+':****:****:****';}
-if(type==='Fecha nacimiento'){const yr=val.match(/\b(19|20)\d{2}\b/);return yr?'**/**/'+yr[0]:'**/**/****';}
-if(type==='Código postal'){return val.slice(0,2)+'***';}
-if(type==='Edad'){const n=parseInt(val);const lo=Math.floor(n/5)*5;return lo+'-'+(lo+4)+' años';}
-if(type==='Matrícula'){return val.replace(/[0-9]/g,'#').replace(/##+/g,m=>'#'.repeat(m.length));}
-if(type==='UUID / Cookie ID'){return'00000000-0000-0000-0000-000000000000';}
-if(type==='Handle RRSS'||type==='Perfil RRSS'){return type==='Handle RRSS'?'@[usuario]':'[perfil-rrss-redactado]';}
-if(type==='Coordenadas GPS'){const parts=val.match(/-?\d+\.\d+/g);if(parts&&parts.length>=2)return parseFloat(parts[0]).toFixed(2)+', '+parseFloat(parts[1]).toFixed(2);return'[GPS_REDACTADO]';}
-return val.trim().split(/\s+/).map(w=>w.length<=1?w:w[0]+'***').join(' ');
-}
-sintetico(type, val) {
-  if (type === 'Nombre') return generarNombreSintetico();
-  if (type === 'email') return generarEmailSintetico();
-  if (type === 'Teléfono') return generarTelefonoSintetico();
-  if (type === 'DNI' || type === 'NIE') return generarDNISintetico();
-  if (type === 'IBAN / cuenta') return generarIBANSintetico();
-  if (type === 'IP (v4)' || type === 'IP (v6)') return generarIPSintetica();
-  if (type === 'Código postal') return generarCPSintetico();
-  if (type === 'Dirección') return generarDireccionSintetica();
-  if (type === 'Edad') return generarEdadSintetica() + ' años';
-  if (type === 'Fecha nacimiento') return generarFechaSintetica();
-  if (type === 'Cargo / profesión') return '[PROFESIONAL]';
-  if (type === 'Matrícula') return Math.floor(Math.random()*9000+1000) + String.fromCharCode(66+Math.floor(Math.random()*20)) + String.fromCharCode(66+Math.floor(Math.random()*20)) + String.fromCharCode(66+Math.floor(Math.random()*20));
-  if (type === 'UUID / Cookie ID') return '00000000-0000-4000-8000-000000000000';
-  if (type === 'Handle RRSS') return '@usuario_' + Math.floor(Math.random()*9999);
-  if (type === 'Perfil RRSS') return 'https://example.com/perfil/' + Math.floor(Math.random()*9999);
-  if (type === 'Coordenadas GPS') return (40 + Math.random()).toFixed(4) + ', ' + (-3 + Math.random()).toFixed(4);
-  if (type === 'CIF') { const l='ABCDEFGHJKLMNPQRSUVW'[randInt(0,19)]; let n=''; for(let i=0;i<8;i++)n+=randInt(0,9); return l+n; }
-if (type === 'Cuenta bancaria (CCC)') { let n=''; for(let i=0;i<20;i++)n+=randInt(0,9); return n; }
-if (type === 'Nº Seguridad Social') { const p=String(randInt(1,52)).padStart(2,'0'); let n=''; for(let i=0;i<8;i++)n+=randInt(0,9); return p+n; }
-if (type === 'Dirección MAC') { const h='0123456789ABCDEF'; let m=''; for(let i=0;i<6;i++){if(i)m+=':';m+=h[randInt(0,15)]+h[randInt(0,15)];} return m; }
-if (type === 'Identificador usuario') { return rand(NOMBRES_SINT).toLowerCase()+'.'+rand(APELLIDOS_SINT).toLowerCase(); }
-if (type === 'Dirección completa') return rand(CALLES_SINT)+' '+randInt(1,150)+', '+randInt(10000,52999)+' '+rand(CIUDADES_SINT);
-  return '[DATO_SINTETICO]';
-}
-generalize(type,val){
-if(type==='email')return'[CORREO_ELECTRÓNICO]';
-if(type==='Teléfono')return'[TELÉFONO]';
-if(type==='DNI'||type==='NIE')return'[DOC_IDENTIDAD]';
-if(type==='IBAN / cuenta')return'[CUENTA_BANCARIA]';
-if(type==='IP (v4)'||type==='IP (v6)')return'[DIRECCIÓN_IP]';
-if(type==='Fecha nacimiento'){const yr=val.match(/\b(19|20)\d{2}\b/);if(yr){const y=parseInt(yr[0]);return'Década '+Math.floor(y/10)*10;}return'[FECHA]';}
-if(type==='Código postal')return val.slice(0,2)+'xxx';
-if(type==='Edad'){const n=parseInt(val);if(!isNaN(n)){const lo=Math.floor(n/5)*5;return lo+'-'+(lo+4)+' años';}return'[EDAD]';}
-if(type==='Dirección')return'[DIRECCIÓN]';
-if(type==='Cargo / profesión')return'[CARGO_PROFESIONAL]';
-if(type==='Matrícula')return'[MATRÍCULA_VEHÍCULO]';
-if(type==='UUID / Cookie ID')return'[IDENTIFICADOR_ONLINE]';
-if(type==='Handle RRSS')return'[USUARIO_RRSS]';
-if(type==='Perfil RRSS')return'[PERFIL_RRSS]';
-if(type==='Coordenadas GPS')return'[UBICACIÓN_GPS]';
-if (type === 'CIF') return '[CIF]';
-if (type === 'Cuenta bancaria (CCC)') return '[CUENTA_BANCARIA]';
-if (type === 'Nº Seguridad Social') return '[NUSS]';
-if (type === 'Dirección MAC') return '[MAC_ADDRESS]';
-if (type === 'Identificador usuario') return '[USUARIO]';
-if (type === 'Dirección completa') return '[DIRECCIÓN_COMPLETA]';
-if (type === 'CIF') return '[CIF]';
-if (type === 'Cuenta bancaria (CCC)') return '[CUENTA_BANCARIA]';
-if (type === 'Nº Seguridad Social') return '[NUSS]';
-if (type === 'Dirección MAC') return '[MAC_ADDRESS]';
-if (type === 'Identificador usuario') return '[USUARIO]';
-if (type === 'Dirección completa') return '[DIRECCIÓN_COMPLETA]';
-return'['+type.toUpperCase().replace(/[^A-Z0-9]/g,'_')+']';
-}
-}
-function runAnonymization(){
-const originalText=currentTab==='file'?loadedFileText:document.getElementById('inputText').value;
-if(!originalText||!originalText.trim()){log(currentTab==='file'?'⚠ Carga un archivo primero.':'⚠ Introduce texto primero.','err');return;}
-const t0=performance.now();setLogActive(true);
-log('Analizando '+originalText.length.toLocaleString('es')+' caracteres…');
-const opts=getOptions();
-const rawEntities=detectEntities(originalText,opts);
-const dicts=obtenerDiccionarios();
-const engine=new AnonEngine();
-const anonEnts=[];let anonText='',pos=0;
-for(const e of rawEntities){
-anonText+=originalText.slice(pos,e.start);
-const valLower=e.original.toLowerCase();
-if(dicts.whitelist.some(w=>valLower===w)){anonText+=e.original;anonEnts.push({...e,anonymized:e.original,technique:'Protegido (Whitelist)'});}
-else if(dicts.blacklist.some(b=>valLower===b)){anonText+='[ANONIMIZADO_PERSONALIZADO]';anonEnts.push({...e,anonymized:'[ANONIMIZADO_PERSONALIZADO]',technique:'Forzado (Blacklist)'});}
-else{const anonVal=engine.apply(selectedTech,e.type,e.original);anonText+=anonVal;anonEnts.push({...e,anonymized:anonVal,technique:selectedTech});}
-pos=e.end;
-}
-anonText+=originalText.slice(pos);
-dicts.blacklist.forEach(termino=>{const escaped=termino.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const hasSpace=/\s/.test(termino);const regex=hasSpace?new RegExp('('+escaped+')','gi'):new RegExp('\\b('+escaped+')\\b','gi');if(regex.test(originalText))anonText=anonText.replace(regex,'[ANONIMIZADO_PERSONALIZADO]');});
-const nDir=anonEnts.filter(e=>e.category==='directo'&&e.technique!=='Protegido (Whitelist)').length;
-const nInd=anonEnts.filter(e=>e.category==='indirecto'&&e.technique!=='Protegido (Whitelist)').length;
-const rBefore=(rawEntities.filter(e=>e.category==='directo').length>0)?'ALTO':(rawEntities.filter(e=>e.category==='indirecto').length>0)?'MEDIO':'BAJO';
-const rAfter=anonEnts.filter(e=>e.technique!=='Protegido (Whitelist)').length===0?rBefore:(nDir>0?'MEDIO':'BAJO');
-const elapsed=((performance.now()-t0)/1000).toFixed(3);
-log('Procesadas '+anonEnts.length+' entidades en '+elapsed+'s','ok');setLogActive(false);
-lastResult={text:originalText,anonText,entities:anonEnts,riskBefore:rBefore,riskAfter:rAfter,filename:currentTab==='file'?(loadedFileName||'texto'):'texto-libre',tech:selectedTech,elapsed};
-renderResults(originalText,anonEnts,anonText,rBefore,rAfter);
-document.getElementById('processingInfo').textContent='⚡ '+elapsed+'s · '+anonEnts.length+' entidades';
-document.getElementById('btnExportDoc').disabled=false;
-document.getElementById('btnReport').disabled=false;
-document.getElementById('btnDownloadPdf').disabled=false;
-const isXls=loadedFileExt&&['xlsx','xls','ods','xlsm'].includes(loadedFileExt);
-document.getElementById('edm-xlsx').style.display=isXls?'':'none';
-}
-function renderResults(text,entities,anonText,rBefore,rAfter){
-const nDir=entities.filter(e=>e.category==='directo').length;
-const nInd=entities.filter(e=>e.category==='indirecto').length;
-document.getElementById('stat-total').textContent=entities.length;
-document.getElementById('stat-dir').textContent=nDir;
-document.getElementById('stat-ind').textContent=nInd;
-const rEl=document.getElementById('stat-riesgo');rEl.textContent=rAfter;rEl.className='stat-value '+(rAfter==='ALTO'?'red':rAfter==='MEDIO'?'amber':'green');
-document.getElementById('riskBefore').textContent=rBefore;
-const raEl=document.getElementById('riskAfter');raEl.textContent=rAfter;raEl.style.color=rAfter==='ALTO'?'var(--red)':rAfter==='MEDIO'?'var(--gold-dark)':'var(--green)';
-document.getElementById('beforeText').innerHTML=buildBeforeHTML(text,entities);
-document.getElementById('diffText').innerHTML=buildDiffHTML(text,entities);
-document.getElementById('afterText').innerHTML=buildAfterHTML(anonText,entities);
-renderTable(entities);
-document.getElementById('entityCount').textContent=entities.length+' entidad'+(entities.length!==1?'es':'');
-renderNotes(entities,rAfter);
-const wb=document.getElementById('warnBox');
-if(!entities.some(e=>e.patId==='nombre')&&getOptions()['ck-nombre']){wb.style.display='block';document.getElementById('warnText').textContent='No se detectaron nombres. El motor identifica nombres de la lista española conocida. Revisa manualmente nombres poco comunes o extranjeros.';}else wb.style.display='none';
-document.getElementById('resultsSection').classList.add('visible');
-setTimeout(()=>document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'}),80);
-}
+function detectEntities(text,opts){const raw=[];for(const pat of PATTERNS){if(!opts[pat.ck]||!pat.re)continue;pat.re.lastIndex=0;let m;while((m=pat.re.exec(text))!==null){if(pat.validate&&!pat.validate(m))continue;const orig=m[0];if(!orig.trim())continue;if(pat.id==='user_id'){const parts=orig.split(/[._\-]/);if(!NOMBRES_ES.has(normalizeStr(parts[0])))continue;if(!parts.slice(1).some(p=>APELLIDOS_ES.has(normalizeStr(p))))continue;if(text[m.index-1]==='/'||text[m.index-1]===':')continue;}raw.push({start:m.index,end:m.index+orig.length,original:orig,type:pat.type,category:pat.cat,patId:pat.id});}pat.re.lastIndex=0;}if(opts['ck-nombre']){for(const n of detectNames(text))raw.push({start:n.start,end:n.end,original:n.original,type:'Nombre',category:'directo',patId:'nombre'});}raw.sort((a,b)=>a.start!==b.start?a.start-b.start:(b.end-b.start)-(a.end-a.start));const final=[];let cur=0;for(const x of raw){if(x.start>=cur){final.push(x);cur=x.end;}}return final;}
+class AnonEngine{constructor(){this.counters={};this.map=new Map();}token(type,val){const k=type+'::'+val.toLowerCase().trim();if(!this.map.has(k)){const key=type.toUpperCase().replace(/[^A-Z0-9]/g,'_');this.counters[key]=(this.counters[key]||0)+1;this.map.set(k,key+'_'+String(this.counters[key]).padStart(3,'0'));}return this.map.get(k);}apply(tech,type,val){switch(tech){case'seudonimización':return this.token(type.replace(/[^a-zA-Z0-9]/g,'_'),val);case'enmascaramiento':return this.mask(type,val);case'generalización':return this.generalize(type,val);case'supresión':return'[SUPRIMIDO]';case'sintético':return this.sintetico(type,val);default:return'[ANONIMIZADO]';}}mask(type,val){if(type==='email'){const at=val.indexOf('@');if(at<1)return val[0]+'***';const dom=val.slice(at+1).split('.');return val[0]+'***@***.'+dom[dom.length-1];}if(type==='Teléfono'){const d=val.replace(/\D/g,'');return'***-***-'+d.slice(-3);}if(type==='DNI'||type==='NIE'){return val.slice(0,-3).replace(/[A-Z0-9]/gi,'*')+val.slice(-3).toUpperCase();}if(type==='CIF')return val[0]+'***'+val.slice(-3);if(type==='IBAN / cuenta'){const c=val.replace(/\s/g,'');return c.slice(0,4)+' **** **** **** '+c.slice(-4);}if(type==='Cuenta bancaria (CCC)'){const c=val.replace(/\s/g,'');return c.slice(0,4)+' **** **** **** '+c.slice(-4);}if(type==='Nº Seguridad Social')return'**-'+val.slice(-4);if(type==='Dirección MAC')return val.slice(0,8)+'-**-**-**';if(type==='IP (v4)'){const p=val.split('.');return p[0]+'.'+p[1]+'.*.*';}if(type==='IP (v6)'){return val.split(':').slice(0,3).join(':')+':****:****:****';}if(type==='Fecha nacimiento'){const yr=val.match(/\b(19|20)\d{2}\b/);return yr?'**/**/'+yr[0]:'**/**/****';}if(type==='Código postal'){return val.slice(0,2)+'***';}if(type==='Edad'){const n=parseInt(val);const lo=Math.floor(n/5)*5;return lo+'-'+(lo+4)+' años';}if(type==='Matrícula'){return val.replace(/[0-9]/g,'#').replace(/##+/g,m=>'#'.repeat(m.length));}if(type==='UUID / Cookie ID'){return'00000000-0000-0000-0000-000000000000';}if(type==='Handle RRSS'||type==='Perfil RRSS'){return type==='Handle RRSS'?'@[usuario]':'[perfil-rrss-redactado]';}if(type==='Coordenadas GPS'){const parts=val.match(/-?\d+\.\d+/g);if(parts&&parts.length>=2)return parseFloat(parts[0]).toFixed(2)+', '+parseFloat(parts[1]).toFixed(2);return'[GPS_REDACTADO]';}if(type==='Identificador usuario')return val.split(/[._\-]/)[0][0]+'***';if(type==='Dirección completa')return'[DIRECCIÓN_COMPLETA]';return val.trim().split(/\s+/).map(w=>w.length<=1?w:w[0]+'***').join(' ');}generalize(type,val){if(type==='email')return'[CORREO_ELECTRÓNICO]';if(type==='Teléfono')return'[TELÉFONO]';if(type==='DNI'||type==='NIE')return'[DOC_IDENTIDAD]';if(type==='CIF')return'[CIF]';if(type==='IBAN / cuenta')return'[CUENTA_BANCARIA]';if(type==='Cuenta bancaria (CCC)')return'[CUENTA_BANCARIA]';if(type==='Nº Seguridad Social')return'[NUSS]';if(type==='Dirección MAC')return'[MAC_ADDRESS]';if(type==='IP (v4)'||type==='IP (v6)')return'[DIRECCIÓN_IP]';if(type==='Fecha nacimiento'){const yr=val.match(/\b(19|20)\d{2}\b/);if(yr){const y=parseInt(yr[0]);return'Década '+Math.floor(y/10)*10;}return'[FECHA]';}if(type==='Código postal')return val.slice(0,2)+'xxx';if(type==='Edad'){const n=parseInt(val);if(!isNaN(n)){const lo=Math.floor(n/5)*5;return lo+'-'+(lo+4)+' años';}return'[EDAD]';}if(type==='Dirección')return'[DIRECCIÓN]';if(type==='Dirección completa')return'[DIRECCIÓN_COMPLETA]';if(type==='Cargo / profesión')return'[CARGO_PROFESIONAL]';if(type==='Matrícula')return'[MATRÍCULA_VEHÍCULO]';if(type==='UUID / Cookie ID')return'[IDENTIFICADOR_ONLINE]';if(type==='Handle RRSS')return'[USUARIO_RRSS]';if(type==='Perfil RRSS')return'[PERFIL_RRSS]';if(type==='Coordenadas GPS')return'[UBICACIÓN_GPS]';if(type==='Identificador usuario')return'[USUARIO]';return'['+type.toUpperCase().replace(/[^A-Z0-9]/g,'_')+']';}sintetico(type,val){if(type==='Nombre')return sintNombre();if(type==='email')return sintEmail();if(type==='Teléfono')return sintTel();if(type==='DNI'||type==='NIE')return sintDNI();if(type==='CIF')return sintCIF();if(type==='IBAN / cuenta')return sintIBAN();if(type==='Cuenta bancaria (CCC)')return sintCCC();if(type==='Nº Seguridad Social')return sintNUSS();if(type==='IP (v4)'||type==='IP (v6)')return sintIP();if(type==='Dirección MAC')return sintMAC();if(type==='Código postal')return sintCP();if(type==='Dirección')return sintDir();if(type==='Dirección completa')return sintDirComp();if(type==='Edad')return sintEdad();if(type==='Fecha nacimiento')return sintFecha();if(type==='Cargo / profesión')return'[PROFESIONAL]';if(type==='Matrícula')return sintMatricula();if(type==='UUID / Cookie ID')return sintUUID();if(type==='Handle RRSS')return sintHandle();if(type==='Perfil RRSS')return'https://example.com/perfil/'+randInt(1000,9999);if(type==='Coordenadas GPS')return sintCoords();if(type==='Identificador usuario')return sintUserId();return'[DATO_SINTETICO]';}}
+function runAnonymization(){const originalText=currentTab==='file'?loadedFileText:document.getElementById('inputText').value;if(!originalText||!originalText.trim()){log(currentTab==='file'?'⚠ Carga un archivo primero.':'⚠ Introduce texto primero.','err');return;}const t0=performance.now();setLogActive(true);log('Analizando '+originalText.length.toLocaleString('es')+' caracteres…');const opts=getOptions();const rawEntities=detectEntities(originalText,opts);const dicts=obtenerDiccionarios();const engine=new AnonEngine();const anonEnts=[];let anonText='',pos=0;for(const e of rawEntities){anonText+=originalText.slice(pos,e.start);const valLower=e.original.toLowerCase();if(dicts.whitelist.some(w=>valLower===w)){anonText+=e.original;anonEnts.push({...e,anonymized:e.original,technique:'Protegido (Whitelist)'});}else if(dicts.blacklist.some(b=>valLower===b)){anonText+='[ANONIMIZADO_PERSONALIZADO]';anonEnts.push({...e,anonymized:'[ANONIMIZADO_PERSONALIZADO]',technique:'Forzado (Blacklist)'});}else{const anonVal=engine.apply(selectedTech,e.type,e.original);anonText+=anonVal;anonEnts.push({...e,anonymized:anonVal,technique:selectedTech});}pos=e.end;}anonText+=originalText.slice(pos);dicts.blacklist.forEach(termino=>{const escaped=termino.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');const hasSpace=/\s/.test(termino);const regex=hasSpace?new RegExp('('+escaped+')','gi'):new RegExp('\\b('+escaped+')\\b','gi');if(regex.test(originalText))anonText=anonText.replace(regex,'[ANONIMIZADO_PERSONALIZADO]');});const nDir=anonEnts.filter(e=>e.category==='directo'&&e.technique!=='Protegido (Whitelist)').length;const nInd=anonEnts.filter(e=>e.category==='indirecto'&&e.technique!=='Protegido (Whitelist)').length;const rBefore=(rawEntities.filter(e=>e.category==='directo').length>0)?'ALTO':(rawEntities.filter(e=>e.category==='indirecto').length>0)?'MEDIO':'BAJO';const rAfter=anonEnts.filter(e=>e.technique!=='Protegido (Whitelist)').length===0?rBefore:(nDir>0?'MEDIO':'BAJO');const elapsed=((performance.now()-t0)/1000).toFixed(3);log('Procesadas '+anonEnts.length+' entidades en '+elapsed+'s','ok');setLogActive(false);lastResult={text:originalText,anonText,entities:anonEnts,riskBefore:rBefore,riskAfter:rAfter,filename:currentTab==='file'?(loadedFileName||'texto'):'texto-libre',tech:selectedTech,elapsed};renderResults(originalText,anonEnts,anonText,rBefore,rAfter);document.getElementById('processingInfo').textContent='⚡ '+elapsed+'s · '+anonEnts.length+' entidades';document.getElementById('btnExportDoc').disabled=false;document.getElementById('btnReport').disabled=false;document.getElementById('btnDownloadPdf').disabled=false;const isXls=loadedFileExt&&['xlsx','xls','ods','xlsm'].includes(loadedFileExt);document.getElementById('edm-xlsx').style.display=isXls?'':'none';}
+function renderResults(text,entities,anonText,rBefore,rAfter){const nDir=entities.filter(e=>e.category==='directo').length;const nInd=entities.filter(e=>e.category==='indirecto').length;document.getElementById('stat-total').textContent=entities.length;document.getElementById('stat-dir').textContent=nDir;document.getElementById('stat-ind').textContent=nInd;const rEl=document.getElementById('stat-riesgo');rEl.textContent=rAfter;rEl.className='stat-value '+(rAfter==='ALTO'?'red':rAfter==='MEDIO'?'amber':'green');document.getElementById('riskBefore').textContent=rBefore;const raEl=document.getElementById('riskAfter');raEl.textContent=rAfter;raEl.style.color=rAfter==='ALTO'?'var(--red)':rAfter==='MEDIO'?'var(--gold-dark)':'var(--green)';document.getElementById('beforeText').innerHTML=buildBeforeHTML(text,entities);document.getElementById('diffText').innerHTML=buildDiffHTML(text,entities);document.getElementById('afterText').innerHTML=buildAfterHTML(anonText,entities);renderTable(entities);document.getElementById('entityCount').textContent=entities.length+' entidad'+(entities.length!==1?'es':'');renderNotes(entities,rAfter);const wb=document.getElementById('warnBox');if(!entities.some(e=>e.patId==='nombre')&&getOptions()['ck-nombre']){wb.style.display='block';document.getElementById('warnText').textContent='No se detectaron nombres. El motor identifica nombres de la lista española conocida. Revisa manualmente nombres poco comunes o extranjeros.';}else wb.style.display='none';document.getElementById('resultsSection').classList.add('visible');setTimeout(()=>document.getElementById('resultsSection').scrollIntoView({behavior:'smooth',block:'start'}),80);document.getElementById('btnDownloadPdf').disabled=false;}
 function buildBeforeHTML(text,entities){let html='',pos=0;for(const e of entities){html+=esc(text.slice(pos,e.start));html+='<span class="'+(e.category==='directo'?'hl-directo':'hl-indirecto')+'" title="'+esc(e.type+' ('+e.category+')')+'">'+esc(e.original)+'</span>';pos=e.end;}return html+esc(text.slice(pos));}
 function buildAfterHTML(anonText,entities){const tokens=[...new Set(entities.map(e=>e.anonymized).filter(v=>v&&v.length>1))].sort((a,b)=>b.length-a.length);let escaped=esc(anonText);for(const t of tokens)escaped=escaped.split(esc(t)).join('<span class="hl-anon">'+esc(t)+'</span>');return escaped;}
 function buildDiffHTML(text,entities){let html='',pos=0;for(const e of entities){html+=esc(text.slice(pos,e.start));const originalClass=e.category==='directo'?'hl-directo':'hl-indirecto';html+='<span class="'+originalClass+'" style="text-decoration:line-through;opacity:0.7">'+esc(e.original)+'</span>';html+=' <span class="hl-anon" style="font-weight:600">→ '+esc(e.anonymized)+'</span> ';pos=e.end;}html+=esc(text.slice(pos));return html;}
-function renderTable(entities){const tbody=document.getElementById('entityTableBody');tbody.innerHTML='';if(!entities.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:20px;font-size:.75rem;">No se detectaron entidades con los tipos activados.</td></tr>';return;}for(const e of entities){const tr=document.createElement('tr');tr.innerHTML='<td><span class="type-chip cat-'+e.category+'">'+esc(e.type)+'</span></td><td><span class="type-chip cat-'+e.category+'">'+e.category+'</span></td><td><span class="original-val">'+esc(e.original)+'</span></td><td><span class="anon-val">'+esc(e.anonymized)+'</span></td><td><span class="tech-chip">'+esc(e.technique)+'</span></td>';tbody.appendChild(tr);}}
+function renderTable(entities){const tbody=document.getElementById('entityTableBody');tbody.innerHTML='';if(!entities.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:20px;font-size:.75rem">No se detectaron entidades con los tipos activados.</td></tr>';return;}for(const e of entities){const tr=document.createElement('tr');tr.innerHTML='<td><span class="type-chip cat-'+e.category+'">'+esc(e.type)+'</span></td><td><span class="type-chip cat-'+e.category+'">'+e.category+'</span></td><td><span class="original-val">'+esc(e.original)+'</span></td><td><span class="anon-val">'+esc(e.anonymized)+'</span></td><td><span class="tech-chip">'+esc(e.technique)+'</span></td>';tbody.appendChild(tr);}}
 function renderNotes(entities,rAfter){const notes=[];const types=[...new Set(entities.map(e=>e.type))];if(!entities.length)notes.push('No se detectaron datos personales con los tipos activados. Revisa las opciones o el texto manualmente.');else{notes.push('Se han anonimizado '+entities.length+' entidad'+(entities.length!==1?'es':'')+': '+types.join(', ')+'.');if(entities.some(e=>e.patId==='nombre'))notes.push('Los nombres detectados provienen del diccionario ES. Revisa nombres inusuales manualmente.');if(rAfter!=='BAJO')notes.push('Riesgo residual no nulo: considera controles adicionales (Paso 5) o mayor nivel de anonimización.');if(selectedTech==='seudonimización')notes.push('Tabla de seudonimización en memoria: se destruye al cerrar la pestaña. No compartir el texto original con el anonimizado.');}document.getElementById('notesText').textContent=notes.join(' ');}
 function toggleExportMenu(e){e.stopPropagation();document.getElementById('exportDocMenu').classList.toggle('open');}
 document.addEventListener('click',()=>document.getElementById('exportDocMenu').classList.remove('open'));
@@ -1244,7 +367,7 @@ async function copyResult(){if(!lastResult)return;try{await navigator.clipboard.
 function openReport(){if(!lastResult)return;buildReport();document.getElementById('reportOverlay').classList.add('open');}
 function closeReport(){document.getElementById('reportOverlay').classList.remove('open');}
 function printReport(){window.print();}
-function buildReport(){const r=lastResult;const nDir=r.entities.filter(e=>e.category==='directo').length;const nInd=r.entities.filter(e=>e.category==='indirecto').length;const typeCounts={};for(const e of r.entities)typeCounts[e.type]=(typeCounts[e.type]||0)+1;const now=new Date();const riskClass=lv=>lv==='ALTO'?'rpt-risk-alto':lv==='MEDIO'?'rpt-risk-medio':'rpt-risk-bajo';const entityRows=r.entities.map(e=>'<tr><td><span style="font-size:.68rem;font-weight:500">'+esc(e.type)+'</span></td><td>'+e.category+'</td><td><span class="rpt-original">'+esc(e.original)+'</span></td><td><span class="rpt-anon">'+esc(e.anonymized)+'</span></td></tr>').join('');const typeRows=Object.entries(typeCounts).map(([t,c])=>'<tr><td>'+esc(t)+'</td><td style="text-align:center;font-weight:600">'+c+'</td></tr>').join('');document.getElementById('reportBody').innerHTML='<div class="rpt-header"><div><div class="rpt-org">Informe de Anonimización de Datos Personales</div><div class="rpt-subtitle">Generado con AnonimizadorPD · Motor local · Sin transmisión de datos</div></div><div class="rpt-meta-block">Archivo: '+esc(r.filename)+'<br>Fecha: '+now.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'})+'<br>Hora: '+now.toLocaleTimeString('es-ES')+'<br>Técnica: '+esc(r.tech)+'<br>Norma: Guía PDPC/AEPD Oct. 2022 · RGPD Art. 4(1)</div></div><div class="rpt-section"><div class="rpt-section-title">1 · Resumen ejecutivo</div><div class="rpt-kpi-grid"><div class="rpt-kpi"><div class="rpt-kpi-num plum">'+r.entities.length+'</div><div class="rpt-kpi-lbl">Entidades anonimizadas</div></div><div class="rpt-kpi"><div class="rpt-kpi-num red">'+nDir+'</div><div class="rpt-kpi-lbl">Identificadores directos</div></div><div class="rpt-kpi"><div class="rpt-kpi-num amber">'+nInd+'</div><div class="rpt-kpi-lbl">Identificadores indirectos</div></div><div class="rpt-kpi"><div class="rpt-kpi-num">'+r.text.length.toLocaleString('es')+'</div><div class="rpt-kpi-lbl">Caracteres procesados</div></div></div><table class="rpt-table" style="width:auto;min-width:320px"><tr><th>Riesgo antes</th><th>Riesgo después</th><th>Técnica aplicada</th><th>Tiempo proceso</th></tr><tr><td><span class="rpt-risk-badge '+riskClass(r.riskBefore)+'">'+r.riskBefore+'</span></td><td><span class="rpt-risk-badge '+riskClass(r.riskAfter)+'">'+r.riskAfter+'</span></td><td style="font-weight:500">'+esc(r.tech)+'</td><td style="font-family:\'IBM Plex Mono\',monospace">'+r.elapsed+'s</td></tr></table></div><div class="rpt-section"><div class="rpt-section-title">2 · Distribución por tipo de entidad</div><table class="rpt-table" style="width:auto;min-width:280px"><tr><th>Tipo de entidad</th><th>Cantidad</th></tr>'+(typeRows||'<tr><td colspan="2" style="color:var(--text-dim);text-align:center">Sin entidades detectadas</td></tr>')+'</table></div><div class="rpt-section"><div class="rpt-section-title">3 · Comparativa antes / después del texto</div><div class="rpt-two-col"><div><div class="rpt-col-label before">ANTES — Texto original</div><div class="rpt-text-box before-box">'+buildBeforeHTML(r.text,r.entities)+'</div></div><div><div class="rpt-col-label after">DESPUÉS — Texto anonimizado</div><div class="rpt-text-box after-box">'+buildAfterHTML(r.anonText,r.entities)+'</div></div></div></div><div class="rpt-section"><div class="rpt-section-title">4 · Registro detallado de entidades</div><table class="rpt-table"><tr><th>Tipo</th><th>Categoría</th><th>Valor original</th><th>Valor anonimizado</th></tr>'+(entityRows||'<tr><td colspan="4" style="color:var(--text-dim);text-align:center">Sin entidades</td></tr>')+'</table></div><div class="rpt-section"><div class="rpt-section-title">5 · Metodología aplicada</div><div class="rpt-method-box"><strong>Referencia: Guía Básica de Anonimización · PDPC/AEPD (octubre 2022)</strong><strong style="margin-top:6px;display:block">Paso 1 · Conocer los datos:</strong>Se han identificado identificadores directos ('+nDir+') e indirectos ('+nInd+') conforme a la clasificación de la Guía.<strong style="margin-top:6px;display:block">Paso 2 · Desidentificación:</strong>Los identificadores directos han sido eliminados o sustituidos según la técnica seleccionada.<strong style="margin-top:6px;display:block">Paso 3 · Técnica aplicada — '+esc(r.tech)+':</strong>'+(r.tech==='seudonimización'?'Sustitución por tokens únicos y consistentes.':r.tech==='enmascaramiento'?'Ocultación parcial de caracteres con asteriscos.':r.tech==='generalización'?'Reducción de granularidad: fechas → año/decenio, edades → rangos de 5 años, CP → prefijo.':'Eliminación completa del dato. Máximo nivel de anonimización.')+'<strong style="margin-top:6px;display:block">Paso 4 · Evaluación de riesgo (k-anonimidad):</strong>Riesgo estimado antes: <strong>'+r.riskBefore+'</strong> → después: <strong>'+r.riskAfter+'</strong>.'+(r.riskAfter!=='BAJO'?'⚠ Riesgo residual no nulo. Se recomienda aplicar controles adicionales.':'Riesgo residual reducido a nivel BAJO.')+'<strong style="margin-top:6px;display:block">Paso 5 · Controles recomendados:</strong>Implementar control de acceso, cifrado del conjunto de datos anonimizado, registro central de compartición y revisiones periódicas de reidentificación.</div></div><div class="rpt-section"><div class="rpt-section-title">6 · Avisos legales y limitaciones</div><div style="font-size:.7rem;color:var(--text-muted);line-height:1.65">Este informe ha sido generado por AnonimizadorPD, un motor local basado en expresiones regulares y diccionarios de entidades españolas. El procesamiento se ha realizado íntegramente en el navegador del usuario: ningún dato ha sido transmitido a servidores externos. La cobertura de detección de nombres propios está limitada a la lista de nombres y apellidos frecuentes en España. Se recomienda revisión manual del texto resultante. La implementación de las recomendaciones de esta herramienta no implica el cumplimiento automático del RGPD ni de la normativa de protección de datos aplicable.</div></div><div class="rpt-footer"><span>AnonimizadorPD · Motor local · '+now.toLocaleDateString('es-ES')+'</span><span>Guía PDPC/AEPD · RGPD Art. 4(1) · ISO/IEC 20889:2018</span></div>';}
+function buildReport(){const r=lastResult;const nDir=r.entities.filter(e=>e.category==='directo').length;const nInd=r.entities.filter(e=>e.category==='indirecto').length;const typeCounts={};for(const e of r.entities)typeCounts[e.type]=(typeCounts[e.type]||0)+1;const now=new Date();const riskClass=lv=>lv==='ALTO'?'rpt-risk-alto':lv==='MEDIO'?'rpt-risk-medio':'rpt-risk-bajo';const entityRows=r.entities.map(e=>'<tr><td><span style="font-size:.68rem;font-weight:500">'+esc(e.type)+'</span></td><td>'+e.category+'</td><td><span class="rpt-original">'+esc(e.original)+'</span></td><td><span class="rpt-anon">'+esc(e.anonymized)+'</span></td></tr>').join('');const typeRows=Object.entries(typeCounts).map(([t,c])=>'<tr><td>'+esc(t)+'</td><td style="text-align:center;font-weight:600">'+c+'</td></tr>').join('');document.getElementById('reportBody').innerHTML='<div class="rpt-header"><div><div class="rpt-org">Informe de Anonimización de Datos Personales</div><div class="rpt-subtitle">Generado con AnonimizadorPD · Motor local · Sin transmisión de datos</div></div><div class="rpt-meta-block">Archivo: '+esc(r.filename)+'<br>Fecha: '+now.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'})+'<br>Hora: '+now.toLocaleTimeString('es-ES')+'<br>Técnica: '+esc(r.tech)+'<br>Norma: Guía PDPC/AEPD Oct. 2022 · RGPD Art. 4(1)</div></div><div class="rpt-section"><div class="rpt-section-title">1 · Resumen ejecutivo</div><div class="rpt-kpi-grid"><div class="rpt-kpi"><div class="rpt-kpi-num plum">'+r.entities.length+'</div><div class="rpt-kpi-lbl">Entidades anonimizadas</div></div><div class="rpt-kpi"><div class="rpt-kpi-num red">'+nDir+'</div><div class="rpt-kpi-lbl">Identificadores directos</div></div><div class="rpt-kpi"><div class="rpt-kpi-num amber">'+nInd+'</div><div class="rpt-kpi-lbl">Identificadores indirectos</div></div><div class="rpt-kpi"><div class="rpt-kpi-num">'+r.text.length.toLocaleString('es')+'</div><div class="rpt-kpi-lbl">Caracteres procesados</div></div></div><table class="rpt-table" style="width:auto;min-width:320px"><tr><th>Riesgo antes</th><th>Riesgo después</th><th>Técnica aplicada</th><th>Tiempo proceso</th></tr><tr><td><span class="rpt-risk-badge '+riskClass(r.riskBefore)+'">'+r.riskBefore+'</span></td><td><span class="rpt-risk-badge '+riskClass(r.riskAfter)+'">'+r.riskAfter+'</span></td><td style="font-weight:500">'+esc(r.tech)+'</td><td style="font-family:\'IBM Plex Mono\',monospace">'+r.elapsed+'s</td></tr></table></div><div class="rpt-section"><div class="rpt-section-title">2 · Distribución por tipo de entidad</div><table class="rpt-table" style="width:auto;min-width:280px"><tr><th>Tipo de entidad</th><th>Cantidad</th></tr>'+(typeRows||'<tr><td colspan="2" style="color:var(--text-dim);text-align:center">Sin entidades detectadas</td></tr>')+'</table></div><div class="rpt-section"><div class="rpt-section-title">3 · Comparativa antes / después del texto</div><div class="rpt-two-col"><div><div class="rpt-col-label before">ANTES — Texto original</div><div class="rpt-text-box before-box">'+buildBeforeHTML(r.text,r.entities)+'</div></div><div><div class="rpt-col-label after">DESPUÉS — Texto anonimizado</div><div class="rpt-text-box after-box">'+buildAfterHTML(r.anonText,r.entities)+'</div></div></div></div><div class="rpt-section"><div class="rpt-section-title">4 · Registro detallado de entidades</div><table class="rpt-table"><tr><th>Tipo</th><th>Categoría</th><th>Valor original</th><th>Valor anonimizado</th></tr>'+(entityRows||'<tr><td colspan="4" style="color:var(--text-dim);text-align:center">Sin entidades</td></tr>')+'</table></div><div class="rpt-section"><div class="rpt-section-title">5 · Metodología aplicada</div><div class="rpt-method-box"><strong>Referencia: Guía Básica de Anonimización · PDPC/AEPD (octubre 2022)</strong><strong style="margin-top:6px;display:block">Paso 1 · Conocer los datos:</strong>Se han identificado identificadores directos ('+nDir+') e indirectos ('+nInd+') conforme a la clasificación de la Guía.<strong style="margin-top:6px;display:block">Paso 2 · Desidentificación:</strong>Los identificadores directos han sido eliminados o sustituidos según la técnica seleccionada.<strong style="margin-top:6px;display:block">Paso 3 · Técnica aplicada — '+esc(r.tech)+':</strong>'+(r.tech==='seudonimización'?'Sustitución por tokens únicos y consistentes.':r.tech==='enmascaramiento'?'Ocultación parcial de caracteres con asteriscos.':r.tech==='generalización'?'Reducción de granularidad: fechas → año/decenio, edades → rangos de 5 años, CP → prefijo.':'Eliminación completa del dato. Máximo nivel de anonimización.')+'<strong style="margin-top:6px;display:block">Paso 4 · Evaluación de riesgo (k-anonimidad):</strong>Riesgo estimado antes: <strong>'+r.riskBefore+'</strong> → después: <strong>'+r.riskAfter+'</strong>.'+(r.riskAfter!=='BAJO'?'⚠ Riesgo residual no nulo. Se recomienda aplicar controles adicionales.':'Riesgo residual reducido a nivel BAJO.')+'<strong style="margin-top:6px;display:block">Paso 5 · Controles recomendados:</strong>Implementar control de acceso, cifrado del conjunto de datos anonimizado, registro central de compartición y revisiones periódicas de reidentificación.</div></div><div class="rpt-section"><div class="rpt-section-title">6 · Avisos legales y limitaciones</div><div style="font-size:.7rem;color:var(--text-muted);line-height:1.65">Este informe ha sido generado por AnonimizadorPD, un motor local basado en expresiones regulares, diccionarios de entidades españolas y OCR. El procesamiento se ha realizado íntegramente en el navegador del usuario: ningún dato ha sido transmitido a servidores externos. La cobertura de detección de nombres propios está limitada a la lista de nombres y apellidos frecuentes en España. Se recomienda revisión manual del texto resultante. La implementación de las recomendaciones de esta herramienta no implica el cumplimiento automático del RGPD ni de la normativa de protección de datos aplicable.</div></div><div class="rpt-footer"><span>AnonimizadorPD · Motor local · '+now.toLocaleDateString('es-ES')+'</span><span>Guía PDPC/AEPD · RGPD Art. 4(1) · ISO/IEC 20889:2018</span></div>';}
 function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function yyyymmdd(){const d=new Date();return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');}
 function log(msg,type){const body=document.getElementById('logBody');const ts=new Date().toTimeString().slice(0,8);const line=document.createElement('div');line.className='log-line'+(type?' '+type:'');line.innerHTML='<span class="log-ts">'+ts+'</span><span>'+msg+'</span>';body.appendChild(line);body.scrollTop=body.scrollHeight;}
